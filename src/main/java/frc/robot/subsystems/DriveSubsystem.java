@@ -19,6 +19,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Util.LimelightHelpers;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /*
@@ -33,6 +34,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class DriveSubsystem extends SubsystemBase {
+  public double aimkp = .0015;
+  public double targetingAngularVelocity;
+
   // Create MAXSwerveModules
   private final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
       DriveConstants.kFrontLeftDrivingCanId,
@@ -76,6 +80,17 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
+        targetingAngularVelocity = LimelightHelpers.getTX("limelight-second") * aimkp;
+    //System.out.println(LimelightHelpers.getTX("limelight-second"));
+    // convert to radians per second for our drive method
+    targetingAngularVelocity *= DriveConstants.kMaxAngularSpeed;
+
+    //invert since tx is positive when the target is to the right of the crosshair
+    targetingAngularVelocity *= -1.0;
+    if (LimelightHelpers.getTX("limelight-second") <= 3 && LimelightHelpers.getTX("limelight-second") >= -3){
+      targetingAngularVelocity = 0;
+    }
+
     m_odometry.update(
         Rotation2d.fromDegrees(m_gyro.getAngle()),
         new SwerveModulePosition[] {

@@ -67,8 +67,17 @@ public class RobotContainer {
                   -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                   true),
               m_robotDrive));
+
+    Trigger leftTrigger = m_driverController.a();
+    leftTrigger.onTrue( new RunCommand(
+              () -> m_robotDrive.drive(
+                  -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
+                  -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+                  m_robotDrive.targetingAngularVelocity,
+                  true),
+              m_robotDrive));
+    
   }
-  private void configureBindings() {
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
