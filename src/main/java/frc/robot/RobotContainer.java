@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Util.LimelightHelpers;
 import frc.robot.commands.Autos;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -68,8 +69,8 @@ public class RobotContainer {
                   true),
               m_robotDrive));
 
-    Trigger leftTrigger = m_driverController.a();
-    leftTrigger.onTrue( new RunCommand(
+    Trigger leftTrigger = m_driverController.a().and(new Trigger(()->LimelightHelpers.getFiducialID("limelight-second")>=0));
+    leftTrigger.whileTrue( new RunCommand(
               () -> m_robotDrive.drive(
                   -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
                   -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),

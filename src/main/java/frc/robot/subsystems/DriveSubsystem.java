@@ -81,7 +81,7 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
   public void periodic() {
     // Update the odometry in the periodic block
         targetingAngularVelocity = LimelightHelpers.getTX("limelight-second") * aimkp;
-    //System.out.println(LimelightHelpers.getTX("limelight-second"));
+    System.out.println(LimelightHelpers.getFiducialID("limelight-second"));
     // convert to radians per second for our drive method
     targetingAngularVelocity *= DriveConstants.kMaxAngularSpeed;
 
@@ -92,7 +92,7 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
     }
 
     m_odometry.update(
-        Rotation2d.fromDegrees(m_gyro.getAngle()),
+        Rotation2d.fromDegrees(-(m_gyro.getAngle())),//ADDED NEGATIVE SIGN FOR JONES 3 - LARRY WE CAN CHANGE IF NO WORKY
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
