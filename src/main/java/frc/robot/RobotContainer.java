@@ -12,7 +12,6 @@ import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
-
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -68,9 +67,8 @@ public class RobotContainer {
                   -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                   true),
               m_robotDrive));
-      
-
   }
+  private void configureBindings() {
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
