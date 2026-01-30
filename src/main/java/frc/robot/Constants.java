@@ -84,5 +84,29 @@ public final class Constants {
     public static final double kDriveDeadband = 0.05;
   }
 
+  
+  public static final class intakeConstants { //change the constants
+    public static final int kIntakeWheelID = 0;
+    public static final int kIntakeArmID = 0;
+    public static final double kIntakeSetpoint = 0;
+  }
+  public static final class AAConstants {
+    public static final double X_REEF_ALIGNMENT_P = .05; 
+    public static final double Y_REEF_ALIGNMENT_P = .05;
+    public static final double ROT_REEF_ALIGNMENT_P = .01;
+
+    public static final double POSE_VALIDATION_TIME = 2;
+    public static final double DONT_SEE_TAG_WAIT_TIME = 5;
+
+    
+    public static final double Y_SETPOINT_REEF_ALIGNMENT = -1.11;//0.76
+    public static final double ROT_SETPOINT_REEF_ALIGNMENT = -1.82; //0
+    public static final double X_SETPOINT_REEF_ALIGNMENT = .43; //
+
+    public static final double Y_TOLERANCE_REEF_ALIGNMENT = .5; //should have a 5-10 mm tolerance (I think), 1 is a placeholder
+    public static final double X_TOLERANCE_REEF_ALIGNMENT = .5; //1 is placeholder
+    public static final double ROT_TOLERANCE_REEF_ALIGNMENT = .5; //1 is placeholder
+
+  }
 }
 

@@ -12,11 +12,11 @@ public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
 
   // Initilization
-private final SparkMax m_KickerArm = new SparkMax(KickerConstants.kKickerArmCANID, MotorType.kBrushless);
-private final SparkMax m_KickerWheel = new SparkMax(KickerConstants.kKickerWheelCANID, MotorType.kBrushless);
-private final SparkClosedLoopController m_pidController = m_KickerArm.getClosedLoopController();
+private final SparkMax m_IntakeArm = new SparkMax(intakeConstants.kIntakeArmID, MotorType.kBrushless);
+private final SparkMax m_IntakeWheel= new SparkMax(intakeConstants.kIntakeWheelID, MotorType.kBrushless);
+private final SparkClosedLoopController m_pidController = m_IntakeArm.getClosedLoopController();
 private SparkAnalogSensor m_ArmEncoder;
-  public KickerSubsystem() {
+  public IntakeSubsystem() {
 
   
   }
@@ -34,28 +34,24 @@ private SparkAnalogSensor m_ArmEncoder;
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    m_ArmEncoder = m_KickerArm.getAnalog();
+    m_ArmEncoder = m_IntakeArm.getAnalog();
     SmartDashboard.putNumber("Kicker Encoder Position", m_ArmEncoder.getPosition());
-    SmartDashboard.putNumber("Kicker Set Point Value",KickerConstants.kKickerSetPointVal);
+    SmartDashboard.putNumber("Kicker Set Point Value",intakeConstants.kIntakeSetpoint);
   }
 
   
 
-  public void runKicker(double setposition) {
-    m_KickerWheel.setVoltage(4);
+  public void runIntake(double setposition) {
+    m_IntakeWheel.setVoltage(4);
     m_pidController.setSetpoint(setposition, com.revrobotics.spark.SparkBase.ControlType.kPosition);
 
   }
 
-  public void stopKicker(double setposition) {
-    m_KickerWheel.setVoltage(0);
+  public void stopIntake(double setposition) {
+    m_IntakeWheel.setVoltage(0);
     //m_pidController.setReference(0.1, com.revrobotics.spark.SparkBase.ControlType.kPosition);
     m_pidController.setSetpoint(setposition, com.revrobotics.spark.SparkBase.ControlType.kPosition);
 
   }
- 
- /*  public void KickerSetPoint(double setposition) {
-    Set the setpoint of the PID controller in raw position mode
- }*/
 
 }

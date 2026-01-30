@@ -69,8 +69,8 @@ public class RobotContainer {
                   true),
               m_robotDrive));
 
-    Trigger leftTrigger = m_driverController.a().and(new Trigger(()->LimelightHelpers.getFiducialID("limelight-second")>=0));
-    leftTrigger.whileTrue( new RunCommand(
+    Trigger aimingTrigger = m_driverController.leftBumper().and(new Trigger(()->LimelightHelpers.getFiducialID("limelight-second")>=0));
+    aimingTrigger.whileTrue( new RunCommand(
               () -> m_robotDrive.drive(
                   -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
                   -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
@@ -78,6 +78,8 @@ public class RobotContainer {
                   true),
               m_robotDrive));
     
+   
+    Trigger dpadTrigger1 = new Trigger(() -> (m_driverController.getPOV() == 0));
   }
 
   /**
