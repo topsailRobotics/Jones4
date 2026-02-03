@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -116,15 +117,47 @@ private final Field2d m_field = new Field2d();
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
-
+        
+    //poseEstimation using megatag1 and 2
+    if (m_poseEstimator == null || m_gyro == null) { //prevent null pointer exception in disabled periodic
+      return;
+    }
+    
+    LimelightHelpers.SetRobotOrientation("limelight_first", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+    var mt2_visionEstimate = 
+        LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight_first");
     var visionEstimate =
         LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight_first");//use limelight host name
-
+    
+    // if our angular velocity is greater than 360 degrees per second, ignore vision updates
+    //rejection booleans
+    boolean mt2_reject = false;
     boolean reject = false;
-
-    if (visionEstimate.tagCount == 0) {
+    
+    //mt2
+    if (mt2_visionEstimate == null || mt2_visionEstimate.tagCount == 0) {
+      mt2_reject = true;
+    }
+    if(Math.abs(m_gyro.getRate()) > 360)
+    {
+      mt2_reject = true;
+    }
+    
+    if(!mt2_reject)
+    {
+      m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+      m_poseEstimator.addVisionMeasurement(
+          mt2_visionEstimate.pose,
+          mt2_visionEstimate.timestampSeconds);
+    }
+  //mt1
+  if(mt2_reject)
+  {
+    if (visionEstimate == null || visionEstimate.tagCount == 0) { //prevent null initialization, short-circuits
       reject = true;
-    } else if (visionEstimate.tagCount == 1 &&
+    }
+
+    if (visionEstimate.tagCount == 1 &&
                visionEstimate.rawFiducials.length == 1) {
       if (visionEstimate.rawFiducials[0].ambiguity > 0.7) {
         reject = true;
@@ -139,10 +172,12 @@ private final Field2d m_field = new Field2d();
           visionEstimate.pose,
           visionEstimate.timestampSeconds);
     }
-
-    m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
-    SmartDashboard.putNumber("NavX Gyro", m_gyro.getAngle());
   }
+    
+  
+  m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());//update robot position in field, further reviews needed
+  SmartDashboard.putNumber("NavX Gyro", m_gyro.getAngle());
+  }//end of periodic
 
   public Pose2d getPose() {
     return m_poseEstimator.getEstimatedPosition();
@@ -159,6 +194,12 @@ private final Field2d m_field = new Field2d();
         },
         pose);
   }
+  /* 
+  //getter for m_gyro
+  public Rotation2d getGyroRotation() {
+    return Rotation2d.fromDegrees(-m_gyro.getAngle());
+}
+  */
   
 
   
