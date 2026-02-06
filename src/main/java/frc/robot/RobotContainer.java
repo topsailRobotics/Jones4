@@ -82,14 +82,22 @@ public class RobotContainer {
               () -> m_robotDrive.drive(
                   -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
                   -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
-                  m_robotDrive.redFerryAmount,
+                  m_robotDrive.FerryAmount,
                   true),
               m_robotDrive));
     
    
     Trigger rightTrigger = new Trigger(() -> m_driverController.getRightTriggerAxis() > 0.5);
+    rightTrigger.whileTrue( new RunCommand(
+              () -> m_robotDrive.drive(
+                  -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
+                  -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+                  m_robotDrive.setDiamond,
+                  true),
+              m_robotDrive));
     m_driverController.povDown().toggleOnTrue(new RunCommand(
               () -> m_robotDrive.setX()));
+      
 
   }
 
