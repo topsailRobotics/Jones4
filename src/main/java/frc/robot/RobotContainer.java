@@ -77,9 +77,20 @@ public class RobotContainer {
                   m_robotDrive.targetingAngularVelocity,
                   true),
               m_robotDrive));
+    Trigger ferryTrigger = m_driverController.rightBumper();
+    ferryTrigger.whileTrue( new RunCommand(
+              () -> m_robotDrive.drive(
+                  -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
+                  -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+                  m_robotDrive.redFerryAmount,
+                  true),
+              m_robotDrive));
     
    
-    Trigger dpadTrigger1 = new Trigger(() -> (m_driverController.getPOV() == 0));
+    Trigger rightTrigger = new Trigger(() -> m_driverController.getRightTriggerAxis() > 0.5);
+    m_driverController.povDown().toggleOnTrue(new RunCommand(
+              () -> m_robotDrive.setX()));
+
   }
 
   /**

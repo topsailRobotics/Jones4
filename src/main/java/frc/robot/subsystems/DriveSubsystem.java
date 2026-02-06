@@ -9,6 +9,8 @@ import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -36,6 +38,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class DriveSubsystem extends SubsystemBase {
   public double aimkp = .0015;
   public double targetingAngularVelocity;
+  public double redFerryAmount;
+  public double newAngle;
 
   // Create MAXSwerveModules
   private final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
@@ -81,7 +85,6 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
   public void periodic() {
     // Update the odometry in the periodic block
         targetingAngularVelocity = LimelightHelpers.getTX("limelight-second") * aimkp;
-    System.out.println(LimelightHelpers.getFiducialID("limelight-second"));
     // convert to radians per second for our drive method
     targetingAngularVelocity *= DriveConstants.kMaxAngularSpeed;
 
@@ -90,6 +93,19 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
     if (LimelightHelpers.getTX("limelight-second") <= 3 && LimelightHelpers.getTX("limelight-second") >= -3){
       targetingAngularVelocity = 0;
     }
+    newAngle = m_gyro.getAngle() % 360;
+    if (newAngle >= 10 || newAngle <= -10){
+      redFerryAmount = (((newAngle)) * 0.01);
+      if (redFerryAmount >= .5){
+        redFerryAmount = .5;
+      } else if( redFerryAmount <=-0.5){
+        redFerryAmount = -.5;
+      }
+    } else {
+      redFerryAmount = 0;
+    }
+
+    
 
     m_odometry.update(
         Rotation2d.fromDegrees(-(m_gyro.getAngle())),//ADDED NEGATIVE SIGN FOR JONES 3 - LARRY WE CAN CHANGE IF NO WORKY
