@@ -44,15 +44,19 @@ private SparkAnalogSensor m_ArmEncoder;
   
 
   public void runIntake(double setposition) {
-    m_pidController2.setSetpoint(setposition, ControlType.kVelocity);
+    // m_pidController2.setSetpoint(100, com.revrobotics.spark.SparkBase.ControlType.kVelocity);
+    m_IntakeWheel.setVoltage(4);
     m_pidController1.setSetpoint(setposition, com.revrobotics.spark.SparkBase.ControlType.kPosition);
+    System.out.println("willy out!");
 
   }
 
   public void stopIntake(double setposition) {
-    m_IntakeWheel.setVoltage(0);
+    // m_pidController2.setSetpoint(0, com.revrobotics.spark.SparkBase.ControlType.kVelocity);
     //m_pidController.setReference(0.1, com.revrobotics.spark.SparkBase.ControlType.kPosition);
+    m_IntakeWheel.setVoltage(setposition);
     m_pidController1.setSetpoint(setposition, com.revrobotics.spark.SparkBase.ControlType.kPosition);
+    System.out.println("willy in!");
 
   }
 

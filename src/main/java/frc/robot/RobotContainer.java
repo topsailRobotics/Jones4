@@ -71,7 +71,9 @@ public class RobotContainer {
                   -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                   true),
               m_robotDrive));
-          new RunCommand(()-> m_intake.stopIntake(0));
+      m_intake.setDefaultCommand(new RunCommand(()-> m_intake.stopIntake(0),m_intake));
+
+
 
     Trigger aimingTrigger = m_driverController.leftBumper().and(new Trigger(()->LimelightHelpers.getFiducialID("limelight-second")>=0));
     aimingTrigger.whileTrue( new RunCommand(
@@ -101,7 +103,7 @@ public class RobotContainer {
               m_robotDrive));
     m_driverController.povDown().toggleOnTrue(new RunCommand(
               () -> m_robotDrive.setX()));
-    m_driverController.povUp().whileTrue(new RunCommand(()-> m_intake.runIntake(1)));
+    m_driverController.a().toggleOnTrue(new RunCommand(()-> m_intake.runIntake(.5)));
       
 
   }
