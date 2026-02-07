@@ -10,6 +10,7 @@ import frc.robot.Util.LimelightHelpers;
 import frc.robot.commands.Autos;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
@@ -30,6 +31,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final IntakeSubsystem m_intake = new IntakeSubsystem();
+
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -68,6 +71,7 @@ public class RobotContainer {
                   -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                   true),
               m_robotDrive));
+          new RunCommand(()-> m_intake.stopIntake(0));
 
     Trigger aimingTrigger = m_driverController.leftBumper().and(new Trigger(()->LimelightHelpers.getFiducialID("limelight-second")>=0));
     aimingTrigger.whileTrue( new RunCommand(
@@ -97,6 +101,7 @@ public class RobotContainer {
               m_robotDrive));
     m_driverController.povDown().toggleOnTrue(new RunCommand(
               () -> m_robotDrive.setX()));
+    m_driverController.povUp().whileTrue(new RunCommand(()-> m_intake.runIntake(1)));
       
 
   }

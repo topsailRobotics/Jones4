@@ -83,12 +83,10 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
     public static final double kDriveDeadband = 0.05;
   }
-
-  
   public static final class intakeConstants { //change the constants
-    public static final int kIntakeWheelID = 0;
-    public static final int kIntakeArmID = 0;
-    public static final double kIntakeSetpoint = 0;
+    public static final int kIntakeWheelID = 61;
+    public static final int kIntakeArmID = 60;
+    public static final double kIntakeSetpoint = 3;
   }
   public static final class AAConstants {
     public static final double X_REEF_ALIGNMENT_P = .05; 
@@ -106,7 +104,6 @@ public final class Constants {
     public static final double Y_TOLERANCE_REEF_ALIGNMENT = .5; //should have a 5-10 mm tolerance (I think), 1 is a placeholder
     public static final double X_TOLERANCE_REEF_ALIGNMENT = .5; //1 is placeholder
     public static final double ROT_TOLERANCE_REEF_ALIGNMENT = .5; //1 is placeholder
-
   }
 }
 
