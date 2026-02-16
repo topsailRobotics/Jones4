@@ -5,7 +5,7 @@ import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import frc.robot.Constants.ModuleConstants;
-import com.revrobotics.spark.ClosedLoopSlot;//
+
 public final class Configs {
     public static final class MAXSwerveModule {
         public static final SparkMaxConfig drivingConfig = new SparkMaxConfig();
@@ -16,7 +16,7 @@ public final class Configs {
             double drivingFactor = ModuleConstants.kWheelDiameterMeters * Math.PI
                     / ModuleConstants.kDrivingMotorReduction;
             double turningFactor = 2 * Math.PI;
-            //double drivingVelocityFeedForward = 1 / ModuleConstants.kDriveWheelFreeSpeedRps; (moved to drivesubsystem)
+            double drivingVelocityFeedForward = 1 / ModuleConstants.kDriveWheelFreeSpeedRps;
 
             drivingConfig
                     .idleMode(IdleMode.kBrake)
@@ -24,11 +24,12 @@ public final class Configs {
             drivingConfig.encoder
                     .positionConversionFactor(drivingFactor) // meters
                     .velocityConversionFactor(drivingFactor / 60.0); // meters per second
-        //     drivingConfig.closedLoop
-        //         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-        //         .pid(0.04, 0, 0, ClosedLoopSlot.kSlot0)
-        //         .velocityFF(drivingVelocityFeedForward, ClosedLoopSlot.kSlot0)
-        //         .outputRange(-1, 1, ClosedLoopSlot.kSlot0);
+            drivingConfig.closedLoop
+                    .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                    // These are example gains you may need to them for your own robot!
+                    .pid(0.04, 0, 0)
+                    .velocityFF(drivingVelocityFeedForward)
+                    .outputRange(-1, 1);
 
             turningConfig
                     .idleMode(IdleMode.kBrake)

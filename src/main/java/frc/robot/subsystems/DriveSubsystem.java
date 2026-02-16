@@ -14,24 +14,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.ModuleConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.config.ClosedLoopConfig;
-import com.revrobotics.spark.config.FeedForwardConfig;
-import com.revrobotics.spark.FeedbackSensor; 
-//limelight
-import frc.robot.Constants.LimelightConstants;// this is still from last year's apriltag, change in constants file later
-import frc.robot.LimelightHelpers;
 /*
  * "IMUAxis.kZ" was removed from all versions of m_gyro.getAngle because we use a NavX gyro
  * 
@@ -67,90 +56,53 @@ public class DriveSubsystem extends SubsystemBase {
 
   // The gyro sensor
 private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
-
-private SwerveDrivePoseEstimator m_poseEstimator;
-
-private final Field2d m_field = new Field2d();
-//deleted code for m_odometry, replaced with m_poseEstimator
-
+  // Odometry class for tracking robot pose
+  SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
+      DriveConstants.kDriveKinematics,
+      Rotation2d.fromDegrees(m_gyro.getAngle()),
+      new SwerveModulePosition[] {
+          m_frontLeft.getPosition(),
+          m_frontRight.getPosition(),
+          m_rearLeft.getPosition(),
+          m_rearRight.getPosition()
+      });
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
     // Usage reporting for MAXSwerve template
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
-    
-    //moved closedloop config to here
-    double drivingVelocityFeedForward = 1.0 / ModuleConstants.kDriveWheelFreeSpeedRps;// calculate velocity ff 
-    SparkMaxConfig config = new SparkMaxConfig();
-    FeedForwardConfig ffConfig = new FeedForwardConfig().kV(drivingVelocityFeedForward);
-    
-    config.closedLoop.pid(0.04, 0.0, 0.0);
-    config.closedLoop.apply(ffConfig);
-    config.closedLoop.outputRange(-1, 1);
-
-
-      // ===== Initialize Pose Estimator =====
-
-    m_poseEstimator = new SwerveDrivePoseEstimator(
-        DriveConstants.kDriveKinematics,
-        Rotation2d.fromDegrees(-(m_gyro.getAngle()) + 180),
-        new SwerveModulePosition[] {
-            m_frontLeft.getPosition(),
-            m_frontRight.getPosition(),
-            m_rearLeft.getPosition(),
-            m_rearRight.getPosition()
-        },
-        new Pose2d());
-
-    SmartDashboard.putData("Field", m_field);
   }
 
   @Override
   public void periodic() {
-    
-     m_poseEstimator.update(
-        Rotation2d.fromDegrees(-(m_gyro.getAngle()) + 180),
+    // Update the odometry in the periodic block
+    m_odometry.update(
+        Rotation2d.fromDegrees(m_gyro.getAngle()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
-
-    var visionEstimate =
-        LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight_first");//use limelight host name
-
-    boolean reject = false;
-
-    if (visionEstimate.tagCount == 0) {
-      reject = true;
-    } else if (visionEstimate.tagCount == 1 &&
-               visionEstimate.rawFiducials.length == 1) {
-      if (visionEstimate.rawFiducials[0].ambiguity > 0.7) {
-        reject = true;
-      }
-      if (visionEstimate.rawFiducials[0].distToCamera > 3) {
-        reject = true;
-      }
-    }
-
-    if (!reject) {
-      m_poseEstimator.addVisionMeasurement(
-          visionEstimate.pose,
-          visionEstimate.timestampSeconds);
-    }
-
-    m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
-    SmartDashboard.putNumber("NavX Gyro", m_gyro.getAngle());
   }
 
+  /**
+   * Returns the currently-estimated pose of the robot.
+   *
+   * @return The pose.
+   */
   public Pose2d getPose() {
-    return m_poseEstimator.getEstimatedPosition();
+    return m_odometry.getPoseMeters();
   }
 
+  /**
+   * Resets the odometry to the specified pose.
+   *
+   * @param pose The pose to which to set the odometry.
+   */
   public void resetOdometry(Pose2d pose) {
-    m_poseEstimator.resetPosition(
-        Rotation2d.fromDegrees(-(m_gyro.getAngle()) + 180),
+    m_odometry.resetPosition(
+        Rotation2d.fromDegrees(m_gyro.getAngle()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -159,10 +111,6 @@ private final Field2d m_field = new Field2d();
         },
         pose);
   }
-  
-
-  
-  
 
   /**
    * Method to drive the robot using joystick info.

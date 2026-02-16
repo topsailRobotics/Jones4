@@ -10,7 +10,6 @@ import frc.robot.commands.Autos;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -56,10 +55,6 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
   //  m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    Trigger dpadUp = new Trigger((() ->m_driverController.getHID().getPOV() == 90));
-    dpadUp.onTrue(new RunCommand( () -> m_robotDrive.setX(),
-            m_robotDrive));
-
       m_robotDrive.setDefaultCommand(
           // The left stick controls translation of the robot.
           // Turning is controlled by the X axis of the right stick.
