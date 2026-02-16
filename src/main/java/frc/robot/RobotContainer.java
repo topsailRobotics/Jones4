@@ -8,6 +8,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Util.LimelightHelpers;
 import frc.robot.commands.Autos;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
@@ -34,11 +35,15 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final IndexerSubsystem m_indexer = new IndexerSubsystem();
+  private final ClimberSubsystem m_ClimberSubsystem = new ClimberSubsystem();
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController m_driverController1 =
+      new CommandXboxController(OperatorConstants.kDriverControllerPort1);
+  private final CommandXboxController m_driverController2 =
+      new CommandXboxController(OperatorConstants.kDriverControllerPort2);
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -75,6 +80,7 @@ public class RobotContainer {
               m_robotDrive));
       m_intake.setDefaultCommand(new RunCommand(()-> m_intake.stopIntake(0),m_intake));
       m_indexer.setDefaultCommand(new RunCommand(()-> m_indexer.stopIndex(),m_indexer));
+      m_ClimberSubsystem.setDefaultCommand(new RunCommand(()-> m_ClimberSubsystem.stopClimber(),m_ClimberSubsystem));
 
       
 
@@ -109,7 +115,7 @@ public class RobotContainer {
     m_driverController.povDown().toggleOnTrue(new RunCommand(
               () -> m_robotDrive.setX()));
     m_driverController.a().toggleOnTrue(new RunCommand(()-> m_intake.runIntake(.5)));
-      
+    
 
   }
 

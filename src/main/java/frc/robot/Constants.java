@@ -80,13 +80,10 @@ public final class Constants {
   }
 
   public static final class OIConstants {
-    public static final int kDriverControllerPort = 0;
+    public static final int kDriverControllerPort1 = 0;
+    public static final int kDriverControllerPort2 = 1;
+
     public static final double kDriveDeadband = 0.05;
-  }
-  public static final class intakeConstants { //change the constants
-    public static final int kIntakeWheelID = 61;
-    public static final int kIntakeArmID = 60;
-    public static final double kIntakeSetpoint = 3;
   }
   public static final class AAConstants {
     public static final double X_REEF_ALIGNMENT_P = .05; 
@@ -105,16 +102,29 @@ public final class Constants {
     public static final double X_TOLERANCE_REEF_ALIGNMENT = .5; //1 is placeholder
     public static final double ROT_TOLERANCE_REEF_ALIGNMENT = .5; //1 is placeholder
   }
-  public static final class ShooterConstants{
+    public static final class IntakeConstants { //change the constants
+    public static final int kIntakeWheelID = 51;
+    public static final int kIntakeArmID = 52;
+    public static final double kIntakeSetpoint = 3;
+  }
+
+  public static final class IndexerConstants{ //change IDS
+    public static final int kbeltID = 53; 
+    public static final int kwheelVertID = 54; 
+  }
+    public static final class ShooterConstants{
     public static final double shooterHeight = 0; //in meters
     public static final double targetHeight = 0; //in meters
     public static final double netHeight = targetHeight - shooterHeight;
     public static final double lockedAngle = 87.088; //in degrees
     public static final double relationModification = 1; //no unit; modifies ball exit velocity to wheel spin speed
+    public static final int kleftshootermotorID = 55; 
+    public static final int krightshootermotorID = 56; 
+
   }
-  public static final class IndexerConstants{ //change IDS
-    public static final int kbeltID = 0; 
-    public static final int kwheelVertID = 0; 
-  }
+  public static final class ClimberConstants{
+    public static final int kclimberMotorID = 57;
+    }
+
 }
 
