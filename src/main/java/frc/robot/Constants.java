@@ -84,30 +84,5 @@ public final class Constants {
     public static final double kDriveDeadband = 0.05;
   }
 
-  public static final class LimelightConstants {
-    public static final double kHorizontalTargetP = .01;
-
-    public static final double kTargetPercentOfScreen = 50;
-    public static final double kDistanceTargetP = .002;//.0020;
-
-    public static final double kRotationTargetP = .0035;
-
-    //blue alliance
-    public static final int kTagID18Rot = 0; //tested correct angle
-    public static final int kTagID19Rot = 300; //untested changed to 300 from 60
-    public static final int kTagID20Rot = 240; //tested correct angle
-    public static final int kTagID21Rot = 180; //tested correct angle
-    public static final int kTagID22Rot = 120; //tested correct angle
-    public static final int kTagID17Rot = 60; //untested changed to 60 from 300
-
-    //red alliance
-    public static final int kTagID7Rot = 0; //untested should work
-    public static final int kTagID6Rot = 300; //untested changed to 300 from 60
-    public static final int kTagID11Rot = 240; //tested correct angle
-    public static final int kTagID10Rot = 180; //tested correct angle
-    public static final int kTagID9Rot = 120; //tested correct angle
-    public static final int kTagID8Rot = 60; //untested changed to 60 from 300
-  }
-
 }
 
