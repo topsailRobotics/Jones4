@@ -4,11 +4,23 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.spark.SparkAnalogSensor;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.IndexerConstants;
 
 public class IndexerSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
+  private final SparkMax m_hori = new SparkMax(IndexerConstants.kbeltID, MotorType.kBrushless);
+  private final SparkMax m_vert= new SparkMax(IndexerConstants.kwheelVertID, MotorType.kBrushless);
+  private final SparkClosedLoopController m_pidController1 = m_hori.getClosedLoopController();
+  private SparkAnalogSensor m_encoder = m_hori.getAnalog();
+
+
   public IndexerSubsystem() {}
 
   /**
@@ -38,10 +50,21 @@ public class IndexerSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
   }
 
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
+  public void runIndex() { //potentially add threshold for horizontal belt activation - carter + larry
+        m_hori.setVoltage(4);
+        m_vert.setVoltage(4);
+  }
+  public void stopIndex() {
+    m_hori.setVoltage(0);
+    m_vert.setVoltage(0);
+  }
+
+
 }

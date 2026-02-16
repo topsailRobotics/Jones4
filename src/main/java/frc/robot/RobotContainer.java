@@ -10,6 +10,7 @@ import frc.robot.Util.LimelightHelpers;
 import frc.robot.commands.Autos;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -32,6 +33,7 @@ public class RobotContainer {
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
+  private final IndexerSubsystem m_indexer = new IndexerSubsystem();
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -72,6 +74,9 @@ public class RobotContainer {
                   true),
               m_robotDrive));
       m_intake.setDefaultCommand(new RunCommand(()-> m_intake.stopIntake(0),m_intake));
+      m_indexer.setDefaultCommand(new RunCommand(()-> m_indexer.stopIndex(),m_indexer));
+
+      
 
 
 

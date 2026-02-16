@@ -112,5 +112,9 @@ public final class Constants {
     public static final double lockedAngle = 87.088; //in degrees
     public static final double relationModification = 1; //no unit; modifies ball exit velocity to wheel spin speed
   }
+  public static final class IndexerConstants{ //change IDS
+    public static final int kbeltID = 0; 
+    public static final int kwheelVertID = 0; 
+  }
 }
 

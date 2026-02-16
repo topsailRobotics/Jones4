@@ -5,7 +5,6 @@ import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
-
 import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,7 +16,6 @@ public class IntakeSubsystem extends SubsystemBase {
 private final SparkMax m_IntakeArm = new SparkMax(intakeConstants.kIntakeArmID, MotorType.kBrushless);
 private final SparkMax m_IntakeWheel= new SparkMax(intakeConstants.kIntakeWheelID, MotorType.kBrushless);
 private final SparkClosedLoopController m_pidController1 = m_IntakeArm.getClosedLoopController();
-private final SparkClosedLoopController m_pidController2 = m_IntakeWheel.getClosedLoopController();
 
 private SparkAnalogSensor m_ArmEncoder;
   public IntakeSubsystem() {
@@ -44,7 +42,6 @@ private SparkAnalogSensor m_ArmEncoder;
   
 
   public void runIntake(double setposition) {
-    // m_pidController2.setSetpoint(100, com.revrobotics.spark.SparkBase.ControlType.kVelocity);
     m_IntakeWheel.setVoltage(4);
     m_pidController1.setSetpoint(setposition, com.revrobotics.spark.SparkBase.ControlType.kPosition);
     System.out.println("willy out!");
@@ -52,9 +49,7 @@ private SparkAnalogSensor m_ArmEncoder;
   }
 
   public void stopIntake(double setposition) {
-    // m_pidController2.setSetpoint(0, com.revrobotics.spark.SparkBase.ControlType.kVelocity);
-    //m_pidController.setReference(0.1, com.revrobotics.spark.SparkBase.ControlType.kPosition);
-    m_IntakeWheel.setVoltage(setposition);
+    m_IntakeWheel.setVoltage(0);
     m_pidController1.setSetpoint(setposition, com.revrobotics.spark.SparkBase.ControlType.kPosition);
     System.out.println("willy in!");
 
