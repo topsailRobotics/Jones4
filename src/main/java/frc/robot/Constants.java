@@ -18,7 +18,8 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
   public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
+    public static final int kDriverControllerPort1 = 0;
+    public static final int kDriverControllerPort2 = 1;
   }
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
@@ -80,9 +81,7 @@ public final class Constants {
   }
 
   public static final class OIConstants {
-    public static final int kDriverControllerPort1 = 0;
-    public static final int kDriverControllerPort2 = 1;
-
+    public static final int kDriverControllerPort = 0;
     public static final double kDriveDeadband = 0.05;
   }
   public static final class AAConstants {
@@ -124,6 +123,9 @@ public final class Constants {
   }
   public static final class ClimberConstants{
     public static final int kclimberMotorID = 57;
+    public static final double kclimberUpperThreshhold = 1; //change is necessary
+    public static final double kclimberLowerThreshhold = 0;
+    public static final double kclimberStopPosition = -1;
     }
 
 }
