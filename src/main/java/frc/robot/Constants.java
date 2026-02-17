@@ -105,5 +105,16 @@ public final class Constants {
     public static final double X_TOLERANCE_REEF_ALIGNMENT = .5; //1 is placeholder
     public static final double ROT_TOLERANCE_REEF_ALIGNMENT = .5; //1 is placeholder
   }
+  public static final class ShooterConstants{
+    public static final double shooterHeight = 0; //in meters
+    public static final double targetHeight = 0; //in meters
+    public static final double netHeight = targetHeight - shooterHeight;
+    public static final double lockedAngle = 87.088; //in degrees
+    public static final double relationModification = 1; //no unit; modifies ball exit velocity to wheel spin speed
+  }
+  public static final class IndexerConstants{ //change IDS
+    public static final int kbeltID = 0; 
+    public static final int kwheelVertID = 0; 
+  }
 }
 

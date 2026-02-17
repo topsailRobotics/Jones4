@@ -7,6 +7,9 @@ package frc.robot.subsystems;
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
+
+import java.util.logging.Logger;
+
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
 
@@ -128,7 +131,6 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
     } else {
       setDiamond = 0;
     }
-
 
     
 
