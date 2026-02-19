@@ -16,8 +16,8 @@ import frc.robot.Constants.ClimberConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-    public final SparkMax m_climber = new SparkMax(ClimberConstants.kclimberMotorID, MotorType.kBrushless);
-    public final AbsoluteEncoder m_climbAbsoluteEncoder = m_climber.getAbsoluteEncoder();
+    public final SparkMax m_climberMotor = new SparkMax(ClimberConstants.kclimberMotorID, MotorType.kBrushless);
+    public final AbsoluteEncoder m_climbAbsoluteEncoder = m_climberMotor.getAbsoluteEncoder();
 
   public ClimberSubsystem() {}
 
@@ -47,6 +47,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    // System.out.println(m_climbAbsoluteEncoder.getPosition());
     // This method will be called once per scheduler run
   }
 
@@ -56,12 +57,12 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void ClimberUp() {
-    m_climber.setVoltage(6);
+    m_climberMotor.setVoltage(-6);
   }
   public void ClimberDown() {
-    m_climber.setVoltage(-6); //change if this goes backwards - larry
+    m_climberMotor.setVoltage(6); //change if this goes backwards - larry
   }
   public void stopClimber() {
-    m_climber.setVoltage(0);
+    m_climberMotor.setVoltage(0);
   }
 }

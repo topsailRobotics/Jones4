@@ -8,6 +8,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Util.LimelightHelpers;
 import frc.robot.commands.Autos;
+import frc.robot.commands.Climb;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -18,6 +19,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -39,9 +41,11 @@ public class RobotContainer {
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController1 =
+  //This is the driver's controller
+  private final CommandXboxController m_driverController0 =
       new CommandXboxController(OperatorConstants.kDriverControllerPort1);
-  private final CommandXboxController m_driverController2 =
+  //This is the operator's controller
+  private final CommandXboxController m_driverController1 =
       new CommandXboxController(OperatorConstants.kDriverControllerPort2);
 
 
@@ -73,9 +77,9 @@ public class RobotContainer {
           // Turning is controlled by the X axis of the right stick.
           new RunCommand(
               () -> m_robotDrive.drive(
-                  -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-                  -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
-                  -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
+                  -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
+                  -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
+                  -MathUtil.applyDeadband(m_driverController0.getRightX(), OIConstants.kDriveDeadband),
                   true),
               m_robotDrive));
       m_intake.setDefaultCommand(new RunCommand(()-> m_intake.stopIntake(0),m_intake));
@@ -86,36 +90,38 @@ public class RobotContainer {
 
 
 
-    Trigger aimingTrigger = m_driverController.leftBumper().and(new Trigger(()->LimelightHelpers.getFiducialID("limelight-second")>=0));
+    Trigger aimingTrigger = new Trigger (()-> m_driverController0.getLeftTriggerAxis() > 0.5 && LimelightHelpers.getFiducialID("limelight-second")>=0);
     aimingTrigger.whileTrue( new RunCommand(
               () -> m_robotDrive.drive(
-                  -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-                  -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+                  -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
+                  -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
                   m_robotDrive.targetingAngularVelocity,
                   true),
               m_robotDrive));
-    Trigger ferryTrigger = m_driverController.rightBumper();
+    
+    Trigger ferryTrigger = new Trigger(() -> m_driverController0.getRightTriggerAxis() > 0.5);
     ferryTrigger.whileTrue( new RunCommand(
               () -> m_robotDrive.drive(
-                  -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-                  -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+                  -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
+                  -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
                   m_robotDrive.FerryAmount,
                   true),
               m_robotDrive));
     
    
-    Trigger rightTrigger = new Trigger(() -> m_driverController.getRightTriggerAxis() > 0.5);
-    rightTrigger.whileTrue( new RunCommand(
+    m_driverController0.rightBumper().whileTrue( new RunCommand(
               () -> m_robotDrive.drive(
-                  -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-                  -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+                  -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
+                  -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
                   m_robotDrive.setDiamond,
                   true),
               m_robotDrive));
-    m_driverController.povDown().toggleOnTrue(new RunCommand(
+    m_driverController0.leftBumper().toggleOnTrue(new RunCommand(
               () -> m_robotDrive.setX()));
-    m_driverController.a().toggleOnTrue(new RunCommand(()-> m_intake.runIntake(.5)));
     
+    //true for climer up, false for down, independent commands sharing same command file
+    m_driverController0.a().onTrue(new Climb(m_ClimberSubsystem, true));
+    m_driverController0.b().onTrue(new Climb(m_ClimberSubsystem, false));
 
   }
 
@@ -124,9 +130,19 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-
+// public Command climbCommand(){
+//    return Commands.startEnd(
+//         () -> {
+//           Commands.run(()-> new Climb(m_ClimberSubsystem, true));
+//           System.out.println("climber up");
+//         },
+//         () -> {
+//           Commands.run(()-> new Climb(m_ClimberSubsystem, false));
+//           System.out.println("climber down");
+//         });
 //   public Command getAutonomousCommand() {
 //     // An example command will be run in autonomous
 //     //return Autos.exampleAuto(m_exampleSubsystem);
 //   }
-}
+  
+}//end of class

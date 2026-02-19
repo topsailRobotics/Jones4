@@ -13,15 +13,17 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 public class Climb extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ClimberSubsystem m_climber;
-  private boolean toggle; //true = climber extended, false = climber retracted - carter
+  private boolean toggle; //false = climber extended, true = climber retracted - carter
 
   
 //    * Creates a new ExampleCommand.
 //    *
 //    * @param subsystem The subsystem used by this command.
 //    *
-  public Climb(ClimberSubsystem subsystem) {
+  public Climb(ClimberSubsystem subsystem, boolean toggle) {
     this.m_climber = subsystem;
+    this.toggle = toggle;
+
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -29,21 +31,23 @@ public class Climb extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (m_climber.m_climbAbsoluteEncoder.getPosition()<= ClimberConstants.kclimberLowerThreshhold){
-        toggle = false;
-    } else {
-        toggle = true;
-    }
+    System.out.println("climb start");
+    // if (m_climber.m_climbAbsoluteEncoder.getPosition()<= ClimberConstants.kclimberLowerThreshhold){
+    //     toggle = false;
+    // } else {
+    //     toggle = true;
+    // }
     
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (toggle){
-        m_climber.ClimberDown();
-    } else {
+
+    if (toggle == true){
         m_climber.ClimberUp();
+    } else {
+        m_climber.ClimberDown();
     }
   }
 
@@ -56,10 +60,10 @@ public class Climb extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_climber.m_climbAbsoluteEncoder.getPosition()<= ClimberConstants.kclimberStopPosition || m_climber.m_climbAbsoluteEncoder.getPosition()<= ClimberConstants.kclimberUpperThreshhold){
-        return true;
+    if (toggle){
+      return m_climber.m_climbAbsoluteEncoder.getPosition() >= ClimberConstants.kclimberUpperThreshhold;
     } else {
-        return false;
+      return m_climber.m_climbAbsoluteEncoder.getPosition() <= ClimberConstants.kclimberLowerThreshhold;
     }
   }
 }
