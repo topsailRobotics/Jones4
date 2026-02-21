@@ -7,9 +7,23 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import com.revrobotics.spark.SparkAnalogSensor;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.ControlType;
+import edu.wpi.first.units.measure.Velocity;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.IntakeConstants;
+
 
 public class ShooterSubsystem extends SubsystemBase {
-  /** Creates a new ExampleSubsystem. */
+
+  private final SparkMax m_shooterMotorLeft = new SparkMax(Constants.ShooterConstants.kleftshootermotorID, MotorType.kBrushless);
+  private final SparkMax m_shooterMotorRight = new SparkMax(Constants.ShooterConstants.krightshootermotorID, MotorType.kBrushless);
+  private final SparkClosedLoopController m_pidController1 = m_shooterMotorLeft.getClosedLoopController();
+
   public ShooterSubsystem() {}
 
   /**
@@ -45,6 +59,18 @@ public class ShooterSubsystem extends SubsystemBase {
     double output = (96.04 * distance * distance * (Math.atan(Math.toRadians(Constants.ShooterConstants.lockedAngle)))) + (96.04 * distance) + (-9.8 * Constants.ShooterConstants.netHeight);
     output /= 2;
     return Constants.ShooterConstants.relationModification * Math.pow(output,0.25);
+  }
+
+  public void runShooter(double setposition){
+    m_shooterMotorLeft.setVoltage(4);
+    m_shooterMotorRight.setVoltage(4);
+    m_pidController1.setSetpoint(setposition, com.revrobotics.spark.SparkBase.ControlType.kPosition);
+  }
+
+  public void stopShooter(double setposition){
+    m_shooterMotorLeft.setVoltage(0);
+    m_shooterMotorRight.setVoltage(0);
+    m_pidController1.setSetpoint(setposition, com.revrobotics.spark.SparkBase.ControlType.kPosition);
   }
 
   @Override
