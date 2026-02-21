@@ -22,7 +22,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private final SparkMax m_shooterMotorLeft = new SparkMax(Constants.ShooterConstants.kleftshootermotorID, MotorType.kBrushless);
   private final SparkMax m_shooterMotorRight = new SparkMax(Constants.ShooterConstants.krightshootermotorID, MotorType.kBrushless);
-  private final SparkClosedLoopController m_pidController1 = m_shooterMotorLeft.getClosedLoopController();
+  private final SparkClosedLoopController m_pidController1 = m_shooterMotorLeft.getClosedLoopController(); //can someone explain to me what this is for? seems important but not sure... - carter m
 
   public ShooterSubsystem() {}
 
@@ -61,13 +61,13 @@ public class ShooterSubsystem extends SubsystemBase {
     return Constants.ShooterConstants.relationModification * Math.pow(output,0.25);
   }
 
-  public void runShooter(double setposition){
-    m_shooterMotorLeft.setVoltage(4);
-    m_shooterMotorRight.setVoltage(4);
+  public void runShooter(double setposition, double motorPower){ //method for starting shooter
+    m_shooterMotorLeft.setVoltage(motorPower);
+    m_shooterMotorRight.setVoltage(motorPower);
     m_pidController1.setSetpoint(setposition, com.revrobotics.spark.SparkBase.ControlType.kPosition);
   }
 
-  public void stopShooter(double setposition){
+  public void stopShooter(double setposition){ //method for stopping shooter
     m_shooterMotorLeft.setVoltage(0);
     m_shooterMotorRight.setVoltage(0);
     m_pidController1.setSetpoint(setposition, com.revrobotics.spark.SparkBase.ControlType.kPosition);
