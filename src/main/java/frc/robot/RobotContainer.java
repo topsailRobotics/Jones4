@@ -9,11 +9,13 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.Util.LimelightHelpers;
 import frc.robot.commands.Autos;
 import frc.robot.commands.Climb;
+import frc.robot.commands.Shoot;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
@@ -38,6 +40,8 @@ public class RobotContainer {
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final IndexerSubsystem m_indexer = new IndexerSubsystem();
   private final ClimberSubsystem m_ClimberSubsystem = new ClimberSubsystem();
+    private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
+
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -122,6 +126,7 @@ public class RobotContainer {
     //true for climer up, false for down, independent commands sharing same command file
     m_driverController0.a().onTrue(new Climb(m_ClimberSubsystem, true));
     m_driverController0.b().onTrue(new Climb(m_ClimberSubsystem, false));
+    m_driverController0.y().whileTrue(new Shoot(m_ShooterSubsystem));
 
   }
 

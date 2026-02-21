@@ -46,8 +46,10 @@ public class Climb extends Command {
 
     if (toggle == true){
         m_climber.ClimberUp();
+        toggle = false;
     } else {
         m_climber.ClimberDown();
+        toggle = true;
     }
   }
 

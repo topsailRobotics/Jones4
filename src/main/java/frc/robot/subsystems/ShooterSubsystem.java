@@ -22,7 +22,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private final SparkMax m_shooterMotorLeft = new SparkMax(Constants.ShooterConstants.kleftshootermotorID, MotorType.kBrushless);
   private final SparkMax m_shooterMotorRight = new SparkMax(Constants.ShooterConstants.krightshootermotorID, MotorType.kBrushless);
-  private final SparkClosedLoopController m_pidController1 = m_shooterMotorLeft.getClosedLoopController(); //can someone explain to me what this is for? seems important but not sure... - carter m
 
   public ShooterSubsystem() {}
 
@@ -55,22 +54,21 @@ public class ShooterSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
+  //need distance input from limelight
   public double CalculateWheelVelocity(double distance) {
     double output = (96.04 * distance * distance * (Math.atan(Math.toRadians(Constants.ShooterConstants.lockedAngle)))) + (96.04 * distance) + (-9.8 * Constants.ShooterConstants.netHeight);
     output /= 2;
     return Constants.ShooterConstants.relationModification * Math.pow(output,0.25);
   }
 
-  public void runShooter(double setposition, double motorPower){ //method for starting shooter
+  public void runShooter(double motorPower){ //method for starting shooter
     m_shooterMotorLeft.setVoltage(motorPower);
     m_shooterMotorRight.setVoltage(motorPower);
-    m_pidController1.setSetpoint(setposition, com.revrobotics.spark.SparkBase.ControlType.kPosition);
   }
 
-  public void stopShooter(double setposition){ //method for stopping shooter
+  public void stopShooter(){ //method for stopping shooter
     m_shooterMotorLeft.setVoltage(0);
     m_shooterMotorRight.setVoltage(0);
-    m_pidController1.setSetpoint(setposition, com.revrobotics.spark.SparkBase.ControlType.kPosition);
   }
 
   @Override
