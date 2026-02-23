@@ -12,7 +12,14 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
 public class ShootSubsystem extends SubsystemBase {
-  /** Creates a new ExampleSubsystem. */
+ 
+    // front: intake
+    // back: electricals
+    // left: climber
+    // right: battery
+  private final SparkMax m_ShootLeft = new SparkMax(IntakeConstants.kIntakeArmID, MotorType.kBrushless);
+  private final SparkMax m_ShootRight= new SparkMax(IntakeConstants.kIntakeWheelID, MotorType.kBrushless);
+ 
   public ShootSubsystem() {
 
   }
