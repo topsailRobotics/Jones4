@@ -17,21 +17,33 @@ public class ShootSubsystem extends SubsystemBase {
     // back: electricals
     // left: climber
     // right: battery
-  private final SparkMax m_ShootLeft = new SparkMax(IntakeConstants.kIntakeArmID, MotorType.kBrushless);
-  private final SparkMax m_ShootRight= new SparkMax(IntakeConstants.kIntakeWheelID, MotorType.kBrushless);
+  private final SparkMax m_ShootLeft = new SparkMax(ShooterConstants.kleftshootermotorID, MotorType.kBrushless);
+  private final SparkMax m_ShootRight= new SparkMax(ShooterConstants.krightshootermotorID, MotorType.kBrushless);
  
+  //default construcor
   public ShootSubsystem() {
 
   }
 
-  
-  
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
 
+  public void runShooter()
+  {
+        // add constants for voltage setpoint later
+        m_ShootLeft.setVoltage(3);
+        m_ShootRight.setVoltage(-3);
+  }
+
+   public void stopShooter()
+  {
+        // add constants for voltage setpoint later
+        m_ShootLeft.setVoltage(0);
+        m_ShootRight.setVoltage(0);
+  }
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
