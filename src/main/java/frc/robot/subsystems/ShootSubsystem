@@ -30,12 +30,32 @@ public class ShootSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+  //For now, use 4 distinct outputs based on distance ranges from the hub. 
+  //Use shooterTest for testing
 
-  public void runShooter()
+  public void shooterTest()
   {
         // add constants for voltage setpoint later
-        m_ShootLeft.setVoltage(3);
-        m_ShootRight.setVoltage(-3);
+        m_ShootLeft.setVoltage(1);
+        m_ShootRight.setVoltage(-1);
+  }
+  public void shooterMedium()
+  {
+        // add constants for voltage setpoint later
+        m_ShootLeft.setVoltage(5);
+        m_ShootRight.setVoltage(-5);
+  }
+  public void shooterHigh()
+  {
+        // add constants for voltage setpoint later
+        m_ShootLeft.setVoltage(6);
+        m_ShootRight.setVoltage(-6);
+  }
+  public void shooterMax()
+  {
+        // add constants for voltage setpoint later
+        m_ShootLeft.setVoltage(7);
+        m_ShootRight.setVoltage(-7);
   }
 
    public void stopShooter()

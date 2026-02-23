@@ -10,6 +10,7 @@ import frc.robot.Util.LimelightHelpers;
 import frc.robot.commands.Autos;
 import frc.robot.commands.Climb;
 import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
@@ -38,6 +39,8 @@ public class RobotContainer {
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final IndexerSubsystem m_indexer = new IndexerSubsystem();
   private final ClimberSubsystem m_ClimberSubsystem = new ClimberSubsystem();
+  private final ShootSubsystem m_ShootSubsystem = new ShootSubsystem();
+
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -122,7 +125,8 @@ public class RobotContainer {
     //true for climer up, false for down, independent commands sharing same command file
     m_driverController0.a().onTrue(new Climb(m_ClimberSubsystem, true));
     m_driverController0.b().onTrue(new Climb(m_ClimberSubsystem, false));
-
+    m_driverController0.y().whileTrue(new RunCommand(
+              () -> m_robotDrive.setX()));
   }
 
   /**
