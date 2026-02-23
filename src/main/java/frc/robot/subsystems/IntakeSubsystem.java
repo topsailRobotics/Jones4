@@ -40,17 +40,32 @@ private SparkAnalogSensor m_ArmEncoder;
   }
 
   
+/*
+ * the runIntake and stopIntake methods are broken down
+ * assuming the intaker will be kept out during games not frequently withdrawn and released
+ * default state will be intakeIn(), and it will later be called again at the end of auto and teleop for climb
+ */
 
-  public void runIntake(double setposition) {
+  public void runIntake() {
     m_IntakeWheel.setVoltage(4);
-    m_pidController1.setSetpoint(setposition, com.revrobotics.spark.SparkBase.ControlType.kPosition);
+    }
 
-  }
-
-  public void stopIntake(double setposition) {
+  public void stopIntake() {
     m_IntakeWheel.setVoltage(0);
-    m_pidController1.setSetpoint(setposition, com.revrobotics.spark.SparkBase.ControlType.kPosition);
-
   }
+  
+  //intake out will be scheduled separately using on true logic
+  public void intakeOut(double setposition)
+  {
+    m_pidController1.setSetpoint(setposition, com.revrobotics.spark.SparkBase.ControlType.kPosition);
+  }
+  
+  //default state is set point 0, parameter omitted
+  public void intakeIn()
+  {
+    m_pidController1.setSetpoint(0, com.revrobotics.spark.SparkBase.ControlType.kPosition);
+  }
+
+  
 
 }
