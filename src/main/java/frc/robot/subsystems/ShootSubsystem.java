@@ -10,6 +10,7 @@ import com.revrobotics.spark.SparkAnalogSensor;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import frc.robot.Constants.ShooterConstants;
 
 public class ShootSubsystem extends SubsystemBase {
  
