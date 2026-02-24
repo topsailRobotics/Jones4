@@ -90,6 +90,7 @@ public class RobotContainer {
       m_intake.setDefaultCommand(new RunCommand(()-> m_intake.intakeIn(),m_intake));  //stopIntake method broken up to 2 separate methods, this one controls intaker position
       m_indexer.setDefaultCommand(new RunCommand(()-> m_indexer.stopIndex(),m_indexer));
       m_ClimberSubsystem.setDefaultCommand(new RunCommand(()-> m_ClimberSubsystem.stopClimber(),m_ClimberSubsystem));
+      m_shooter.setDefaultCommand(new RunCommand(()-> m_shooter.stopShooter(),m_shooter));
 
       
 
