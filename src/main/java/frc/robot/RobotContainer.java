@@ -12,7 +12,7 @@ import frc.robot.commands.Climb;
 import frc.robot.commands.Index;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -40,7 +40,7 @@ public class RobotContainer {
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final IndexerSubsystem m_indexer = new IndexerSubsystem();
   private final ClimberSubsystem m_ClimberSubsystem = new ClimberSubsystem();
-  private final ShooterSubsystem m_shooter = new ShooterSubsystem(); //actions not declared yet in shootersubsystem
+  private final ShootSubsystem m_shooter = new ShootSubsystem(); //actions not declared yet in shootersubsystem
 
 
 
@@ -131,10 +131,9 @@ public class RobotContainer {
     m_driverController0.x()
     .whileTrue(new Index(m_indexer,m_intake)); //command is scheduled while x is held
 
-    //shooter configuring, uncomment after methods in shooter subsystem are declared
-    // m_driverController0.y().whileTrue(new RunCommand(
-    //   ()->m_shooter.runShooter(), 
-    //   m_shooter));//internally does addRequirement(ShooterSubsystem)
+    m_driverController0.y().whileTrue(new RunCommand(
+    ()->m_shooter.shooterTest(), 
+    m_shooter));//internally contains addRequirement(ShooterSubsystem)
     
 
   }
