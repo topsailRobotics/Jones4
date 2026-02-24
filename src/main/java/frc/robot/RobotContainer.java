@@ -9,17 +9,20 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.Util.LimelightHelpers;
 import frc.robot.commands.Autos;
 import frc.robot.commands.Climb;
+import frc.robot.commands.Index;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -37,7 +40,9 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final IndexerSubsystem m_indexer = new IndexerSubsystem();
-  private final ClimberSubsystem m_ClimberSubsystem = new ClimberSubsystem();
+  private final ClimberSubsystem m_climber = new ClimberSubsystem();
+  private final ShootSubsystem m_shooter = new ShootSubsystem(); //actions not declared yet in shootersubsystem
+
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -82,13 +87,13 @@ public class RobotContainer {
                   -MathUtil.applyDeadband(m_driverController0.getRightX(), OIConstants.kDriveDeadband),
                   true),
               m_robotDrive));
-      m_intake.setDefaultCommand(new RunCommand(()-> m_intake.stopIntake(0),m_intake));
+      m_intake.setDefaultCommand(new RunCommand(()-> m_intake.stopIntake(),m_intake));
+      m_intake.setDefaultCommand(new RunCommand(()-> m_intake.intakeIn(),m_intake));  //stopIntake method broken up to 2 separate methods, this one controls intaker position
       m_indexer.setDefaultCommand(new RunCommand(()-> m_indexer.stopIndex(),m_indexer));
-      m_ClimberSubsystem.setDefaultCommand(new RunCommand(()-> m_ClimberSubsystem.stopClimber(),m_ClimberSubsystem));
+      m_climber.setDefaultCommand(new RunCommand(()-> m_climber.stopClimber(),m_climber));
+      m_shooter.setDefaultCommand(new RunCommand(()-> m_shooter.stopShooter(),m_shooter));
 
       
-
-
 
     Trigger aimingTrigger = new Trigger (()-> m_driverController0.getLeftTriggerAxis() > 0.5 && LimelightHelpers.getFiducialID("limelight-second")>=0);
     aimingTrigger.whileTrue( new RunCommand(
@@ -116,12 +121,24 @@ public class RobotContainer {
                   m_robotDrive.setDiamond,
                   true),
               m_robotDrive));
-    m_driverController0.leftBumper().toggleOnTrue(new RunCommand(
-              () -> m_robotDrive.setX()));
+    m_driverController0.leftBumper().toggleOnTrue(new InstantCommand(  //changed from RunCommand to Instant Command, control loop should do the job
+              () -> m_robotDrive.setX(),
+              m_robotDrive));
     
     //true for climer up, false for down, independent commands sharing same command file
-    m_driverController0.a().onTrue(new Climb(m_ClimberSubsystem, true));
-    m_driverController0.b().onTrue(new Climb(m_ClimberSubsystem, false));
+    m_driverController0.a().onTrue(new Climb(m_climber, true));
+    m_driverController0.b().onTrue(new Climb(m_climber, false));
+    
+
+    //internal system command
+    m_driverController0.x()
+    .whileTrue(new Index(m_indexer,m_intake)); //command is scheduled while x is held
+
+    //shooter command
+    m_driverController0.y().whileTrue(new RunCommand(
+    ()->m_shooter.shooterTest(), 
+    m_shooter));//internally contains addRequirement(ShooterSubsystem)
+    
 
   }
 
@@ -130,19 +147,5 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-// public Command climbCommand(){
-//    return Commands.startEnd(
-//         () -> {
-//           Commands.run(()-> new Climb(m_ClimberSubsystem, true));
-//           System.out.println("climber up");
-//         },
-//         () -> {
-//           Commands.run(()-> new Climb(m_ClimberSubsystem, false));
-//           System.out.println("climber down");
-//         });
-//   public Command getAutonomousCommand() {
-//     // An example command will be run in autonomous
-//     //return Autos.exampleAuto(m_exampleSubsystem);
-//   }
-  
+
 }//end of class
