@@ -119,9 +119,9 @@ public final class Constants {
     public static final double relationModification = 1; //no unit; modifies ball exit velocity to wheel spin speed
     public static final int kleftshootermotorID = 55; 
     public static final int krightshootermotorID = 56; 
-    public static final int towerTagID = 67; //change later; may not be correct
-    public static final double towerTagHeight = 2; //in meters, change later 2 is a placeholder
-    public static final double limelightsecondHeight = 1; //in meters, change later 1 is a placeholder
+    public static final int towerTagID = 67; //change later; likely not correct
+    public static final double towerTagHeight = 2; //in meters, change later (2 is a placeholder)
+    public static final double limelightsecondHeight = 1; //in meters, change later (1 is a placeholder)
   }
   public static final class ClimberConstants{
     public static final int kclimberMotorID = 57;
