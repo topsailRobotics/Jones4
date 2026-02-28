@@ -24,7 +24,7 @@ public class Shoot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_shooter.runShooter(m_shooter.CalculateWheelVelocity());
+    m_shooter.runShooter();
     //m_shooter.runShooter(3);
   }
 

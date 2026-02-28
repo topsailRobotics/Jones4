@@ -25,7 +25,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private final SparkMax m_shooterMotorLeft = new SparkMax(Constants.ShooterConstants.kleftshootermotorID, MotorType.kBrushless);
   private final SparkMax m_shooterMotorRight = new SparkMax(Constants.ShooterConstants.krightshootermotorID, MotorType.kBrushless);
 
-  private double distance; //updated by periodic
+  private double distance; //updated later
 
   public ShooterSubsystem() {
     this.distance = distance;
@@ -56,22 +56,25 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // my attempt at making a distance estimation program based on larry's AlignToTowerRelative.java command - carter
+
+  }
+
+  public double CalculateWheelVelocity() { //removed distance parameter, pulls from distance variable
+
     if (LimelightHelpers.getTV("limelight-second") && LimelightHelpers.getFiducialID("limelight-second") == ShooterConstants.towerTagID){
       double theta = Math.tan(Math.toRadians(LimelightHelpers.getTY("limelight-second")));
       distance = Math.abs(ShooterConstants.towerTagHeight - ShooterConstants.limelightsecondHeight) / theta;
     }
-  }
 
-  public double CalculateWheelVelocity() { //removed distance parameter, pulls from distance variable
     double output = (96.04 * distance * distance * (Math.atan(Math.toRadians(Constants.ShooterConstants.lockedAngle)))) + (96.04 * distance) + (-9.8 * Constants.ShooterConstants.netHeight);
     output /= 2;
     return Constants.ShooterConstants.relationModification * Math.pow(output,0.25);
+
   }
 
-  public void runShooter(double motorPower){ //method for starting shooter
-    m_shooterMotorLeft.setVoltage(motorPower);
-    m_shooterMotorRight.setVoltage(motorPower);
+  public void runShooter(){ //method for starting shooter
+    m_shooterMotorLeft.setVoltage(CalculateWheelVelocity());
+    m_shooterMotorRight.setVoltage(CalculateWheelVelocity());
   }
 
   public void stopShooter(){ //method for stopping shooter
