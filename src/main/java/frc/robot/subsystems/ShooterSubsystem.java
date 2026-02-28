@@ -16,7 +16,7 @@ import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
-
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.Util.LimelightHelpers;
 
 
@@ -24,6 +24,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private final SparkMax m_shooterMotorLeft = new SparkMax(Constants.ShooterConstants.kleftshootermotorID, MotorType.kBrushless);
   private final SparkMax m_shooterMotorRight = new SparkMax(Constants.ShooterConstants.krightshootermotorID, MotorType.kBrushless);
+
+  private double distance; //updated by periodic
 
   public ShooterSubsystem() {}
 
@@ -53,9 +55,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // my attempt at making a distance estimation program based on larry's AlignToTowerRelative.java command
-    if (LimelightHelpers.getTV("limelight-second")){
-
+    // my attempt at making a distance estimation program based on larry's AlignToTowerRelative.java command - carter
+    if (LimelightHelpers.getTV("limelight-second") && LimelightHelpers.getFiducialID("limelight-second") == ShooterConstants.towerTagID){
+      double theta = Math.tan(Math.toRadians(LimelightHelpers.getTY("limelight-second")));
+      distance = Math.abs(ShooterConstants.towerTagHeight - ShooterConstants.limelightsecondHeight) / theta;
     }
   }
 
