@@ -27,8 +27,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private double distance; //updated by periodic
 
-  public ShooterSubsystem() {}
-
+  public ShooterSubsystem() {
+    this.distance = distance;
+  }
   /**
    * Example command factory method.
    *
@@ -62,8 +63,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
   }
 
-  //need distance input from limelight
-  public double CalculateWheelVelocity(double distance) {
+  public double CalculateWheelVelocity() { //removed distance parameter, pulls from distance variable
     double output = (96.04 * distance * distance * (Math.atan(Math.toRadians(Constants.ShooterConstants.lockedAngle)))) + (96.04 * distance) + (-9.8 * Constants.ShooterConstants.netHeight);
     output /= 2;
     return Constants.ShooterConstants.relationModification * Math.pow(output,0.25);
