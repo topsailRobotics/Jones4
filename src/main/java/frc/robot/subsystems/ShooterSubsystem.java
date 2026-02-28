@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
+import frc.robot.Util.LimelightHelpers;
+
 
 public class ShooterSubsystem extends SubsystemBase {
 
@@ -51,7 +53,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    // my attempt at making a distance estimation program based on larry's AlignToTowerRelative.java command
+    if (LimelightHelpers.getTV("limelight-second")){
+
+    }
   }
 
   //need distance input from limelight
