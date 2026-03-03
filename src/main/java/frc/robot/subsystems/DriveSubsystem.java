@@ -7,8 +7,13 @@ package frc.robot.subsystems;
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
+
+import java.util.logging.Logger;
+
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -19,6 +24,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Util.LimelightHelpers;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /*
@@ -33,6 +39,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class DriveSubsystem extends SubsystemBase {
+  public double aimkp = .0015;
+  public double targetingAngularVelocity;
+  public double FerryAmount;
+  public double setDiamond;
+  public double newDiamond;
+  public double newAngle;
+
   // Create MAXSwerveModules
   private final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
       DriveConstants.kFrontLeftDrivingCanId,
@@ -75,9 +88,54 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
 
   @Override
   public void periodic() {
-    // Update the odometry in the periodic block
+    //aiming at hub code
+    targetingAngularVelocity = LimelightHelpers.getTX("limelight-second") * aimkp;
+    targetingAngularVelocity *= DriveConstants.kMaxAngularSpeed;
+
+    //invert since tx is positive when the target is to the right of the crosshair
+    targetingAngularVelocity *= -1.0;
+    if (LimelightHelpers.getTX("limelight-second") <= 3 && LimelightHelpers.getTX("limelight-second") >= -3){
+      targetingAngularVelocity = 0;
+    }
+    // ferrying angle
+    newAngle = (m_gyro.getAngle()-180) % 360;
+    if (newAngle >= 180){
+      newAngle = -(180-(newAngle - 180));
+    } else if(newAngle <= -180){
+      newAngle = 180-(newAngle + 180);
+    }
+    if (newAngle >= 1 || newAngle <= -1){
+      FerryAmount = (((newAngle)) * 0.005);
+      if (FerryAmount >= .5){
+        FerryAmount = .5;
+      } else if( FerryAmount <=-0.5){
+        FerryAmount = -.5;
+      }
+    } else {
+      FerryAmount = 0;
+    }
+    //driving over bump optimal angle
+    newDiamond = (m_gyro.getAngle()-45) % 90;
+    if (newDiamond >= 45){
+      newDiamond = -(45-(newAngle - 45));
+    } else if(newDiamond <= -45){
+      newDiamond = 45-(newAngle + 45);
+    }
+    if (newDiamond >= 10 || newDiamond <= -10){
+      setDiamond = (((newDiamond)) * 0.005);
+      if (setDiamond >= .4){
+        setDiamond = .4;
+      } else if( setDiamond <=-0.5){
+        setDiamond = -.4;
+      }
+    } else {
+      setDiamond = 0;
+    }
+
+    
+
     m_odometry.update(
-        Rotation2d.fromDegrees(m_gyro.getAngle()),
+        Rotation2d.fromDegrees(-(m_gyro.getAngle())),//ADDED NEGATIVE SIGN FOR JONES 3 - LARRY WE CAN CHANGE IF NO WORKY
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -148,6 +206,7 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
     m_frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
     m_rearLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
     m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+    System.out.println("setx");
   }
 
   /**
