@@ -61,9 +61,9 @@ public class Climb extends Command {
   @Override
   public boolean isFinished() {
     if (toggle){
-      return m_climber.m_climbAbsoluteEncoder.getPosition() >= ClimberConstants.kclimberUpperThreshhold;
+      return m_climber.m_climbAbsoluteEncoder.getPosition() <= ClimberConstants.kclimberUpperThreshhold;
     } else {
-      return m_climber.m_climbAbsoluteEncoder.getPosition() <= ClimberConstants.kclimberLowerThreshhold;
+      return m_climber.m_climbAbsoluteEncoder.getPosition() >= ClimberConstants.kclimberLowerThreshhold;
     }
   }
 }

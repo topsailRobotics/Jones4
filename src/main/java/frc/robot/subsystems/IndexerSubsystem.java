@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkAnalogSensor;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -18,7 +19,9 @@ public class IndexerSubsystem extends SubsystemBase {
   private final SparkMax m_hori = new SparkMax(IndexerConstants.kbeltID, MotorType.kBrushless);
   private final SparkMax m_vert= new SparkMax(IndexerConstants.kwheelVertID, MotorType.kBrushless);
   private final SparkClosedLoopController m_pidController1 = m_hori.getClosedLoopController();
-  private SparkAnalogSensor m_encoder = m_hori.getAnalog();
+  private SparkAnalogSensor m_encoder = m_hori.getAnalog(); 
+//   private SparkAbsoluteEncoder m_encoder = m_hori.getAbsoluteEncoder(); 
+//   ^^^ for using the absolute encoder, should theoretically work
 
 
   public IndexerSubsystem() {}
@@ -58,8 +61,8 @@ public class IndexerSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
   public void runIndex() { //potentially add threshold for horizontal belt activation - carter + larry
-        m_hori.setVoltage(4);
-        m_vert.setVoltage(4);
+        m_hori.setVoltage(8);
+        m_vert.setVoltage(-8);
   }
   public void stopIndex() {
     m_hori.setVoltage(0);

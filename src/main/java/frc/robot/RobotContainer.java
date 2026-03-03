@@ -121,7 +121,7 @@ public class RobotContainer {
                   m_robotDrive.setDiamond,
                   true),
               m_robotDrive));
-    m_driverController0.leftBumper().toggleOnTrue(new InstantCommand(  //changed from RunCommand to Instant Command, control loop should do the job
+    m_driverController0.leftBumper().toggleOnTrue(new RunCommand(  //changed from RunCommand to Instant Command, control loop should do the job
               () -> m_robotDrive.setX(),
               m_robotDrive));
     
@@ -132,7 +132,7 @@ public class RobotContainer {
 
     //internal system command
     m_driverController0.x()
-    .whileTrue(new Index(m_indexer,m_intake)); //command is scheduled while x is held
+    .toggleOnTrue(new Index(m_indexer,m_intake)); //command is scheduled while x is held
 
     //shooter command
     m_driverController0.y().whileTrue(new RunCommand(
