@@ -91,7 +91,7 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
     //aiming at hub code
     targetingAngularVelocity = LimelightHelpers.getTX("limelight-second") * aimkp;
     targetingAngularVelocity *= DriveConstants.kMaxAngularSpeed;
-
+    System.out.println(m_gyro.getAngle());
     //invert since tx is positive when the target is to the right of the crosshair
     targetingAngularVelocity *= -1.0;
     if (LimelightHelpers.getTX("limelight-second") <= 3 && LimelightHelpers.getTX("limelight-second") >= -3){
@@ -135,7 +135,7 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
     
 
     m_odometry.update(
-        Rotation2d.fromDegrees((m_gyro.getAngle())),//ADDED NEGATIVE SIGN FOR JONES 3 - LARRY WE CAN CHANGE IF NO WORKY
+        Rotation2d.fromDegrees(-(m_gyro.getAngle())),//ADDED NEGATIVE SIGN FOR JONES 3 - LARRY WE CAN CHANGE IF NO WORKY
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -160,7 +160,7 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        Rotation2d.fromDegrees((m_gyro.getAngle())),
+        Rotation2d.fromDegrees(-(m_gyro.getAngle())),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -188,7 +188,7 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
         fieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
-                Rotation2d.fromDegrees((m_gyro.getAngle())))
+                Rotation2d.fromDegrees(-(m_gyro.getAngle())))
             : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
@@ -242,7 +242,7 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
-    return Rotation2d.fromDegrees((m_gyro.getAngle())).getDegrees();
+    return Rotation2d.fromDegrees(-(m_gyro.getAngle())).getDegrees();
   }
 
   /**

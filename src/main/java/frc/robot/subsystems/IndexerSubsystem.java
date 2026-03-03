@@ -61,8 +61,17 @@ public class IndexerSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
   public void runIndex() { //potentially add threshold for horizontal belt activation - carter + larry
-        m_hori.setVoltage(8);
-        m_vert.setVoltage(-8);
+      
+     
+  }
+  public void runIndexVert()
+  {
+   m_vert.setVoltage(-8);
+  }
+
+   public void runIndexHori()
+  {
+      m_hori.setVoltage(8);
   }
   public void stopIndex() {
     m_hori.setVoltage(0);

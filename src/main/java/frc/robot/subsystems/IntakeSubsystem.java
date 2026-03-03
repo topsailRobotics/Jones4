@@ -47,7 +47,7 @@ private SparkAnalogSensor m_ArmEncoder;
  */
 
   public void runIntake() {
-    m_IntakeWheel.setVoltage(-3);
+    m_IntakeWheel.setVoltage(-10);
     }
 
   public void stopIntake() {
