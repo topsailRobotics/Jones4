@@ -10,6 +10,7 @@ import frc.robot.Util.LimelightHelpers;
 import frc.robot.commands.Autos;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Index;
+import frc.robot.commands.Shoot;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
@@ -89,7 +90,7 @@ public class RobotContainer {
               m_robotDrive));
       m_intake.setDefaultCommand(new RunCommand(()-> m_intake.stopIntake(),m_intake));
       m_intake.setDefaultCommand(new RunCommand(()-> m_intake.intakeIn(),m_intake));  //stopIntake method broken up to 2 separate methods, this one controls intaker position
-      m_indexer.setDefaultCommand(new RunCommand(()-> m_indexer.stopIndex(),m_indexer));
+      m_indexer.setDefaultCommand(new RunCommand(()-> {m_indexer.stopIndexHori();m_indexer.stopIndexVert();},m_indexer));
       m_climber.setDefaultCommand(new RunCommand(()-> m_climber.stopClimber(),m_climber));
       m_shooter.setDefaultCommand(new RunCommand(()-> m_shooter.stopShooter(),m_shooter));
 
@@ -135,9 +136,8 @@ public class RobotContainer {
     .toggleOnTrue(new Index(m_indexer,m_intake)); //command is scheduled while x is held
 
     //shooter command
-    m_driverController0.y().whileTrue(new RunCommand(
-    ()->m_shooter.shooterTest(), 
-    m_shooter));//internally contains addRequirement(ShooterSubsystem)
+    m_driverController0.y()
+    .toggleOnTrue(new Shoot(m_indexer,m_shooter));
     
 
   }
