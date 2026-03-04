@@ -72,7 +72,7 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
       DriveConstants.kDriveKinematics,
-      Rotation2d.fromDegrees(m_gyro.getAngle()),
+      getHeading(),
       new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -135,7 +135,7 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
     
 
     m_odometry.update(
-        Rotation2d.fromDegrees(-(m_gyro.getAngle())),//ADDED NEGATIVE SIGN FOR JONES 3 - LARRY WE CAN CHANGE IF NO WORKY
+        getHeading(),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -160,7 +160,7 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        Rotation2d.fromDegrees(m_gyro.getAngle()),
+        getHeading(),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -188,7 +188,7 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
         fieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
-                Rotation2d.fromDegrees(m_gyro.getAngle()))
+                getHeading())
             : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
