@@ -130,7 +130,9 @@ public class RobotContainer {
     m_driverController0.a().onTrue(new Climb(m_climber, true));
     m_driverController0.b().onTrue(new Climb(m_climber, false));
     
-
+    //x to turn on intake and horizontal indexer to collect and store fuels, click again to turn off
+    //y to turn on both indexer and shooter, fuels are pushed into the shooter and launched out
+    
     //internal system command
     m_driverController0.x()
     .toggleOnTrue(new Index(m_indexer,m_intake)); //command is scheduled while x is held
