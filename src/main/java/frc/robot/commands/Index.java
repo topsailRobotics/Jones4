@@ -44,14 +44,13 @@ public class Index extends Command {
   @Override  // Called every time the scheduler runs while the command is scheduled.
   public void execute() {
     m_indexer.runIndexHori();
-     m_indexer.runIndexVert();
     m_intake.runIntake(); 
-    m_intake.intakeOut(3); 
+    m_intake.intakeOut(3);  
   }
   
   @Override  // Called once the command ends or is interrupted.
   public void end(boolean interrupted) {
-      m_indexer.stopIndex() ;
+      m_indexer.stopIndexHori() ;
       m_intake.stopIntake();
       m_intake.intakeIn();
   }
