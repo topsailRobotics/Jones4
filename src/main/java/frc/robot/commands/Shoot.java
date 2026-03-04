@@ -44,12 +44,14 @@ public class Shoot extends Command {
   @Override  // Called every time the scheduler runs while the command is scheduled.
   public void execute() {
     m_indexer.runIndexVert();
+    m_indexer.runIndexHori();
     m_shoot.shooterTest();
   }
   
   @Override  // Called once the command ends or is interrupted.
   public void end(boolean interrupted) {
     m_indexer.stopIndexVert();
+    m_indexer.stopIndexHori();
     m_shoot.stopShooter();
   }
 
