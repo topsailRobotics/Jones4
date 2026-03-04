@@ -238,11 +238,10 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
 
   /**
    * Returns the heading of the robot.
-   *
-   * @return the robot's heading in degrees, from -180 to 180
+   * @return the robot's heading, type: Rotational2d
    */
-  public double getHeading() {
-    return Rotation2d.fromDegrees(m_gyro.getAngle()).getDegrees();
+  public Rotation2d getHeading() {
+    return Rotation2d.fromDegrees(-m_gyro.getAngle());
   }
 
   /**
