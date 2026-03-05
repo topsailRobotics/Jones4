@@ -123,8 +123,8 @@ public final class Constants {
   }
   public static final class ClimberConstants{
     public static final int kclimberMotorID = 57;
-    public static final double kclimberUpperThreshhold = 0; //change is necessary, previous .55
-    public static final double kclimberLowerThreshhold = 0.86;
+    public static final double kclimberUpperThreshhold = 0.99; //change is necessary, previous .55
+    public static final double kclimberLowerThreshhold = 0.2;
     }
 
 }

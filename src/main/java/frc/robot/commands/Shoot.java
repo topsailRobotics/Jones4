@@ -9,6 +9,7 @@
  * this command only controls wheels spinning
  */
 
+//try having timer in execute only for indexer to make it wait
 //imports
 package frc.robot.commands;
 import frc.robot.subsystems.ShootSubsystem;

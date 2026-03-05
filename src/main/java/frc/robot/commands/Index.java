@@ -45,7 +45,7 @@ public class Index extends Command {
   public void execute() {
     m_indexer.runIndexHori();
     m_intake.runIntake(); 
-    m_intake.intakeOut(3);  
+    m_intake.intakeOut(1.75);  
   }
   
   @Override  // Called once the command ends or is interrupted.
