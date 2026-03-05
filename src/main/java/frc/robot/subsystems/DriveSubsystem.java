@@ -91,7 +91,7 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
     //aiming at hub code
     targetingAngularVelocity = LimelightHelpers.getTX("limelight-second") * aimkp;
     targetingAngularVelocity *= DriveConstants.kMaxAngularSpeed;
-    System.out.println(m_gyro.getAngle());
+    //System.out.println(m_gyro.getAngle());
     //invert since tx is positive when the target is to the right of the crosshair
     targetingAngularVelocity *= -1.0;
     if (LimelightHelpers.getTX("limelight-second") <= 3 && LimelightHelpers.getTX("limelight-second") >= -3){
