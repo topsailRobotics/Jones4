@@ -14,6 +14,8 @@ import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -23,6 +25,8 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Util.LimelightHelpers;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -69,21 +73,28 @@ public class DriveSubsystem extends SubsystemBase {
 
   // The gyro sensor
 private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
-  // Odometry class for tracking robot pose
-  SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
-      DriveConstants.kDriveKinematics,
-      getHeading(),
-      new SwerveModulePosition[] {
-          m_frontLeft.getPosition(),
-          m_frontRight.getPosition(),
-          m_rearLeft.getPosition(),
-          m_rearRight.getPosition()
-      });
+private SwerveDrivePoseEstimator m_poseEstimator;
+
+private final Field2d m_field = new Field2d();
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
     // Usage reporting for MAXSwerve template
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
+
+    // Initialize Pose Estimator
+    m_poseEstimator = new SwerveDrivePoseEstimator(
+        DriveConstants.kDriveKinematics,
+        Rotation2d.fromDegrees(-(m_gyro.getAngle()) + 180),
+        new SwerveModulePosition[] {
+            m_frontLeft.getPosition(),
+            m_frontRight.getPosition(),
+            m_rearLeft.getPosition(),
+            m_rearRight.getPosition()
+        },
+        new Pose2d());
+
+    SmartDashboard.putData("Field", m_field);
   }
 
   @Override
@@ -134,7 +145,7 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
 
     
 
-    m_odometry.update(
+    m_poseEstimator.update(
         getHeading(),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
@@ -142,6 +153,63 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
+     //poseEstimation using megatag1 and 2
+    if (m_poseEstimator == null || m_gyro == null) { //prevent null pointer exception in disabled periodic
+      return;
+    }
+    
+    LimelightHelpers.SetRobotOrientation("limelight-four", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+    var mt2_visionEstimate = 
+        LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-four");
+    var visionEstimate =
+        LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-four");//use limelight host name
+    
+    // if our angular velocity is greater than 360 degrees per second, ignore vision updates
+    //rejection booleans
+    boolean mt2_reject = false;
+    boolean reject = false;
+    
+    //mt2
+    if (mt2_visionEstimate == null || mt2_visionEstimate.tagCount == 0) {
+      mt2_reject = true;
+    }
+    if(Math.abs(m_gyro.getRate()) > 360)
+    {
+      mt2_reject = true;
+    }
+    
+    if(!mt2_reject)
+    {
+      m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+      m_poseEstimator.addVisionMeasurement(
+          mt2_visionEstimate.pose,
+          mt2_visionEstimate.timestampSeconds);
+    }
+  //mt1
+  if(mt2_reject)
+  {
+    if (visionEstimate == null || visionEstimate.tagCount == 0) { //prevent null initialization, short-circuits
+      reject = true;
+    }
+
+    if (visionEstimate.tagCount == 1 &&
+               visionEstimate.rawFiducials.length == 1) {
+      if (visionEstimate.rawFiducials[0].ambiguity > 0.7) {
+        reject = true;
+      }
+      if (visionEstimate.rawFiducials[0].distToCamera > 3) {
+        reject = true;
+      }
+    }
+
+    if (!reject) {
+      m_poseEstimator.addVisionMeasurement(
+          visionEstimate.pose,
+          visionEstimate.timestampSeconds);
+    }
+  }
+ m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());//update robot position in field, further reviews needed
+  SmartDashboard.putNumber("NavX Gyro", m_gyro.getAngle());
   }
 
   /**
@@ -150,7 +218,7 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
    * @return The pose.
    */
   public Pose2d getPose() {
-    return m_odometry.getPoseMeters();
+    return m_poseEstimator.getEstimatedPosition();
   }
 
   /**
@@ -159,7 +227,7 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
    * @param pose The pose to which to set the odometry.
    */
   public void resetOdometry(Pose2d pose) {
-    m_odometry.resetPosition(
+    m_poseEstimator.resetPosition(
         getHeading(),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
