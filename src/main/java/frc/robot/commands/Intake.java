@@ -41,7 +41,7 @@ public class Intake extends Command {
   @Override  // Called every time the scheduler runs while the command is scheduled.
   public void execute() {
     m_intake.runIntake(); 
-   m_intake.intakeUp(0.75);  
+   m_intake.intakeUp(0.65);  
   }
   
   @Override  // Called once the command ends or is interrupted.

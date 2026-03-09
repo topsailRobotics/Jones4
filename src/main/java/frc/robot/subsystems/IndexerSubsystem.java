@@ -25,7 +25,7 @@ public class IndexerSubsystem extends SubsystemBase {
 
   public void runIndexVert()
   {
-    m_vert.setVoltage(-8);
+    m_vert.setVoltage(8);
   }
 
    public void runIndexHori()
