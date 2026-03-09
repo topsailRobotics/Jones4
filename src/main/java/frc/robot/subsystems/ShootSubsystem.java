@@ -37,8 +37,8 @@ public class ShootSubsystem extends SubsystemBase {
   public void shooterTest()
   {
         // add constants for voltage setpoint later
-        m_ShootLeft.setVoltage(-1);
-        m_ShootRight.setVoltage(1);
+        m_ShootLeft.setVoltage(-5);
+        m_ShootRight.setVoltage(5);
   }
   public void shooterMedium()
   {

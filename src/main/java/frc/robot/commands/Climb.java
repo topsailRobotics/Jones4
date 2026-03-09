@@ -55,15 +55,17 @@ public class Climb extends Command {
   @Override
   public void end(boolean interrupted) {
     m_climber.stopClimber();
+    System.out.println("climb end");
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (toggle){
-      return m_climber.m_climbAbsoluteEncoder.getPosition() >= ClimberConstants.kclimberUpperThreshhold;
-    } else {
-      return m_climber.m_climbAbsoluteEncoder.getPosition() <= ClimberConstants.kclimberLowerThreshhold;
-    }
+    return false;
+    // if (toggle != true){
+    //   return m_climber.m_climbAbsoluteEncoder.getPosition() >= ClimberConstants.kclimberUpperThreshhold;
+    // } else {
+    //   return m_climber.m_climbAbsoluteEncoder.getPosition() <= ClimberConstants.kclimberLowerThreshhold;
+    // }
   }
 }

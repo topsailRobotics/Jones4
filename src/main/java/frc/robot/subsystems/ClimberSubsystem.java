@@ -47,8 +47,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // System.out.println(m_climbAbsoluteEncoder.getPosition());
-    // This method will be called once per scheduler run
+    System.out.println(m_climbAbsoluteEncoder.getPosition());
   }
 
   @Override

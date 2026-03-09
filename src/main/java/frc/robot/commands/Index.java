@@ -43,14 +43,16 @@ public class Index extends Command {
   //release intake and run internal wheels
   @Override  // Called every time the scheduler runs while the command is scheduled.
   public void execute() {
-    m_indexer.runIndex();
-    m_intake.runIntake();  
+    m_indexer.runIndexHori();
+    m_intake.runIntake(); 
+    m_intake.intakeOut(1.75);  
   }
   
   @Override  // Called once the command ends or is interrupted.
   public void end(boolean interrupted) {
-      m_indexer.stopIndex() ;
+      m_indexer.stopIndexHori() ;
       m_intake.stopIntake();
+      m_intake.intakeIn();
   }
 
   // Returns true when the command should end.
