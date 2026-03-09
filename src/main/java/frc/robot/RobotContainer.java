@@ -1,3 +1,5 @@
+//password for radio : thsrobotics
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -10,6 +12,7 @@ import frc.robot.Util.LimelightHelpers;
 import frc.robot.commands.Autos;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Index;
+import frc.robot.commands.Shoot;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
@@ -87,9 +90,8 @@ public class RobotContainer {
                   -MathUtil.applyDeadband(m_driverController0.getRightX(), OIConstants.kDriveDeadband),
                   true),
               m_robotDrive));
-      m_intake.setDefaultCommand(new RunCommand(()-> m_intake.stopIntake(),m_intake));
-      m_intake.setDefaultCommand(new RunCommand(()-> m_intake.intakeIn(),m_intake));  //stopIntake method broken up to 2 separate methods, this one controls intaker position
-      m_indexer.setDefaultCommand(new RunCommand(()-> m_indexer.stopIndex(),m_indexer));
+      m_intake.setDefaultCommand(new RunCommand(()-> {m_intake.intakeIn();m_intake.stopIntake();},m_intake));  //stopIntake method broken up to 2 separate methods, this one controls intaker position
+      m_indexer.setDefaultCommand(new RunCommand(()-> {m_indexer.stopIndexHori();m_indexer.stopIndexVert();},m_indexer));
       m_climber.setDefaultCommand(new RunCommand(()-> m_climber.stopClimber(),m_climber));
       m_shooter.setDefaultCommand(new RunCommand(()-> m_shooter.stopShooter(),m_shooter));
 
@@ -121,23 +123,24 @@ public class RobotContainer {
                   m_robotDrive.setDiamond,
                   true),
               m_robotDrive));
-    m_driverController0.leftBumper().toggleOnTrue(new InstantCommand(  //changed from RunCommand to Instant Command, control loop should do the job
+    m_driverController0.leftBumper().toggleOnTrue(new RunCommand(  //changed from RunCommand to Instant Command, control loop should do the job
               () -> m_robotDrive.setX(),
               m_robotDrive));
     
     //true for climer up, false for down, independent commands sharing same command file
-    m_driverController0.a().onTrue(new Climb(m_climber, true));
-    m_driverController0.b().onTrue(new Climb(m_climber, false));
+    m_driverController0.povUp().whileTrue(new Climb(m_climber, true));
+    m_driverController0.povDown().whileTrue(new Climb(m_climber, false));
     
-
+    //x to turn on intake and horizontal indexer to collect and store fuels, click again to turn off
+    //y to turn on both indexer and shooter, fuels are pushed into the shooter and launched out
+    
     //internal system command
     m_driverController0.x()
-    .whileTrue(new Index(m_indexer,m_intake)); //command is scheduled while x is held
+    .toggleOnTrue(new Index(m_indexer,m_intake)); //command is scheduled while x is held
 
     //shooter command
-    m_driverController0.y().whileTrue(new RunCommand(
-    ()->m_shooter.shooterTest(), 
-    m_shooter));//internally contains addRequirement(ShooterSubsystem)
+    m_driverController0.y()
+    .toggleOnTrue(new Shoot(m_indexer,m_shooter));
     
 
   }

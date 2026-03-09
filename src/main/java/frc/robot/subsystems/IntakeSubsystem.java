@@ -47,7 +47,7 @@ private SparkAnalogSensor m_ArmEncoder;
  */
 
   public void runIntake() {
-    m_IntakeWheel.setVoltage(4);
+    m_IntakeWheel.setVoltage(-10);
     }
 
   public void stopIntake() {
@@ -63,7 +63,7 @@ private SparkAnalogSensor m_ArmEncoder;
   //default state is set point 0, parameter omitted
   public void intakeIn()
   {
-    m_pidController1.setSetpoint(0, com.revrobotics.spark.SparkBase.ControlType.kPosition);
+    m_pidController1.setSetpoint(12, com.revrobotics.spark.SparkBase.ControlType.kPosition);
   }
 
   

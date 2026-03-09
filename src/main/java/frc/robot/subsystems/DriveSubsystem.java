@@ -72,7 +72,7 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
       DriveConstants.kDriveKinematics,
-      Rotation2d.fromDegrees(m_gyro.getAngle()),
+      getHeading(),
       new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -89,12 +89,12 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
   @Override
   public void periodic() {
     //aiming at hub code
-    targetingAngularVelocity = LimelightHelpers.getTX("limelight-second") * aimkp;
+    targetingAngularVelocity = LimelightHelpers.getTX("limelight-four") * aimkp;
     targetingAngularVelocity *= DriveConstants.kMaxAngularSpeed;
-
+    //System.out.println(m_gyro.getAngle());
     //invert since tx is positive when the target is to the right of the crosshair
     targetingAngularVelocity *= -1.0;
-    if (LimelightHelpers.getTX("limelight-second") <= 3 && LimelightHelpers.getTX("limelight-second") >= -3){
+    if (LimelightHelpers.getTX("limelight-four") <= 3 && LimelightHelpers.getTX("limelight-four") >= -3){
       targetingAngularVelocity = 0;
     }
     // ferrying angle
@@ -135,7 +135,7 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
     
 
     m_odometry.update(
-        Rotation2d.fromDegrees(-(m_gyro.getAngle())),//ADDED NEGATIVE SIGN FOR JONES 3 - LARRY WE CAN CHANGE IF NO WORKY
+        getHeading(),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -160,7 +160,7 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        Rotation2d.fromDegrees(m_gyro.getAngle()),
+        getHeading(),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -188,7 +188,7 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
         fieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
-                Rotation2d.fromDegrees(m_gyro.getAngle()))
+                getHeading())
             : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
@@ -238,11 +238,10 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
 
   /**
    * Returns the heading of the robot.
-   *
-   * @return the robot's heading in degrees, from -180 to 180
+   * @return the robot's heading, type: Rotational2d
    */
-  public double getHeading() {
-    return Rotation2d.fromDegrees(m_gyro.getAngle()).getDegrees();
+  public Rotation2d getHeading() {
+    return Rotation2d.fromDegrees(-m_gyro.getAngle());
   }
 
   /**
