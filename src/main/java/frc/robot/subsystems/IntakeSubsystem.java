@@ -1,10 +1,18 @@
 package frc.robot.subsystems;
 
+import java.io.ObjectInputFilter.Config;
+
+import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.ResetMode;
+import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkAnalogSensor;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase.PersistMode;
+
 import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,10 +24,14 @@ public class IntakeSubsystem extends SubsystemBase {
 private final SparkMax m_IntakeArm = new SparkMax(IntakeConstants.kIntakeArmID, MotorType.kBrushless);
 private final SparkMax m_IntakeWheel= new SparkMax(IntakeConstants.kIntakeWheelID, MotorType.kBrushless);
 private final SparkClosedLoopController m_pidController1 = m_IntakeArm.getClosedLoopController();
-
-private SparkAnalogSensor m_ArmEncoder;
+private final AbsoluteEncoder m_AbsoluteEncoder = m_IntakeArm.getAbsoluteEncoder();
   public IntakeSubsystem() {
-
+SparkMaxConfig config = new SparkMaxConfig();
+config.closedLoop.
+feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+.pid(1, 0, 0.05)
+.outputRange(-1,1);
+m_IntakeArm.configure(config,ResetMode.kResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
   
   }
 
@@ -36,7 +48,6 @@ private SparkAnalogSensor m_ArmEncoder;
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    m_ArmEncoder = m_IntakeArm.getAnalog();
   }
 
   
@@ -47,7 +58,7 @@ private SparkAnalogSensor m_ArmEncoder;
  */
 
   public void runIntake() {
-    m_IntakeWheel.setVoltage(-10);
+    m_IntakeWheel.setVoltage(-10.5);
     }
 
   public void stopIntake() {
@@ -55,15 +66,15 @@ private SparkAnalogSensor m_ArmEncoder;
   }
   
   //intake out will be scheduled separately using on true logic
-  public void intakeOut(double setposition)
+  public void intakeUp(double setposition)
   {
     m_pidController1.setSetpoint(setposition, com.revrobotics.spark.SparkBase.ControlType.kPosition);
   }
   
   //default state is set point 0, parameter omitted
-  public void intakeIn()
+  public void intakeOff()
   {
-    m_pidController1.setSetpoint(12, com.revrobotics.spark.SparkBase.ControlType.kPosition);
+    m_pidController1.setSetpoint(0.65, com.revrobotics.spark.SparkBase.ControlType.kPosition); //0.85 is at 0ish
   }
 
   

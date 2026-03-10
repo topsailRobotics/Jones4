@@ -11,25 +11,22 @@
 
 //imports
 package frc.robot.commands;
-import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.IntakeConstants;
 
-public class Index extends Command {
+public class Intake extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})  //remove later
   
   //instance variables
-  private final IndexerSubsystem m_indexer;
   private final IntakeSubsystem m_intake;
   
   /*
    * constructor
    */
-  public Index(IndexerSubsystem m_indexer, IntakeSubsystem m_intake) {
-    this.m_indexer = m_indexer;
+  public Intake(IntakeSubsystem m_intake) {
     this.m_intake = m_intake;
-    addRequirements(m_indexer, m_intake); //declare exclusive subsystem control
+    // addRequirements(m_intake); //declare exclusive subsystem control
   }
 
   /*
@@ -43,16 +40,14 @@ public class Index extends Command {
   //release intake and run internal wheels
   @Override  // Called every time the scheduler runs while the command is scheduled.
   public void execute() {
-    m_indexer.runIndexHori();
     m_intake.runIntake(); 
-    m_intake.intakeOut(1.75);  
+   m_intake.intakeUp(0.65);  
   }
   
   @Override  // Called once the command ends or is interrupted.
   public void end(boolean interrupted) {
-      m_indexer.stopIndexHori() ;
       m_intake.stopIntake();
-      m_intake.intakeIn();
+      m_intake.intakeOff();
   }
 
   // Returns true when the command should end.
