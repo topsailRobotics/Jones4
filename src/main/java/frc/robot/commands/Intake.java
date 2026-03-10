@@ -9,28 +9,24 @@
  * this command only controls wheels spinning
  */
 
-//try having timer in execute only for indexer to make it wait
 //imports
 package frc.robot.commands;
-import frc.robot.subsystems.ShootSubsystem;
-import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.IntakeConstants;
 
-public class Shoot extends Command {
+public class Intake extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})  //remove later
   
   //instance variables
-  private final IndexerSubsystem m_indexer;
-  private final ShootSubsystem m_shoot;
+  private final IntakeSubsystem m_intake;
   
   /*
    * constructor
    */
-  public Shoot(IndexerSubsystem m_indexer, ShootSubsystem m_shoot) {
-    this.m_indexer = m_indexer;
-    this.m_shoot = m_shoot;
-    addRequirements(m_indexer, m_shoot); //declare exclusive subsystem control
+  public Intake(IntakeSubsystem m_intake) {
+    this.m_intake = m_intake;
+    // addRequirements(m_intake); //declare exclusive subsystem control
   }
 
   /*
@@ -38,22 +34,20 @@ public class Shoot extends Command {
    */
   @Override     // Called when the command is initially scheduled.
   public void initialize() {
-    System.out.println("shoot initialized");
+    System.out.println("Index initialized");
     
   }
   //release intake and run internal wheels
   @Override  // Called every time the scheduler runs while the command is scheduled.
   public void execute() {
-    m_indexer.runIndexVert();
-    m_indexer.runIndexHori();
-    m_shoot.shooterTest();
+    m_intake.runIntake(); 
+   m_intake.intakeUp(0.65);  
   }
   
   @Override  // Called once the command ends or is interrupted.
   public void end(boolean interrupted) {
-    m_indexer.stopIndexVert();
-    m_indexer.stopIndexHori();
-    m_shoot.stopShooter();
+      m_intake.stopIntake();
+      m_intake.intakeOff();
   }
 
   // Returns true when the command should end.
