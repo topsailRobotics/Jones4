@@ -11,7 +11,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.Util.LimelightHelpers;
 import frc.robot.commands.Autos;
 import frc.robot.commands.Climb;
-import frc.robot.commands.Index;
+import frc.robot.commands.Intake;
 import frc.robot.commands.Shoot;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -90,7 +90,7 @@ public class RobotContainer {
                   -MathUtil.applyDeadband(m_driverController0.getRightX(), OIConstants.kDriveDeadband),
                   true),
               m_robotDrive));
-      m_intake.setDefaultCommand(new RunCommand(()-> {m_intake.intakeIn();m_intake.stopIntake();},m_intake));  //stopIntake method broken up to 2 separate methods, this one controls intaker position
+      m_intake.setDefaultCommand(new RunCommand(()-> {m_intake.intakeOff();m_intake.stopIntake();},m_intake));  //stopIntake method broken up to 2 separate methods, this one controls intaker position
       m_indexer.setDefaultCommand(new RunCommand(()-> {m_indexer.stopIndexHori();m_indexer.stopIndexVert();},m_indexer));
       m_climber.setDefaultCommand(new RunCommand(()-> m_climber.stopClimber(),m_climber));
       m_shooter.setDefaultCommand(new RunCommand(()-> m_shooter.stopShooter(),m_shooter));
@@ -136,7 +136,7 @@ public class RobotContainer {
     
     //internal system command
     m_driverController0.x()
-    .toggleOnTrue(new Index(m_indexer,m_intake)); //command is scheduled while x is held
+    .toggleOnTrue(new Intake(m_intake)); //command is scheduled while x is held
 
     //shooter command
     m_driverController0.y()
