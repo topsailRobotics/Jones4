@@ -9,6 +9,7 @@ package frc.robot;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Util.LimelightHelpers;
+import frc.robot.commands.Aim;
 import frc.robot.commands.Autos;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Intake;
@@ -97,32 +98,30 @@ public class RobotContainer {
 
       
 
-    Trigger aimingTrigger = new Trigger (()-> m_driverController0.getLeftTriggerAxis() > 0.5 && LimelightHelpers.getFiducialID("limelight-second")>=0);
-    aimingTrigger.whileTrue( new RunCommand(
-              () -> m_robotDrive.drive(
-                  -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
-                  -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
-                  m_robotDrive.targetingAngularVelocity,
-                  true),
-              m_robotDrive));
-    
+    Trigger aimingTrigger = new Trigger (()-> m_driverController0.getLeftTriggerAxis() > 0.5 && LimelightHelpers.getFiducialID("limelight-four") > 0);
+    aimingTrigger.whileTrue(new RunCommand(
+      () -> m_robotDrive.drive(
+          -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
+          -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
+          m_robotDrive.targetingAngularVelocity,
+          true)));
+  
     Trigger ferryTrigger = new Trigger(() -> m_driverController0.getRightTriggerAxis() > 0.5);
-    ferryTrigger.whileTrue( new RunCommand(
-              () -> m_robotDrive.drive(
-                  -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
-                  -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
-                  m_robotDrive.FerryAmount,
-                  true),
-              m_robotDrive));
+    ferryTrigger.whileTrue(new RunCommand(
+      () -> m_robotDrive.drive(
+          -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
+          -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
+          m_robotDrive.FerryAmount,
+          true)));
     
    
-    m_driverController0.rightBumper().whileTrue( new RunCommand(
-              () -> m_robotDrive.drive(
-                  -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
-                  -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
-                  m_robotDrive.setDiamond,
-                  true),
-              m_robotDrive));
+    m_driverController0.rightBumper().whileTrue(new RunCommand(
+      () -> m_robotDrive.drive(
+          -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
+          -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
+          m_robotDrive.setDiamond,
+          true)));
+      
     m_driverController0.leftBumper().toggleOnTrue(new RunCommand(  //changed from RunCommand to Instant Command, control loop should do the job
               () -> m_robotDrive.setX(),
               m_robotDrive));
@@ -140,8 +139,14 @@ public class RobotContainer {
 
     //shooter command
     m_driverController0.y()
-    .toggleOnTrue(new Shoot(m_indexer,m_shooter));
+    .toggleOnTrue(new Shoot(m_indexer,m_shooter,1));
+
+    m_driverController0.b()
+    .toggleOnTrue(new Shoot(m_indexer,m_shooter,2));
     
+    m_driverController0.a().whileTrue(new RunCommand(  //changed from RunCommand to Instant Command, control loop should do the job
+              () -> m_intake.intakeUp(0.85),
+              m_intake));
 
   }
 

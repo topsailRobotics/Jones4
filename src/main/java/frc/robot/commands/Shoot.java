@@ -23,13 +23,14 @@ public class Shoot extends Command {
   //instance variables
   private final IndexerSubsystem m_indexer;
   private final ShootSubsystem m_shoot;
-  
+  private int range;
   /*
    * constructor
    */
-  public Shoot(IndexerSubsystem m_indexer, ShootSubsystem m_shoot) {
+  public Shoot(IndexerSubsystem m_indexer, ShootSubsystem m_shoot, int range) {
     this.m_indexer = m_indexer;
     this.m_shoot = m_shoot;
+    this.range=range;
     addRequirements(m_indexer, m_shoot); //declare exclusive subsystem control
   }
 
@@ -46,7 +47,13 @@ public class Shoot extends Command {
   public void execute() {
     m_indexer.runIndexVert();
     m_indexer.runIndexHori();
-    m_shoot.shooterTest();
+    if(range==1)
+    {
+      m_shoot.shooterTest();
+    }else if(range==2)
+    {
+      m_shoot.shooterMedium();
+    }
   }
   
   @Override  // Called once the command ends or is interrupted.

@@ -25,12 +25,12 @@ public class IndexerSubsystem extends SubsystemBase {
 
   public void runIndexVert()
   {
-    m_vert.setVoltage(8);
+    m_vert.setVoltage(5);
   }
 
    public void runIndexHori()
   {
-      m_hori.setVoltage(8);
+      m_hori.setVoltage(3);
   }
 
   public void stopIndexVert() {

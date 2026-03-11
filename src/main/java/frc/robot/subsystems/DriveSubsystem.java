@@ -43,7 +43,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class DriveSubsystem extends SubsystemBase {
-  public double aimkp = .0015;
+  public double aimkp = .015;
   public double targetingAngularVelocity;
   public double FerryAmount;
   public double setDiamond;
@@ -99,16 +99,14 @@ private final Field2d m_field = new Field2d();
 
   @Override
   public void periodic() {
-    //aiming at hub code
+    //aiming 
+    
     targetingAngularVelocity = LimelightHelpers.getTX("limelight-four") * aimkp;
-    targetingAngularVelocity *= DriveConstants.kMaxAngularSpeed;
-    //System.out.println(m_gyro.getAngle());
-    //invert since tx is positive when the target is to the right of the crosshair
     targetingAngularVelocity *= -1.0;
     if (LimelightHelpers.getTX("limelight-four") <= 3 && LimelightHelpers.getTX("limelight-four") >= -3){
       targetingAngularVelocity = 0;
     }
-    // ferrying angle
+    //ferry
     newAngle = (m_gyro.getAngle()-180) % 360;
     if (newAngle >= 180){
       newAngle = -(180-(newAngle - 180));
@@ -125,8 +123,8 @@ private final Field2d m_field = new Field2d();
     } else {
       FerryAmount = 0;
     }
-    //driving over bump optimal angle
-    newDiamond = (m_gyro.getAngle()-45) % 90;
+// diamond 
+newDiamond = (m_gyro.getAngle()-45) % 90;
     if (newDiamond >= 45){
       newDiamond = -(45-(newAngle - 45));
     } else if(newDiamond <= -45){
@@ -142,8 +140,6 @@ private final Field2d m_field = new Field2d();
     } else {
       setDiamond = 0;
     }
-
-    
 
     m_poseEstimator.update(
         getHeading(),
@@ -274,7 +270,7 @@ private final Field2d m_field = new Field2d();
     m_frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
     m_rearLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
     m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-    System.out.println("setx");
+    //System.out.println("setx");
   }
 
   /**
@@ -320,4 +316,6 @@ private final Field2d m_field = new Field2d();
   public double getTurnRate() {
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
+
+  
 }
