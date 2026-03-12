@@ -59,12 +59,19 @@ public class ShooterSubsystem extends SubsystemBase {
 
   }
 
+  /**
+   * Loops through all april tags on the hubs to try and find the towers to calculate wheel velocity.
+   * 
+   * Currently returns nothing
+   */
   public double CalculateWheelVelocity() { //removed distance parameter, pulls from distance variable
-
-    if (LimelightHelpers.getTV("limelight-second") && LimelightHelpers.getFiducialID("limelight-second") == ShooterConstants.towerTagID){
+    for (int i = 0; i < ShooterConstants.towerTagID.length; i++){ 
+      if (LimelightHelpers.getTV("limelight-second") && LimelightHelpers.getFiducialID("limelight-second") == ShooterConstants.towerTagID[i]){
       double theta = Math.tan(Math.toRadians(LimelightHelpers.getTY("limelight-second")));
       distance = Math.abs(ShooterConstants.towerTagHeight - ShooterConstants.limelightsecondHeight) / theta;
+      }
     }
+    
 
     double output = (96.04 * distance * distance * (Math.atan(Math.toRadians(Constants.ShooterConstants.lockedAngle)))) + (96.04 * distance) + (-9.8 * Constants.ShooterConstants.netHeight);
     output /= 2;
@@ -72,12 +79,18 @@ public class ShooterSubsystem extends SubsystemBase {
 
   }
 
-  public void runShooter(){ //method for starting shooter
+  /**
+   * Method for starting shooter.
+   */
+  public void runShooter(){ 
     m_shooterMotorLeft.setVoltage(CalculateWheelVelocity());
     m_shooterMotorRight.setVoltage(CalculateWheelVelocity());
   }
 
-  public void stopShooter(){ //method for stopping shooter
+  /**
+   * Method for stopping shooter.
+   */
+  public void stopShooter(){ 
     m_shooterMotorLeft.setVoltage(0);
     m_shooterMotorRight.setVoltage(0);
   }

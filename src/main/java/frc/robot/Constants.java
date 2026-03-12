@@ -24,13 +24,13 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 7.6; //7.60 based on documents but need to be sure - Willemqaswe
-    public static final double kMaxAngularSpeed = 8 * Math.PI; // radians per second
+    public static final double kMaxSpeedMetersPerSecond = 4.8;
+    public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
 
     // Chassis configuration
-    public static final double kTrackWidth = Units.inchesToMeters(26.5);
+    public static final double kTrackWidth = Units.inchesToMeters(26.1875);
     // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = Units.inchesToMeters(21.5);
+    public static final double kWheelBase = Units.inchesToMeters(26.1875);
     // Distance between front and back wheels on robot
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
         new Translation2d(kWheelBase / 2, kTrackWidth / 2),
@@ -63,7 +63,7 @@ public final class Constants {
     // The MAXSwerve module can be configured with one of three pinion gears: 12T,
     // 13T, or 14T. This changes the drive speed of the module (a pinion gear with
     // more teeth will result in a robot that drives faster).
-    public static final int kDrivingMotorPinionTeeth = 16; //high reduction --- changed this to 16 for the new gear ratio - Willem
+    public static final int kDrivingMotorPinionTeeth = 14;
 
     // Calculations required for driving motor conversion factors and feed forward
     public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;
@@ -119,14 +119,19 @@ public final class Constants {
     public static final double relationModification = 1; //no unit; modifies ball exit velocity to wheel spin speed
     public static final int kleftshootermotorID = 55; 
     public static final int krightshootermotorID = 56; 
-    public static final int towerTagID = 67; //change later; likely not correct
+    public static final int[] towerTagID = 
+    {8,5,9,10,11,2,       //red team alliance hub numbers
+     21,24,25,26,18,27};  //blue team alliance hub numbers
+
+
+     //change later; likely not correct
     public static final double towerTagHeight = 2; //in meters, change later (2 is a placeholder)
     public static final double limelightsecondHeight = 1; //in meters, change later (1 is a placeholder)
   }
   public static final class ClimberConstants{
     public static final int kclimberMotorID = 57;
-    public static final double kclimberUpperThreshhold = 0.99; //change is necessary, previous .55
-    public static final double kclimberLowerThreshhold = 0.2;
+    public static final double kclimberUpperThreshhold = .9; //change is necessary, previous .55
+    public static final double kclimberLowerThreshhold = -.99;
     }
 
 }
