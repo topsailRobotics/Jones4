@@ -43,7 +43,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class DriveSubsystem extends SubsystemBase {
-  public double aimkp = .015;
+  public double aimkp = .0125;
   public double targetingAngularVelocity;
   public double FerryAmount;
   public double setDiamond;
