@@ -25,7 +25,7 @@ public class IndexerSubsystem extends SubsystemBase {
 
   public void runIndexVert()
   {
-    m_pidController1.setSetpoint(.25,ControlType.kDutyCycle);
+    m_pidController1.setSetpoint(.67,ControlType.kDutyCycle);
   }
 
    public void runIndexHori()
