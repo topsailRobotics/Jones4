@@ -135,7 +135,7 @@ public class RobotContainer {
     
     //internal system command
     m_driverController0.x()
-    .toggleOnTrue(new Intake(m_intake)); //command is scheduled while x is held
+    .toggleOnTrue(new Intake(m_intake,m_indexer)); //command is scheduled while x is held
 
     //shooter command
     m_driverController0.y()
