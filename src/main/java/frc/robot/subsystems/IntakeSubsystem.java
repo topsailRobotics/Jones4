@@ -61,10 +61,14 @@ m_IntakeArm.configure(config,ResetMode.kResetSafeParameters, com.revrobotics.Per
     m_IntakeWheel.setVoltage(-8);
     }
 
+  public void reverseIntake() {
+    m_IntakeWheel.setVoltage(8);
+    }
+
   public void stopIntake() {
     m_IntakeWheel.setVoltage(0);
   }
-  
+
   //intake out will be scheduled separately using on true logic
   public void intakeUp(double setposition)
   {
@@ -74,7 +78,7 @@ m_IntakeArm.configure(config,ResetMode.kResetSafeParameters, com.revrobotics.Per
   //default state is set point 0, parameter omitted
   public void intakeOff()
   {
-    m_pidController1.setSetpoint(0.62, com.revrobotics.spark.SparkBase.ControlType.kPosition); //0.85 is at 0ish
+    m_pidController1.setSetpoint(0, com.revrobotics.spark.SparkBase.ControlType.kDutyCycle); //0.85 is at 0ish
   }
 
   

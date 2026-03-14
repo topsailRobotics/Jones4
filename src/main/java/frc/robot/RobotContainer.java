@@ -13,6 +13,7 @@ import frc.robot.commands.Aim;
 import frc.robot.commands.Autos;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Intake;
+import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.Shoot;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -136,13 +137,12 @@ public class RobotContainer {
     //internal system command
     m_driverController0.x()
     .toggleOnTrue(new Intake(m_intake,m_indexer)); //command is scheduled while x is held
-
+  
+    m_driverController0.b()
+    .toggleOnTrue(new ReverseIntake(m_intake));
     //shooter command
     m_driverController0.y()
     .toggleOnTrue(new Shoot(m_indexer,m_shooter,1));
-
-    m_driverController0.b()
-    .toggleOnTrue(new Shoot(m_indexer,m_shooter,2));
     
     m_driverController0.a().whileTrue(new RunCommand(  //changed from RunCommand to Instant Command, control loop should do the job
               () -> m_intake.intakeUp(0.85),

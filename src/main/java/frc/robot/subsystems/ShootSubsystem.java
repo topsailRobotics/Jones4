@@ -6,10 +6,14 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkAnalogSensor;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.ControlType;
+
 import frc.robot.Constants.ShooterConstants;
 
 public class ShootSubsystem extends SubsystemBase {
@@ -20,7 +24,8 @@ public class ShootSubsystem extends SubsystemBase {
     // right: battery
   private final SparkMax m_ShootLeft = new SparkMax(ShooterConstants.kleftshootermotorID, MotorType.kBrushless);
   private final SparkMax m_ShootRight= new SparkMax(ShooterConstants.krightshootermotorID, MotorType.kBrushless);
- 
+  public final RelativeEncoder m_Encoder = m_ShootLeft.getEncoder();
+private final SparkClosedLoopController m_pidController1 = m_ShootLeft.getClosedLoopController();
   //default construcor
   public ShootSubsystem() {
 
@@ -36,9 +41,8 @@ public class ShootSubsystem extends SubsystemBase {
 
   public void shooterTest()
   {
-        // add constants for voltage setpoint later
-        m_ShootLeft.setVoltage(-6);
-        m_ShootRight.setVoltage(6);
+      m_pidController1.setSetpoint(-3085, ControlType.kVelocity);
+      System.out.println(m_Encoder.getVelocity());// add constants for voltage setpoint later
   }
   public void shooterMedium()
   {

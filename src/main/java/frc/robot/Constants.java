@@ -24,7 +24,7 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 7.6; //7.60 based on documents but need to be sure - Willemqaswe
+    public static final double kMaxSpeedMetersPerSecond = 7.60; //7.60 based on documents but need to be sure - Willemqaswe
     public static final double kMaxAngularSpeed = 8 * Math.PI; // radians per second
 
     // Chassis configuration
@@ -77,7 +77,7 @@ public final class Constants {
   }
 
   public static final class NeoMotorConstants {
-    public static final double kFreeSpeedRpm = 5676;
+    public static final double kFreeSpeedRpm = 6784;//changed this to the neo vortex speed 
   }
 
   public static final class OIConstants {
@@ -121,6 +121,7 @@ public final class Constants {
     public static final int krightshootermotorID = 56; 
 
   }
+
   public static final class ClimberConstants{
     public static final int kclimberMotorID = 57;
     public static final double kclimberUpperThreshhold = 0.99; //change is necessary, previous .55

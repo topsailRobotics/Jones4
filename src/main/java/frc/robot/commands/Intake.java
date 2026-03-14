@@ -29,7 +29,7 @@ public class Intake extends Command {
   public Intake(IntakeSubsystem m_intake, IndexerSubsystem m_indexer) {
     this.m_intake = m_intake;
     this.m_indexer = m_indexer;
-    // addRequirements(m_intake); //declare exclusive subsystem control
+    addRequirements(m_intake); //declare exclusive subsystem control
   }
 
   /*
