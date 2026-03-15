@@ -12,6 +12,11 @@ import frc.robot.Constants.AAConstants;
 import frc.robot.Util.LimelightHelpers;
 import frc.robot.subsystems.DriveSubsystem;
 
+/**
+ * Class used to align the robot to the hub.
+ * 
+ * @author Larry
+ */
 public class AlignToTowerRelative extends Command {
   private PIDController xController, yController, rotController;
   private boolean isRightScore;
@@ -19,6 +24,13 @@ public class AlignToTowerRelative extends Command {
   private DriveSubsystem drivebase;
   private double tagID = -1;
 
+  /**
+   *  Method used to align tower to the hub.
+   * 
+   * @param isRightScore UNKNOWN PURPOSE OF PARAMETER (PLEASE FILL IN DOCUMENTATION)
+   * @param drivebase UNKNOWN PURPOSE OF PARAMETER (PLEASE FILL IN DOCUMENTATION)
+   * @author Larry
+   */
   public AlignToTowerRelative(boolean isRightScore, DriveSubsystem drivebase) {
     xController = new PIDController(AAConstants.X_REEF_ALIGNMENT_P, 0.0, 0);  // Vertical movement
     yController = new PIDController(AAConstants.Y_REEF_ALIGNMENT_P, 0.0, 0);  // Horitontal movement
@@ -28,6 +40,11 @@ public class AlignToTowerRelative extends Command {
     addRequirements(drivebase);
   }
 
+  /**
+   * UNKNOWN PURPOSE OF METHOD (PLEASE FILL IN DOCUMENTATION)
+   * 
+   * @author Larry
+   */
   @Override
   public void initialize() {
     drivebase.drive(0,0, 0, false);
@@ -48,6 +65,12 @@ public class AlignToTowerRelative extends Command {
     tagID = LimelightHelpers.getFiducialID("limelight-second");
   }
 
+
+    /**
+   * UNKNOWN PURPOSE OF METHOD (PLEASE FILL IN DOCUMENTATION)
+   * 
+   * @author Larry
+   */
   @Override
   public void execute() {
     if (LimelightHelpers.getTV("limelight-second") && LimelightHelpers.getFiducialID("limelight-second") == tagID) {
@@ -75,11 +98,21 @@ public class AlignToTowerRelative extends Command {
     SmartDashboard.putNumber("poseValidTimer", stopTimer.get());
   }
 
+    /**
+   * UNKNOWN PURPOSE OF METHOD (PLEASE FILL IN DOCUMENTATION)
+   * 
+   * @author Larry
+   */
   @Override
   public void end(boolean interrupted) {
     drivebase.drive(0,0, 0, true);
   }
 
+    /**
+   * UNKNOWN PURPOSE OF METHOD (PLEASE FILL IN DOCUMENTATION)
+   * 
+   * @author Larry
+   */
   @Override
   public boolean isFinished() {
     // Requires the robot to stay in the correct position for 0.3 seconds, as long as it gets a tag in the camera
