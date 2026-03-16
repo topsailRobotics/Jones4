@@ -34,24 +34,47 @@ public class ShootSubsystem extends SubsystemBase {
   //For now, use 4 distinct outputs based on distance ranges from the hub. 
   //Use shooterTest for testing
 
+ /**
+   * Method used to test the shooter. Will probably get deleted or not be used in final robot.
+   * 
+   * @author Carter
+ */
   public void shooterTest()
   {
         // add constants for voltage setpoint later
         m_ShootLeft.setVoltage(-5);
         m_ShootRight.setVoltage(5);
   }
+
+  /**
+   * Method used to set shooter to the medium distance.
+   * 
+   * @author Carter
+   */
   public void shooterMedium()
   {
         // add constants for voltage setpoint later
         m_ShootLeft.setVoltage(-5);
         m_ShootRight.setVoltage(5);
   }
+
+   /**
+    * Method used to set shooter to the medium distance.
+    * 
+    * @author Carter
+   */
   public void shooterHigh()
   {
         // add constants for voltage setpoint later
         m_ShootLeft.setVoltage(-6);
         m_ShootRight.setVoltage(6);
   }
+
+  /**
+    * Method used to set shooter to the maximum distance.
+    * 
+    * @author Carter
+   */
   public void shooterMax()
   {
         // add constants for voltage setpoint later
@@ -59,12 +82,18 @@ public class ShootSubsystem extends SubsystemBase {
         m_ShootRight.setVoltage(7);
   }
 
+  /**
+    * Method used to stop the shooter.
+    * 
+    * @author Carter
+   */
    public void stopShooter()
   {
         // add constants for voltage setpoint later
         m_ShootLeft.setVoltage(0);
         m_ShootRight.setVoltage(0);
   }
+  
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
