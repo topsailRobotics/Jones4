@@ -28,12 +28,9 @@ public class Intake extends Command {
   //instance variables
   private final IntakeSubsystem m_intake;
   
-  /*
-   * constructor
-   */
 
   /**
-   * UNKNOWN PURPOSE OF METHOD (PLEASE FILL IN DOCUMENTATION)
+   * This is the constructor for the Intake class.
    * 
    * @param m_intake UNKNOWN PURPOSE OF PARAMETER (PLEASE FILL IN DOCUMENTATION)
    * @author ziwei8658
@@ -48,7 +45,7 @@ public class Intake extends Command {
    */
 
   /**
-   * Called when the command is initially scheduled to confirm that the command has been initialized.
+   * Called when the intake command is initially scheduled to confirm that the command has been initialized.
    * 
    * @author ziwei8658
    */
@@ -69,7 +66,7 @@ public class Intake extends Command {
   }
   
     /**
-   * Called once the command ends or is interrupted.
+   * Called once the intake command ends or is interrupted.
    * 
    * @param interrupted UNKNOWN PURPOSE OF METHOD (PLEASE FILL IN DOCUMENTATION)
    * @author ziwei8658

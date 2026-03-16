@@ -25,7 +25,7 @@ public class AlignToTowerRelative extends Command {
   private double tagID = -1;
 
   /**
-   *  Method used to align tower to the hub.
+   *  Constructor method for the AlignToTowerRelative class.
    * 
    * @param isRightScore UNKNOWN PURPOSE OF PARAMETER (PLEASE FILL IN DOCUMENTATION)
    * @param drivebase UNKNOWN PURPOSE OF PARAMETER (PLEASE FILL IN DOCUMENTATION)
@@ -101,6 +101,7 @@ public class AlignToTowerRelative extends Command {
     /**
    * UNKNOWN PURPOSE OF METHOD (PLEASE FILL IN DOCUMENTATION)
    * 
+   * @param interrupted UNKNOWN PURPOSE OF PARAMETER (PLEASE FILL IN DOCUMENTATION)
    * @author Larry9297
    */
   @Override
