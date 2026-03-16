@@ -15,7 +15,7 @@ import frc.robot.subsystems.DriveSubsystem;
 /**
  * Class used to align the robot to the hub.
  * 
- * @author Larry
+ * @author Larry9297
  */
 public class AlignToTowerRelative extends Command {
   private PIDController xController, yController, rotController;
@@ -29,7 +29,7 @@ public class AlignToTowerRelative extends Command {
    * 
    * @param isRightScore UNKNOWN PURPOSE OF PARAMETER (PLEASE FILL IN DOCUMENTATION)
    * @param drivebase UNKNOWN PURPOSE OF PARAMETER (PLEASE FILL IN DOCUMENTATION)
-   * @author Larry
+   * @author Larry9297
    */
   public AlignToTowerRelative(boolean isRightScore, DriveSubsystem drivebase) {
     xController = new PIDController(AAConstants.X_REEF_ALIGNMENT_P, 0.0, 0);  // Vertical movement
@@ -43,7 +43,7 @@ public class AlignToTowerRelative extends Command {
   /**
    * UNKNOWN PURPOSE OF METHOD (PLEASE FILL IN DOCUMENTATION)
    * 
-   * @author Larry
+   * @author Larry9297
    */
   @Override
   public void initialize() {
@@ -69,7 +69,7 @@ public class AlignToTowerRelative extends Command {
     /**
    * UNKNOWN PURPOSE OF METHOD (PLEASE FILL IN DOCUMENTATION)
    * 
-   * @author Larry
+   * @author Larry9297
    */
   @Override
   public void execute() {
@@ -101,7 +101,7 @@ public class AlignToTowerRelative extends Command {
     /**
    * UNKNOWN PURPOSE OF METHOD (PLEASE FILL IN DOCUMENTATION)
    * 
-   * @author Larry
+   * @author Larry9297
    */
   @Override
   public void end(boolean interrupted) {
@@ -111,7 +111,7 @@ public class AlignToTowerRelative extends Command {
     /**
    * UNKNOWN PURPOSE OF METHOD (PLEASE FILL IN DOCUMENTATION)
    * 
-   * @author Larry
+   * @author Larry9297
    */
   @Override
   public boolean isFinished() {
