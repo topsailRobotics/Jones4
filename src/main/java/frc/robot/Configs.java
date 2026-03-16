@@ -6,7 +6,13 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import frc.robot.Constants.ModuleConstants;
 
+/** 
+ * Class used to contain all configs values used across the robot.
+*/
 public final class Configs {
+        /**
+         * A certain subsection of config values used specifically on the swerve modules (wheels that move the bot).
+        */
     public static final class MAXSwerveModule {
         public static final SparkMaxConfig drivingConfig = new SparkMaxConfig();
         public static final SparkMaxConfig turningConfig = new SparkMaxConfig();
