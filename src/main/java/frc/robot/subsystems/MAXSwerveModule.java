@@ -37,6 +37,12 @@ public class MAXSwerveModule {
    * encoder, and PID controller. This configuration is specific to the REV
    * MAXSwerve Module built with NEOs, SPARKS MAX, and a Through Bore
    * Encoder.
+   * 
+   * @param drivingCANId The CAN id that is associated with the turning of the wheels on the roll axis on a swerve module.
+   * @param turningCANId The CAN id that is associated with the turning on the yaw axis of the wheels on a swerve module.
+   * @param chassisAngularOffset UNKOWN PURPOSE OF PARAMETER (PLEASE FILL IN DOCUMENTATION)
+   * 
+   * @author septiceyesam2049-bot
    */
   public MAXSwerveModule(int drivingCANId, int turningCANId, double chassisAngularOffset) {
     m_drivingSpark = new SparkMax(drivingCANId, MotorType.kBrushless);
@@ -65,6 +71,8 @@ public class MAXSwerveModule {
    * Returns the current state of the module.
    *
    * @return The current state of the module.
+   * 
+   * @author septiceyesam2049-bot
    */
   public SwerveModuleState getState() {
     // Apply chassis angular offset to the encoder position to get the position
@@ -77,6 +85,8 @@ public class MAXSwerveModule {
    * Returns the current position of the module.
    *
    * @return The current position of the module.
+   * 
+   * @author septiceyesam2049-bot
    */
   public SwerveModulePosition getPosition() {
     // Apply chassis angular offset to the encoder position to get the position
@@ -90,6 +100,8 @@ public class MAXSwerveModule {
    * Sets the desired state for the module.
    *
    * @param desiredState Desired state with speed and angle.
+   * 
+   * @author septiceyesam2049-bot
    */
   public void setDesiredState(SwerveModuleState desiredState) {
     // Apply chassis angular offset to the desired state.
@@ -107,7 +119,11 @@ public class MAXSwerveModule {
     m_desiredState = desiredState;
   }
 
-  /** Zeroes all the SwerveModule encoders. */
+  /** 
+   * Zeroes all the SwerveModule encoders. 
+   * 
+   * @author septiceyesam2049-bot
+  */
   public void resetEncoders() {
     m_drivingEncoder.setPosition(0);
   }
