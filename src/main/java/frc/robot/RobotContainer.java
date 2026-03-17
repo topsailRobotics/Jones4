@@ -52,7 +52,7 @@ public class RobotContainer {
   private final ShootSubsystem m_shooter = new ShootSubsystem(); //actions not declared yet in shootersubsystem
 
   //autos
-  private final String m_defaultAuto = "default";
+  private final String m_defaultAuto = "New Auto";
   private final String m_TestAuto = "test";
 
   // A chooser for autonomous commands
