@@ -48,18 +48,18 @@ private final SparkClosedLoopController m_pidController2 = m_ShootRight.getClose
   }
   public void shooterLow()
   {
-      m_pidController1.setSetpoint(-2450, ControlType.kVelocity);
-      m_pidController2.setSetpoint(-2450, ControlType.kVelocity);
+      m_pidController1.setSetpoint(-2500, ControlType.kVelocity); // straight in front of the hub
+      m_pidController2.setSetpoint(-2500, ControlType.kVelocity);
 
   }
   public void shooterMedium()
   {
-      m_pidController1.setSetpoint(-3300, ControlType.kVelocity); //change these values
+      m_pidController1.setSetpoint(-3300, ControlType.kVelocity); //
       m_pidController2.setSetpoint(-3300, ControlType.kVelocity);
   }
   public void shooterHigh()
   {
-      m_pidController1.setSetpoint(-5000, ControlType.kVelocity);
+      m_pidController1.setSetpoint(-5000, ControlType.kVelocity); //ferry 18-16 feet
       m_pidController2.setSetpoint(-5000, ControlType.kVelocity);
   }
 

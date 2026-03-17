@@ -24,6 +24,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -31,6 +33,8 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -47,7 +51,16 @@ public class RobotContainer {
   private final ClimberSubsystem m_climber = new ClimberSubsystem();
   private final ShootSubsystem m_shooter = new ShootSubsystem(); //actions not declared yet in shootersubsystem
 
+  //autos
+  private final String m_defaultAuto = "default";
+  private final String m_TestAuto = "test";
 
+  // A chooser for autonomous commands
+  SendableChooser<String> m_chooser = new SendableChooser<>();
+  
+
+   ;
+    
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   //This is the driver's controller
@@ -60,6 +73,21 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    // Add commands to the autonomous command chooser
+  m_chooser.setDefaultOption(m_defaultAuto, m_defaultAuto);
+  m_chooser.addOption(m_TestAuto, m_TestAuto);
+  m_chooser.addOption(m_TestAuto, m_TestAuto);
+  m_chooser.addOption(m_TestAuto, m_TestAuto);
+
+  // Put the chooser on the dashboard
+  SmartDashboard.putData(m_chooser);
+
+    NamedCommands.registerCommand("ShootLow", new Shoot(m_indexer,m_shooter,1));
+    NamedCommands.registerCommand("ShootMedium", new Shoot(m_indexer,m_shooter,2));
+    NamedCommands.registerCommand("ShootHigh", new Shoot(m_indexer,m_shooter,3));
+    NamedCommands.registerCommand("Intake", new Intake(m_intake,m_indexer, false));
+    //NamedCommands.registerCommand("ReverseIntake", new Intake(m_intake,m_indexer, true));
+
     // Configure the trigger bindings
     configureBindings();
   }
@@ -138,9 +166,6 @@ public class RobotContainer {
   
     m_driverController0.b()
     .toggleOnTrue(new Intake(m_intake, m_indexer, true));
-    //shooter command
-    m_driverController0.y()
-    .toggleOnTrue(new Shoot(m_indexer,m_shooter));
     
     m_driverController0.a().whileTrue(new RunCommand(  //changed from RunCommand to Instant Command, control loop should do the job
               () -> m_intake.intakeUp(0.85),
@@ -148,6 +173,14 @@ public class RobotContainer {
 
     m_driverController0.povDown().onTrue(new InstantCommand(()->m_robotDrive.zeroHeading(), m_robotDrive));
 
+
+    //shooter commands
+    m_driverController1.x()
+    .toggleOnTrue(new Shoot(m_indexer,m_shooter,1));
+    m_driverController1.y()
+    .toggleOnTrue(new Shoot(m_indexer,m_shooter,2));
+    m_driverController1.a()
+    .toggleOnTrue(new Shoot(m_indexer,m_shooter,3));
   }
 
   /**
@@ -155,5 +188,11 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+  public Command getAutonomousCommand() {
+    // This method loads the auto when it is called, however, it is recommended
+    // to first load your paths/autos when code starts, then return the
+    // pre-loaded auto/path
+    return new PathPlannerAuto(m_chooser.getSelected());
+  }
 
 }//end of class

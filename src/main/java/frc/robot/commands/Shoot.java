@@ -13,6 +13,7 @@
 //imports
 package frc.robot.commands;
 import frc.robot.subsystems.ShootSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 // import frc.robot.Constants.IntakeConstants;     currently unused
@@ -26,15 +27,16 @@ public class Shoot extends Command {
   //instance variables
   private final IndexerSubsystem m_indexer;
   private final ShootSubsystem m_shoot;
+  private DriveSubsystem m_drive;
   private int range;
   private final Timer timer = new Timer();
   /*
    * constructor
    */
-  public Shoot(IndexerSubsystem m_indexer, ShootSubsystem m_shoot, int range) {
+  public Shoot(IndexerSubsystem m_indexer, ShootSubsystem m_shoot,int range) {
     this.m_indexer = m_indexer;
     this.m_shoot = m_shoot;
-    this.range=range;
+    this.range = range;
     addRequirements(m_indexer, m_shoot); //declare exclusive subsystem control
   }
 
@@ -44,7 +46,7 @@ public class Shoot extends Command {
   @Override     // Called when the command is initially scheduled.
   public void initialize() {
     System.out.println("shoot initialized");
-    timer.stop();
+   // timer.stop();
     timer.reset();
     timer.start();
     
@@ -52,13 +54,30 @@ public class Shoot extends Command {
   //release intake and run internal wheels
   @Override  // Called every time the scheduler runs while the command is scheduled.
   public void execute() {
-    if(range==1)
+    /* 
+    range = m_drive.getRange();
+    if(range>=5) //specific ranges to be changed
     {
-      m_shoot.shooterTest();
-    }else if(range==2)
+      m_shoot.shooterHigh();
+    }else if(range>=4)
     {
       m_shoot.shooterMedium();
+    }else if(range>=3)
+    {
+      m_shoot.shooterLow();
     }
+    */
+    if(range == 1)
+    {
+       m_shoot.shooterLow();
+    }else if(range==2)
+    {
+       m_shoot.shooterMedium();
+    }else if(range==3)
+    {
+       m_shoot.shooterHigh();
+    }
+
     if(timer.get() > 2.5){ // tried making the vIndex run on time not rpms - Langgang
       m_indexer.runIndexVert();
     }
