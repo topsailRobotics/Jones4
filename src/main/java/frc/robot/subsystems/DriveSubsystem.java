@@ -87,7 +87,7 @@ private SwerveDrivePoseEstimator m_poseEstimator;
 
 private final Field2d m_field = new Field2d();
 //get this year's field map
-AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
+AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark);
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
 

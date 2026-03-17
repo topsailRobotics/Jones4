@@ -140,7 +140,7 @@ public class RobotContainer {
     .toggleOnTrue(new Intake(m_intake, m_indexer, true));
     //shooter command
     m_driverController0.y()
-    .toggleOnTrue(new Shoot(m_indexer,m_shooter,1));
+    .toggleOnTrue(new Shoot(m_indexer,m_shooter));
     
     m_driverController0.a().whileTrue(new RunCommand(  //changed from RunCommand to Instant Command, control loop should do the job
               () -> m_intake.intakeUp(0.85),
