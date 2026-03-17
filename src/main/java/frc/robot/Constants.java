@@ -159,11 +159,9 @@ public final class Constants {
   /**
    * Constants used to help in the climbing process. Also has CAN ID value for the motor used.
    */
-  public static final class ClimberConstants{
-    public static final int kclimberMotorID = 57;
-    public static final double kclimberUpperThreshhold = 0.99; //change is necessary, previous .55
-    public static final double kclimberLowerThreshhold = 0.2;
-    }
-
+  //public static final class ClimberConstants{
+  //  public static final int kclimberMotorID = 57;
+  //  public static final double kclimberUpperThreshhold = 0.99; //change is necessary, previous .55
+  //  public static final double kclimberLowerThreshhold = 0.2;
+  //}
 }
-
