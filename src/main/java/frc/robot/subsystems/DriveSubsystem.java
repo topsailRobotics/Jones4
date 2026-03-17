@@ -22,6 +22,7 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -36,6 +37,8 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Util.LimelightHelpers;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 /*
  * "IMUAxis.kZ" was removed from all versions of m_gyro.getAngle because we use a NavX gyro
  * 
@@ -83,7 +86,8 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
 private SwerveDrivePoseEstimator m_poseEstimator;
 
 private final Field2d m_field = new Field2d();
-
+//get this year's field map
+AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
 
@@ -313,6 +317,19 @@ private SwerveModuleState[] getModuleStates() {
         },
         pose);
   }
+
+ //method to get range 
+ public double getRange()
+ {
+  Pose2d robotPose = m_poseEstimator.getEstimatedPosition();
+  Translation2d robotTranslation = robotPose.getTranslation();
+  
+  double tagID = LimelightHelpers.getFiducialID("limelight-four");
+  Pose2d tagPose = fieldLayout.getTagPose((int)tagID).get().toPose2d();
+  Translation2d tagTranslation = tagPose.getTranslation();
+
+  return(robotTranslation.getDistance(tagTranslation));
+ }
 
   /**
    * Method to drive the robot using joystick info.
