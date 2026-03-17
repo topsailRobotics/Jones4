@@ -11,6 +11,8 @@
 
 //imports
 package frc.robot.commands;
+import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
 
@@ -27,7 +29,8 @@ public class Intake extends Command {
   
   //instance variables
   private final IntakeSubsystem m_intake;
-  
+  private final IndexerSubsystem m_indexer;
+  private boolean reverse;
 
   /**
    * This is the constructor for the Intake class.
@@ -35,9 +38,11 @@ public class Intake extends Command {
    * @param m_intake UNKNOWN PURPOSE OF PARAMETER (PLEASE FILL IN DOCUMENTATION)
    * @author ziwei8658
    */
-  public Intake(IntakeSubsystem m_intake) {
+  public Intake(IntakeSubsystem m_intake, IndexerSubsystem m_indexer, boolean reverse) {
     this.m_intake = m_intake;
-    // addRequirements(m_intake); //declare exclusive subsystem control
+    this.m_indexer = m_indexer;
+    this.reverse = reverse;
+    addRequirements(m_intake); //declare exclusive subsystem control
   }
 
   /*
@@ -51,7 +56,7 @@ public class Intake extends Command {
    */
   @Override     
   public void initialize() {
-    System.out.println("Index initialized");
+    System.out.println("Intake On");
     
   }
   /**
@@ -61,8 +66,13 @@ public class Intake extends Command {
    */
   @Override  
   public void execute() {
-    m_intake.runIntake(); 
-   m_intake.intakeUp(0.65);  
+    if (reverse){
+      m_intake.reverseIntake();
+    } else {
+      m_intake.runIntake(); 
+    }
+
+    m_intake.intakeUp(0.62);  
   }
   
     /**
@@ -75,6 +85,7 @@ public class Intake extends Command {
   public void end(boolean interrupted) {
       m_intake.stopIntake();
       m_intake.intakeOff();
+      System.out.println("Intake off");
   }
 
     /**

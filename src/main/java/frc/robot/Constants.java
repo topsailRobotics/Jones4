@@ -31,13 +31,13 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 7.6; //7.60 based on documents but need to be sure - Willemqaswe
+    public static final double kMaxSpeedMetersPerSecond = 7.60; //7.60 based on documents but need to be sure - Willemqaswe
     public static final double kMaxAngularSpeed = 8 * Math.PI; // radians per second
 
     // Chassis configuration
-    public static final double kTrackWidth = Units.inchesToMeters(26.5);
+    public static final double kTrackWidth = Units.inchesToMeters(26.1875);
     // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = Units.inchesToMeters(21.5);
+    public static final double kWheelBase = Units.inchesToMeters(26.1875);
     // Distance between front and back wheels on robot
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
         new Translation2d(kWheelBase / 2, kTrackWidth / 2),
@@ -80,9 +80,11 @@ public final class Constants {
     public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;
     public static final double kWheelDiameterMeters = 0.0762;
     public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
-    // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15
+    // 45 teeth on the wheel's bevel gear, 20 teeth on the first-stage spur gear, 16
     // teeth on the bevel pinion
-    public static final double kDrivingMotorReduction = (45.0 * 22) / (kDrivingMotorPinionTeeth * 15);
+
+    
+    public static final double kDrivingMotorReduction = (45.0 * 19) / (kDrivingMotorPinionTeeth * 16);
     public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters)
         / kDrivingMotorReduction;
   }
@@ -91,7 +93,7 @@ public final class Constants {
    * To be honest I have no clue why this class exists since its only recorded use is in another constants class.
    */
   public static final class NeoMotorConstants {
-    public static final double kFreeSpeedRpm = 5676;
+    public static final double kFreeSpeedRpm = 6784;//changed this to the neo vortex speed 
   }
 
   /**
@@ -157,11 +159,9 @@ public final class Constants {
   /**
    * Constants used to help in the climbing process. Also has CAN ID value for the motor used.
    */
-  public static final class ClimberConstants{
-    public static final int kclimberMotorID = 57;
-    public static final double kclimberUpperThreshhold = 0.99; //change is necessary, previous .55
-    public static final double kclimberLowerThreshhold = 0.2;
-    }
-
+  //public static final class ClimberConstants{
+  //  public static final int kclimberMotorID = 57;
+  //  public static final double kclimberUpperThreshhold = 0.99; //change is necessary, previous .55
+  //  public static final double kclimberLowerThreshhold = 0.2;
+  //}
 }
-

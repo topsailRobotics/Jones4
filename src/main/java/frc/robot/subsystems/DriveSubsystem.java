@@ -10,6 +10,10 @@ import edu.wpi.first.hal.HAL;
 
 import java.util.logging.Logger;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
 
@@ -18,6 +22,7 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -25,12 +30,15 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Util.LimelightHelpers;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 /*
  * "IMUAxis.kZ" was removed from all versions of m_gyro.getAngle because we use a NavX gyro
  * 
@@ -47,13 +55,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  * @author septiceyesam2049-bot
  */
 public class DriveSubsystem extends SubsystemBase {
-  public double aimkp = .0015;
+  public double aimkp = .01;
   public double targetingAngularVelocity;
+  public double rangingVelocity;
   public double FerryAmount;
   public double setDiamond;
   public double newDiamond;
   public double newAngle;
 
+  RobotConfig config;
   // Create MAXSwerveModules
   private final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
       DriveConstants.kFrontLeftDrivingCanId,
@@ -80,16 +90,65 @@ private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
 private SwerveDrivePoseEstimator m_poseEstimator;
 
 private final Field2d m_field = new Field2d();
-
+//get this year's field map
+AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark);
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
+
+
+//put pathplanner stuff here
+//
+
+
+
+ // Load the RobotConfig from the GUI settings. You should probably
+    // store this in your Constants file
+
+    try{
+      config = RobotConfig.fromGUISettings();
+    } catch (Exception e) {
+      // Handle exception as needed
+      e.printStackTrace();
+    }
+    // Configure AutoBuilder last
+    AutoBuilder.configure(
+            this::getPose, // Robot pose supplier
+            this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
+            this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+            (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
+            new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
+                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                    new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+            ),
+            config, // The robot configuration
+            () -> {
+              // Boolean supplier that controls when the path will be mirrored for the red alliance
+              // This will flip the path being followed to the red side of the field.
+              // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+              var alliance = DriverStation.getAlliance();
+              if (alliance.isPresent()) {
+                return alliance.get() == DriverStation.Alliance.Red;
+              }
+              return false;
+            },
+            this // Reference to this subsystem to set requirements
+    );
+
+
+
+
+
+//
+// pathplanner stuff here
+    
     // Usage reporting for MAXSwerve template
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
 
     // Initialize Pose Estimator
     m_poseEstimator = new SwerveDrivePoseEstimator(
         DriveConstants.kDriveKinematics,
-        Rotation2d.fromDegrees(-(m_gyro.getAngle()) + 180),
+        Rotation2d.fromDegrees((m_gyro.getAngle()) + 180),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -103,17 +162,12 @@ private final Field2d m_field = new Field2d();
 
   @Override
   public void periodic() {
-    //aiming at hub code
-    targetingAngularVelocity = LimelightHelpers.getTX("limelight-four") * aimkp;
-    targetingAngularVelocity *= DriveConstants.kMaxAngularSpeed;
-    //System.out.println(m_gyro.getAngle());
-    //invert since tx is positive when the target is to the right of the crosshair
-    targetingAngularVelocity *= -1.0;
-    if (LimelightHelpers.getTX("limelight-four") <= 3 && LimelightHelpers.getTX("limelight-four") >= -3){
-      targetingAngularVelocity = 0;
-    }
-    // ferrying angle
-    newAngle = (m_gyro.getAngle()-180) % 360;
+    //ranging 
+    
+    rangingVelocity = (LimelightHelpers.getTY("limelight-four")-13.5)* 0.075;
+    rangingVelocity *= -1.0;
+    //ferry
+    newAngle = (-(m_gyro.getAngle())-180) % 360;
     if (newAngle >= 180){
       newAngle = -(180-(newAngle - 180));
     } else if(newAngle <= -180){
@@ -129,25 +183,30 @@ private final Field2d m_field = new Field2d();
     } else {
       FerryAmount = 0;
     }
-    //driving over bump optimal angle
-    newDiamond = (m_gyro.getAngle()-45) % 90;
-    if (newDiamond >= 45){
-      newDiamond = -(45-(newAngle - 45));
-    } else if(newDiamond <= -45){
-      newDiamond = 45-(newAngle + 45);
-    }
-    if (newDiamond >= 10 || newDiamond <= -10){
-      setDiamond = (((newDiamond)) * 0.005);
-      if (setDiamond >= .4){
-        setDiamond = .4;
-      } else if( setDiamond <=-0.5){
-        setDiamond = -.4;
-      }
-    } else {
-      setDiamond = 0;
+// diamond 
+// newDiamond = (m_gyro.getAngle()-45) % 90;
+//     if (newDiamond >= 45){
+//       newDiamond = -(45-(newAngle - 45));
+//     } else if(newDiamond <= -45){
+//       newDiamond = 45-(newAngle + 45);
+//     }
+//     if (newDiamond >= 10 || newDiamond <= -10){
+//       setDiamond = (((newDiamond)) * 0.005);
+//       if (setDiamond >= .4){
+//         setDiamond = .4;
+//       } else if( setDiamond <=-0.5){
+//         setDiamond = -.4;
+//       }
+//     } else {
+//       setDiamond = 0;
+//     }
+//aiming
+    targetingAngularVelocity = LimelightHelpers.getTX("limelight-four") * aimkp;
+    targetingAngularVelocity *= -1.0;
+    if (LimelightHelpers.getTX("limelight-four") <= 20 && LimelightHelpers.getTX("limelight-four") >= -20){
+      targetingAngularVelocity = 0;
     }
 
-    
 
     m_poseEstimator.update(
         getHeading(),
@@ -227,6 +286,27 @@ private final Field2d m_field = new Field2d();
     return m_poseEstimator.getEstimatedPosition();
   }
 
+  public ChassisSpeeds getRobotRelativeSpeeds() {
+    return DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
+  }
+
+private SwerveModuleState[] getModuleStates() {
+    SwerveModuleState[] states = new SwerveModuleState[4];
+    
+    states[0] = m_frontLeft.getState();
+    states[1] = m_frontRight.getState();
+    states[2] = m_rearLeft.getState();
+    states[3] = m_rearRight.getState();
+
+    return states;
+  }
+
+  public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
+    ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
+
+    SwerveModuleState[] targetStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetSpeeds);
+    setModuleStates(targetStates);
+  }
   /**
    * Resets the odometry to the specified pose.
    *
@@ -245,6 +325,19 @@ private final Field2d m_field = new Field2d();
         },
         pose);
   }
+
+ //method to get range 
+ public double getRange()
+ {
+  Pose2d robotPose = m_poseEstimator.getEstimatedPosition();
+  Translation2d robotTranslation = robotPose.getTranslation();
+  
+  double tagID = LimelightHelpers.getFiducialID("limelight-four");
+  Pose2d tagPose = fieldLayout.getTagPose((int)tagID).get().toPose2d();
+  Translation2d tagTranslation = tagPose.getTranslation();
+
+  return(robotTranslation.getDistance(tagTranslation));
+ }
 
   /**
    * Method to drive the robot using joystick info.
@@ -285,7 +378,7 @@ private final Field2d m_field = new Field2d();
     m_frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
     m_rearLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
     m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-    System.out.println("setx");
+    //System.out.println("setx");
   }
 
   /**
@@ -332,7 +425,7 @@ private final Field2d m_field = new Field2d();
    * @author septiceyesam2049-bot
    */
   public Rotation2d getHeading() {
-    return Rotation2d.fromDegrees(-m_gyro.getAngle());
+    return Rotation2d.fromDegrees(m_gyro.getAngle());
   }
 
   /**
@@ -345,4 +438,6 @@ private final Field2d m_field = new Field2d();
   public double getTurnRate() {
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
+
+  
 }
