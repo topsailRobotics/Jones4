@@ -17,10 +17,17 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  /**
+   * Constants used for being able to use controllers
+   */
   public static class OperatorConstants {
     public static final int kDriverControllerPort1 = 0;
     public static final int kDriverControllerPort2 = 1;
   }
+
+  /**
+   * Constant values used for driving accross entire robot.
+   */
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
@@ -59,6 +66,10 @@ public final class Constants {
     public static final boolean kGyroReversed = false;
     
   }
+
+  /**
+   * Constants purpose is unkown. This is currently used in configs file exclusively.
+   */
   public static final class ModuleConstants {
     // The MAXSwerve module can be configured with one of three pinion gears: 12T,
     // 13T, or 14T. This changes the drive speed of the module (a pinion gear with
@@ -78,16 +89,26 @@ public final class Constants {
         / kDrivingMotorReduction;
   }
 
+  /**
+   * To be honest I have no clue why this class exists since its only recorded use is in another constants class.
+   */
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 6784;//changed this to the neo vortex speed 
   }
 
+  /**
+   * UNKOWN PURPOSE OF CLASS (PLEASE FILL IN DEV DOCS)
+   */
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
     public static final double kDriveDeadband = 0.05;
   }
+
+  /**
+    * Constants used in aligning the robot to the hub via apriltags.
+  */
   public static final class AAConstants {
-    public static final double X_REEF_ALIGNMENT_P = .05; 
+    public static final double X_REEF_ALIGNMENT_P = .05; //Should we change all instance of reef to hub?
     public static final double Y_REEF_ALIGNMENT_P = .05;
     public static final double ROT_REEF_ALIGNMENT_P = .01;
 
@@ -103,17 +124,28 @@ public final class Constants {
     public static final double X_TOLERANCE_REEF_ALIGNMENT = .5; //1 is placeholder
     public static final double ROT_TOLERANCE_REEF_ALIGNMENT = .5; //1 is placeholder
   }
-    public static final class IntakeConstants { //change the constants
+
+  /**
+   * Constants used in the intake process.
+  */
+  public static final class IntakeConstants { //change the constants
     public static final int kIntakeWheelID = 51;
     public static final int kIntakeArmID = 52;
     public static final double kIntakeSetpoint = 3;
   }
 
+  /**
+   * Constants used for the CAN IDs of the wheels in the index (system that cycles balls thorugh the center of the robot to eventually shoot them out).
+   */
   public static final class IndexerConstants{ //change IDS
     public static final int kbeltID = 53; 
     public static final int kwheelVertID = 54; 
   }
-    public static final class ShooterConstants{
+
+  /**
+   * constants used to help calulate the shooter to aim correctly. ALso has CAN ID values for shooter motors.
+   */
+  public static final class ShooterConstants{
     public static final double shooterHeight = 0; //in meters
     public static final double targetHeight = 0; //in meters
     public static final double netHeight = targetHeight - shooterHeight;
@@ -124,6 +156,9 @@ public final class Constants {
 
   }
 
+  /**
+   * Constants used to help in the climbing process. Also has CAN ID value for the motor used.
+   */
   public static final class ClimberConstants{
     public static final int kclimberMotorID = 57;
     public static final double kclimberUpperThreshhold = 0.99; //change is necessary, previous .55

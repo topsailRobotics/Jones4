@@ -22,13 +22,41 @@ public class IndexerSubsystem extends SubsystemBase {
 //   private SparkAbsoluteEncoder m_encoder = m_hori.getAbsoluteEncoder(); 
 //   ^^^ for using the absolute encoder, should theoretically work
 
+  /**
+   * Method to run the vertical indexer.
+   * 
+   * @author UNKOWN
+   */
   public void runIndexVert()
   {
    m_pidController1.setSetpoint(0.67,ControlType.kDutyCycle); //commented out temporarily
   }
 
+  /**
+   * Method to run the horizontal indexer.
+   * 
+   * @author UNKOWN
+   */
+   public void runIndexHori()
+  {
+      m_hori.setVoltage(8);
+  }
 
+  /**
+   * Method to stop the vertical indexer.
+   * 
+   * @author UNKOWN
+   */
   public void stopIndexVert() {
+    m_hori.setVoltage(0);
+  }
+  
+  /**
+   * Method to stop the vertical indexer.
+   * 
+   * @author UNKOWN
+   */
+  public void stopIndexHori() {
     m_vert.setVoltage(0);
   }
   

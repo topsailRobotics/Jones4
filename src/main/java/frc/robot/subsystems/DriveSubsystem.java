@@ -49,7 +49,11 @@ import edu.wpi.first.apriltag.AprilTagFields;
 
 
 
-
+/**
+ * The class that is used for moving the wheels on the bottom of the robot, so it is capable of being driven the robot.
+ * 
+ * @author septiceyesam2049-bot
+ */
 public class DriveSubsystem extends SubsystemBase {
   public double aimkp = .01;
   public double targetingAngularVelocity;
@@ -272,9 +276,11 @@ AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k
   }
 
   /**
-   * Returns the currently-estimated pose of the robot.
+   * Returns the currently-estimated pose (the combination of position (Cartesian coordinates) and orientation (heading) in a 2D space) of the robot.
    *
    * @return The pose.
+   * 
+   * @author septiceyesam2049-bot
    */
   public Pose2d getPose() {
     return m_poseEstimator.getEstimatedPosition();
@@ -305,6 +311,8 @@ private SwerveModuleState[] getModuleStates() {
    * Resets the odometry to the specified pose.
    *
    * @param pose The pose to which to set the odometry.
+   * 
+   * @author septiceyesam2049-bot
    */
   public void resetOdometry(Pose2d pose) {
     m_poseEstimator.resetPosition(
@@ -337,8 +345,9 @@ private SwerveModuleState[] getModuleStates() {
    * @param xSpeed        Speed of the robot in the x direction (forward).
    * @param ySpeed        Speed of the robot in the y direction (sideways).
    * @param rot           Angular rate of the robot.
-   * @param fieldRelative Whether the provided x and y speeds are relative to the
-   *                      field.
+   * @param fieldRelative Whether the provided x and y speeds are relative to the field.
+   * 
+   * @author septiceyesam2049-bot
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     // Convert the commanded speeds into the correct units for the drivetrain
@@ -361,6 +370,8 @@ private SwerveModuleState[] getModuleStates() {
 
   /**
    * Sets the wheels into an X formation to prevent movement.
+   * 
+   * @author septiceyesam2049-bot
    */
   public void setX() {
     m_frontLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
@@ -374,6 +385,8 @@ private SwerveModuleState[] getModuleStates() {
    * Sets the swerve ModuleStates.
    *
    * @param desiredStates The desired SwerveModule states.
+   * 
+   * @author septiceyesam2049-bot
    */
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     SwerveDriveKinematics.desaturateWheelSpeeds(
@@ -384,7 +397,11 @@ private SwerveModuleState[] getModuleStates() {
     m_rearRight.setDesiredState(desiredStates[3]);
   }
 
-  /** Resets the drive encoders to currently read a position of 0. */
+  /** 
+   * Resets the drive encoders to currently read a position of 0. 
+   * 
+   * @author septiceyesam2049-bot 
+   */
   public void resetEncoders() {
     m_frontLeft.resetEncoders();
     m_rearLeft.resetEncoders();
@@ -392,14 +409,20 @@ private SwerveModuleState[] getModuleStates() {
     m_rearRight.resetEncoders();
   }
 
-  /** Zeroes the heading of the robot. */
+  /** Zeroes the heading of the robot. 
+   * 
+   * @author septiceyesam2049-bot
+  */
   public void zeroHeading() {
     m_gyro.reset();
   }
 
   /**
    * Returns the heading of the robot.
+   * 
    * @return the robot's heading, type: Rotational2d
+   * 
+   * @author septiceyesam2049-bot
    */
   public Rotation2d getHeading() {
     return Rotation2d.fromDegrees(m_gyro.getAngle());
@@ -409,6 +432,8 @@ private SwerveModuleState[] getModuleStates() {
    * Returns the turn rate of the robot.
    *
    * @return The turn rate of the robot, in degrees per second
+   * 
+   * @author septiceyesam2049-bot
    */
   public double getTurnRate() {
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);

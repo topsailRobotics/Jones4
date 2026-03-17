@@ -40,6 +40,11 @@ private final SparkClosedLoopController m_pidController2 = m_ShootRight.getClose
   //For now, use 4 distinct outputs based on distance ranges from the hub. 
   //Use shooterTest for testing
 
+ /**
+   * Method used to test the shooter. Will probably get deleted or not be used in final robot.
+   * 
+   * @author Carter
+ */
   public void shooterTest()
   {
       m_pidController1.setSetpoint(-2500, ControlType.kVelocity);
@@ -52,23 +57,49 @@ private final SparkClosedLoopController m_pidController2 = m_ShootRight.getClose
       m_pidController2.setSetpoint(-2500, ControlType.kVelocity);
 
   }
+  
   public void shooterMedium()
   {
       m_pidController1.setSetpoint(-3300, ControlType.kVelocity); //
       m_pidController2.setSetpoint(-3300, ControlType.kVelocity);
   }
+
+   /**
+    * Method used to set shooter to the medium distance.
+    * 
+    * @author Carter
+   */
   public void shooterHigh()
   {
+        // add constants for voltage setpoint later
       m_pidController1.setSetpoint(-5000, ControlType.kVelocity); //ferry 18-16 feet
       m_pidController2.setSetpoint(-5000, ControlType.kVelocity);
   }
 
+  /**
+    * Method used to set shooter to the maximum distance.
+    * 
+    * @author Carter
+   */
+  public void shooterMax()
+  {
+        // add constants for voltage setpoint later
+        m_ShootLeft.setVoltage(-7);
+        m_ShootRight.setVoltage(7);
+  }
+
+  /**
+    * Method used to stop the shooter.
+    * 
+    * @author Carter
+   */
    public void stopShooter()
   {
         // add constants for voltage setpoint later
         m_ShootLeft.setVoltage(0);
         m_ShootRight.setVoltage(0);
   }
+  
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation

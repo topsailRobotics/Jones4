@@ -14,8 +14,16 @@ package frc.robot.commands;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.IntakeConstants;
+import frc.robot.subsystems.IntakeSubsystem;
 
+/**
+ * This command combines actions from indexer subsystem and intake subsystem for internal fuel storage.
+ * Shootersubsystem methods may be incorporated later.
+ * Will be used in auto.
+ * This command controls wheels spinning.
+ * 
+ * @author ziwei8658
+ */
 public class Intake extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})  //remove later
   
@@ -23,9 +31,12 @@ public class Intake extends Command {
   private final IntakeSubsystem m_intake;
   private final IndexerSubsystem m_indexer;
   private boolean reverse;
-  
-  /*
-   * constructor
+
+  /**
+   * This is the constructor for the Intake class.
+   * 
+   * @param m_intake UNKNOWN PURPOSE OF PARAMETER (PLEASE FILL IN DOCUMENTATION)
+   * @author ziwei8658
    */
   public Intake(IntakeSubsystem m_intake, IndexerSubsystem m_indexer, boolean reverse) {
     this.m_intake = m_intake;
@@ -37,13 +48,23 @@ public class Intake extends Command {
   /*
    * methods
    */
-  @Override     // Called when the command is initially scheduled.
+
+  /**
+   * Called when the intake command is initially scheduled to confirm that the command has been initialized.
+   * 
+   * @author ziwei8658
+   */
+  @Override     
   public void initialize() {
     System.out.println("Intake On");
     
   }
-  //release intake and run internal wheels
-  @Override  // Called every time the scheduler runs while the command is scheduled.
+  /**
+   * Releases intake and runs internal wheels. This is called every time the scheduler runs while the command is scheduled.
+   * 
+   * @author ziwei8658
+   */
+  @Override  
   public void execute() {
     if (reverse){
       m_intake.reverseIntake();
@@ -54,15 +75,25 @@ public class Intake extends Command {
     m_intake.intakeUp(0.62);  
   }
   
-  @Override  // Called once the command ends or is interrupted.
+    /**
+   * Called once the intake command ends or is interrupted.
+   * 
+   * @param interrupted UNKNOWN PURPOSE OF METHOD (PLEASE FILL IN DOCUMENTATION)
+   * @author ziwei8658
+   */
+  @Override
   public void end(boolean interrupted) {
       m_intake.stopIntake();
       m_intake.intakeOff();
       System.out.println("Intake off");
   }
 
-  // Returns true when the command should end.
-  //does not end on its own, the command is ended when external schedules are false(see robot container)
+    /**
+   * Returns true when the command should end. Does not end on its own, the command is ended when external schedules are false(see robot container)
+   * 
+   * @author ziwei8658
+   */
+  //
   @Override
   public boolean isFinished() {
     return false;

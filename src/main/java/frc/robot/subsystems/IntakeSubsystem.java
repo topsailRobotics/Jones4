@@ -39,6 +39,8 @@ m_IntakeArm.configure(config,ResetMode.kResetSafeParameters, com.revrobotics.Per
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
    *
    * @return value of some boolean subsystem state, such as a digital sensor.
+   * 
+   * @author Larry9297
    */
   public boolean exampleCondition() {
     // Query some boolean state, such as a digital sensor.
@@ -57,6 +59,11 @@ m_IntakeArm.configure(config,ResetMode.kResetSafeParameters, com.revrobotics.Per
  * default state will be intakeIn(), and it will later be called again at the end of auto and teleop for climb
  */
 
+  /**
+   * Method used to run intake
+   * 
+   * @author Larry9297
+   */
   public void runIntake() {
     m_IntakeWheel.setVoltage(-8);
     }
@@ -65,6 +72,11 @@ m_IntakeArm.configure(config,ResetMode.kResetSafeParameters, com.revrobotics.Per
     m_IntakeWheel.setVoltage(8);
     }
 
+  /**
+   * Method used to stop intake
+   * 
+   * @author Larry9297
+   */
   public void stopIntake() {
     m_IntakeWheel.setVoltage(0);
   }

@@ -19,6 +19,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 // import frc.robot.Constants.IntakeConstants;     currently unused
 import edu.wpi.first.wpilibj.Timer;
 
+/**
+ * Class that is used to command the robot to shoot.
+ * 
+ * @author ziwei8658
+ */
 public class Shoot extends Command {
 
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})  //remove later
@@ -30,8 +35,13 @@ public class Shoot extends Command {
   private DriveSubsystem m_drive;
   private int range;
   private final Timer timer = new Timer();
-  /*
-   * constructor
+
+  /**
+   * The constructor for the Shoot class.
+   * 
+   * @param m_intake UNKNOWN PURPOSE OF PARAMETER (PLEASE FILL IN DOCUMENTATION)
+   * @param m_shoot UNKNOWN PURPOSE OF PARAMETER (PLEASE FILL IN DOCUMENTATION)
+   * @author ziwei8658
    */
   public Shoot(IndexerSubsystem m_indexer, ShootSubsystem m_shoot,int range) {
     this.m_indexer = m_indexer;
@@ -43,6 +53,12 @@ public class Shoot extends Command {
   /*
    * methods
    */
+
+  /**
+   * Called when the intake command is initially scheduled to confirm that the command has been initialized.
+   * 
+   * @author ziwei8658
+   */
   @Override     // Called when the command is initially scheduled.
   public void initialize() {
     System.out.println("shoot initialized");
@@ -51,8 +67,13 @@ public class Shoot extends Command {
     timer.start();
     
   }
-  //release intake and run internal wheels
-  @Override  // Called every time the scheduler runs while the command is scheduled.
+
+  /**
+   * Release intake and run internal wheels. Called every time the scheduler runs while the shoot command is scheduled.
+   * 
+   * @author ziwei8658
+   */
+  @Override
   public void execute() {
     /* 
     range = m_drive.getRange();
@@ -84,10 +105,10 @@ public class Shoot extends Command {
     /*if(m_shoot.m_Encoder.getVelocity()<=-2445){
       m_indexer.runIndexVert();
       } */
-    }
-    
-    
-  
+    m_indexer.runIndexVert();
+    m_indexer.runIndexHori();
+    m_shoot.shooterTest();
+  }
   
   @Override  // Called once the command ends or is interrupted.
   public void end(boolean interrupted) {
@@ -96,8 +117,12 @@ public class Shoot extends Command {
     timer.stop();
   }
 
-  // Returns true when the command should end.
-  //does not end on its own, the command is ended when external schedules are false(see robot container)
+  /**
+   * Returns true when the command should end. Does not end on its own, the command is ended when external schedules are false(see robot container)
+   * 
+   * @return Will return false when called.
+   * @author ziwei8658
+   */
   @Override
   public boolean isFinished() {
     return false;
