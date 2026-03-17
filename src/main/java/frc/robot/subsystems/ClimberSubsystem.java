@@ -3,7 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-
+/*
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkAnalogSensor;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -12,10 +12,10 @@ import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ClimberConstants;
+import frc.robot.ClimberConstants.ClimberConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
-  /** Creates a new ExampleSubsystem. */
+  /** Creates a new ExampleSubsystem.
     public final SparkMax m_climberMotor = new SparkMax(ClimberConstants.kclimberMotorID, MotorType.kBrushless);
     public final AbsoluteEncoder m_climbAbsoluteEncoder = m_climberMotor.getAbsoluteEncoder();
 
@@ -25,21 +25,15 @@ public class ClimberSubsystem extends SubsystemBase {
    * Example command factory method.
    *
    * @return a command
-   */
+   
   public Command exampleMethodCommand() {
     // Inline construction of command goes here.
     // Subsystem::RunOnce implicitly requires `this` subsystem.
     return runOnce(
         () -> {
-          /* one-time action goes here */
         });
   }
 
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
   public boolean exampleCondition() {
     // Query some boolean state, such as a digital sensor.
     return false;
@@ -64,3 +58,4 @@ public class ClimberSubsystem extends SubsystemBase {
     m_climberMotor.setVoltage(0);
   }
 }
+  */

@@ -1,7 +1,7 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
+/*
 package frc.robot.commands;
 
 import frc.robot.Constants.ClimberConstants;
@@ -16,10 +16,6 @@ public class Climb extends Command {
   private boolean toggle; //false = climber extended, true = climber retracted - carter
 
   
-//    * Creates a new ExampleCommand.
-//    *
-//    * @param subsystem The subsystem used by this command.
-//    *
   public Climb(ClimberSubsystem subsystem, boolean toggle) {
     this.m_climber = subsystem;
     this.toggle = toggle;
@@ -69,3 +65,4 @@ public class Climb extends Command {
     // }
   }
 }
+*/
