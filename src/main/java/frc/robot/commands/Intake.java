@@ -11,6 +11,7 @@
 
 //imports
 package frc.robot.commands;
+import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.IntakeConstants;
@@ -20,13 +21,17 @@ public class Intake extends Command {
   
   //instance variables
   private final IntakeSubsystem m_intake;
+  private final IndexerSubsystem m_indexer;
+  private boolean reverse;
   
   /*
    * constructor
    */
-  public Intake(IntakeSubsystem m_intake) {
+  public Intake(IntakeSubsystem m_intake, IndexerSubsystem m_indexer, boolean reverse) {
     this.m_intake = m_intake;
-    // addRequirements(m_intake); //declare exclusive subsystem control
+    this.m_indexer = m_indexer;
+    this.reverse = reverse;
+    addRequirements(m_intake); //declare exclusive subsystem control
   }
 
   /*
@@ -34,20 +39,26 @@ public class Intake extends Command {
    */
   @Override     // Called when the command is initially scheduled.
   public void initialize() {
-    System.out.println("Index initialized");
+    System.out.println("Intake On");
     
   }
   //release intake and run internal wheels
   @Override  // Called every time the scheduler runs while the command is scheduled.
   public void execute() {
-    m_intake.runIntake(); 
-   m_intake.intakeUp(0.65);  
+    if (reverse){
+      m_intake.reverseIntake();
+    } else {
+      m_intake.runIntake(); 
+    }
+
+    m_intake.intakeUp(0.62);  
   }
   
   @Override  // Called once the command ends or is interrupted.
   public void end(boolean interrupted) {
       m_intake.stopIntake();
       m_intake.intakeOff();
+      System.out.println("Intake off");
   }
 
   // Returns true when the command should end.

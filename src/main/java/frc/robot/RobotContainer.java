@@ -9,6 +9,7 @@ package frc.robot;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Util.LimelightHelpers;
+import frc.robot.commands.Aim;
 import frc.robot.commands.Autos;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Intake;
@@ -91,57 +92,61 @@ public class RobotContainer {
                   true),
               m_robotDrive));
       m_intake.setDefaultCommand(new RunCommand(()-> {m_intake.intakeOff();m_intake.stopIntake();},m_intake));  //stopIntake method broken up to 2 separate methods, this one controls intaker position
-      m_indexer.setDefaultCommand(new RunCommand(()-> {m_indexer.stopIndexHori();m_indexer.stopIndexVert();},m_indexer));
       m_climber.setDefaultCommand(new RunCommand(()-> m_climber.stopClimber(),m_climber));
       m_shooter.setDefaultCommand(new RunCommand(()-> m_shooter.stopShooter(),m_shooter));
 
       
 
-    Trigger aimingTrigger = new Trigger (()-> m_driverController0.getLeftTriggerAxis() > 0.5 && LimelightHelpers.getFiducialID("limelight-second")>=0);
-    aimingTrigger.whileTrue( new RunCommand(
-              () -> m_robotDrive.drive(
-                  -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
-                  -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
-                  m_robotDrive.targetingAngularVelocity,
-                  true),
-              m_robotDrive));
-    
+    Trigger aimingTrigger = new Trigger (()-> m_driverController0.getLeftTriggerAxis() > 0.5 && LimelightHelpers.getFiducialID("limelight-four") > 0);
+    aimingTrigger.whileTrue(new RunCommand(
+      () -> m_robotDrive.drive(
+          m_robotDrive.rangingVelocity,
+          -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
+          m_robotDrive.targetingAngularVelocity,
+          false)));
+  
     Trigger ferryTrigger = new Trigger(() -> m_driverController0.getRightTriggerAxis() > 0.5);
-    ferryTrigger.whileTrue( new RunCommand(
-              () -> m_robotDrive.drive(
-                  -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
-                  -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
-                  m_robotDrive.FerryAmount,
-                  true),
-              m_robotDrive));
+    ferryTrigger.whileTrue(new RunCommand(
+      () -> m_robotDrive.drive(
+          -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
+          -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
+          m_robotDrive.FerryAmount,
+          true)));
     
    
-    m_driverController0.rightBumper().whileTrue( new RunCommand(
-              () -> m_robotDrive.drive(
-                  -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
-                  -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
-                  m_robotDrive.setDiamond,
-                  true),
-              m_robotDrive));
+    m_driverController0.rightBumper().whileTrue(new RunCommand(
+      () -> m_robotDrive.drive(
+          -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
+          -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
+          m_robotDrive.setDiamond,
+          true)));
+      
     m_driverController0.leftBumper().toggleOnTrue(new RunCommand(  //changed from RunCommand to Instant Command, control loop should do the job
               () -> m_robotDrive.setX(),
               m_robotDrive));
     
     //true for climer up, false for down, independent commands sharing same command file
-    m_driverController0.povUp().whileTrue(new Climb(m_climber, true));
-    m_driverController0.povDown().whileTrue(new Climb(m_climber, false));
+    //m_driverController0.povUp().whileTrue(new Climb(m_climber, true));
+    //m_driverController0.povDown().whileTrue(new Climb(m_climber, false));
     
     //x to turn on intake and horizontal indexer to collect and store fuels, click again to turn off
     //y to turn on both indexer and shooter, fuels are pushed into the shooter and launched out
     
     //internal system command
     m_driverController0.x()
-    .toggleOnTrue(new Intake(m_intake)); //command is scheduled while x is held
-
+    .toggleOnTrue(new Intake(m_intake,m_indexer, false)); //command is scheduled while x is held
+  
+    m_driverController0.b()
+    .toggleOnTrue(new Intake(m_intake, m_indexer, true));
     //shooter command
     m_driverController0.y()
     .toggleOnTrue(new Shoot(m_indexer,m_shooter));
     
+    m_driverController0.a().whileTrue(new RunCommand(  //changed from RunCommand to Instant Command, control loop should do the job
+              () -> m_intake.intakeUp(0.85),
+              m_intake));
+
+    m_driverController0.povDown().onTrue(new InstantCommand(()->m_robotDrive.zeroHeading(), m_robotDrive));
 
   }
 

@@ -6,10 +6,14 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkAnalogSensor;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.ControlType;
+
 import frc.robot.Constants.ShooterConstants;
 
 public class ShootSubsystem extends SubsystemBase {
@@ -20,7 +24,9 @@ public class ShootSubsystem extends SubsystemBase {
     // right: battery
   private final SparkMax m_ShootLeft = new SparkMax(ShooterConstants.kleftshootermotorID, MotorType.kBrushless);
   private final SparkMax m_ShootRight= new SparkMax(ShooterConstants.krightshootermotorID, MotorType.kBrushless);
- 
+  public final RelativeEncoder m_Encoder = m_ShootLeft.getEncoder();
+private final SparkClosedLoopController m_pidController1 = m_ShootLeft.getClosedLoopController();
+private final SparkClosedLoopController m_pidController2 = m_ShootRight.getClosedLoopController();
   //default construcor
   public ShootSubsystem() {
 
@@ -36,27 +42,25 @@ public class ShootSubsystem extends SubsystemBase {
 
   public void shooterTest()
   {
-        // add constants for voltage setpoint later
-        m_ShootLeft.setVoltage(-5);
-        m_ShootRight.setVoltage(5);
+      m_pidController1.setSetpoint(-2500, ControlType.kVelocity);
+      m_pidController2.setSetpoint(-2500, ControlType.kVelocity);
+      System.out.println(m_Encoder.getVelocity());// add constants for voltage setpoint later
+  }
+  public void shooterLow()
+  {
+      m_pidController1.setSetpoint(-2450, ControlType.kVelocity);
+      m_pidController2.setSetpoint(-2450, ControlType.kVelocity);
+
   }
   public void shooterMedium()
   {
-        // add constants for voltage setpoint later
-        m_ShootLeft.setVoltage(-5);
-        m_ShootRight.setVoltage(5);
+      m_pidController1.setSetpoint(-3300, ControlType.kVelocity); //change these values
+      m_pidController2.setSetpoint(-3300, ControlType.kVelocity);
   }
   public void shooterHigh()
   {
-        // add constants for voltage setpoint later
-        m_ShootLeft.setVoltage(-6);
-        m_ShootRight.setVoltage(6);
-  }
-  public void shooterMax()
-  {
-        // add constants for voltage setpoint later
-        m_ShootLeft.setVoltage(-7);
-        m_ShootRight.setVoltage(7);
+      m_pidController1.setSetpoint(-5000, ControlType.kVelocity);
+      m_pidController2.setSetpoint(-5000, ControlType.kVelocity);
   }
 
    public void stopShooter()

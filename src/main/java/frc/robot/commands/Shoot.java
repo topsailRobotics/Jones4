@@ -15,21 +15,26 @@ package frc.robot.commands;
 import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.IntakeConstants;
+// import frc.robot.Constants.IntakeConstants;     currently unused
+import edu.wpi.first.wpilibj.Timer;
 
 public class Shoot extends Command {
+
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})  //remove later
   
+
   //instance variables
   private final IndexerSubsystem m_indexer;
   private final ShootSubsystem m_shoot;
-  
+  private int range;
+  private final Timer timer = new Timer();
   /*
    * constructor
    */
-  public Shoot(IndexerSubsystem m_indexer, ShootSubsystem m_shoot) {
+  public Shoot(IndexerSubsystem m_indexer, ShootSubsystem m_shoot, int range) {
     this.m_indexer = m_indexer;
     this.m_shoot = m_shoot;
+    this.range=range;
     addRequirements(m_indexer, m_shoot); //declare exclusive subsystem control
   }
 
@@ -39,21 +44,37 @@ public class Shoot extends Command {
   @Override     // Called when the command is initially scheduled.
   public void initialize() {
     System.out.println("shoot initialized");
+    timer.stop();
+    timer.reset();
+    timer.start();
     
   }
   //release intake and run internal wheels
   @Override  // Called every time the scheduler runs while the command is scheduled.
   public void execute() {
-    m_indexer.runIndexVert();
-    m_indexer.runIndexHori();
-    m_shoot.shooterTest();
-  }
+    if(range==1)
+    {
+      m_shoot.shooterTest();
+    }else if(range==2)
+    {
+      m_shoot.shooterMedium();
+    }
+    if(timer.get() > 2.5){ // tried making the vIndex run on time not rpms - Langgang
+      m_indexer.runIndexVert();
+    }
+    /*if(m_shoot.m_Encoder.getVelocity()<=-2445){
+      m_indexer.runIndexVert();
+      } */
+    }
+    
+    
+  
   
   @Override  // Called once the command ends or is interrupted.
   public void end(boolean interrupted) {
     m_indexer.stopIndexVert();
-    m_indexer.stopIndexHori();
     m_shoot.stopShooter();
+    timer.stop();
   }
 
   // Returns true when the command should end.
@@ -61,6 +82,7 @@ public class Shoot extends Command {
   @Override
   public boolean isFinished() {
     return false;
+
   }
 
 }//end of class
