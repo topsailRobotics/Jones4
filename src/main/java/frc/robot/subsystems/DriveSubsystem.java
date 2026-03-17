@@ -48,8 +48,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class DriveSubsystem extends SubsystemBase {
-  public double aimkp = .0125;
+  public double aimkp = .01;
   public double targetingAngularVelocity;
+  public double rangingVelocity;
   public double FerryAmount;
   public double setDiamond;
   public double newDiamond;
@@ -139,7 +140,7 @@ private final Field2d m_field = new Field2d();
     // Initialize Pose Estimator
     m_poseEstimator = new SwerveDrivePoseEstimator(
         DriveConstants.kDriveKinematics,
-        Rotation2d.fromDegrees(-(m_gyro.getAngle()) + 180),
+        Rotation2d.fromDegrees((m_gyro.getAngle()) + 180),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -153,15 +154,12 @@ private final Field2d m_field = new Field2d();
 
   @Override
   public void periodic() {
-    //aiming 
+    //ranging 
     
-    targetingAngularVelocity = LimelightHelpers.getTX("limelight-four") * aimkp;
-    targetingAngularVelocity *= -1.0;
-    if (LimelightHelpers.getTX("limelight-four") <= 3 && LimelightHelpers.getTX("limelight-four") >= -3){
-      targetingAngularVelocity = 0;
-    }
+    rangingVelocity = (LimelightHelpers.getTY("limelight-four")-13.5)* 0.075;
+    rangingVelocity *= -1.0;
     //ferry
-    newAngle = (m_gyro.getAngle()-180) % 360;
+    newAngle = (-(m_gyro.getAngle())-180) % 360;
     if (newAngle >= 180){
       newAngle = -(180-(newAngle - 180));
     } else if(newAngle <= -180){
@@ -178,22 +176,29 @@ private final Field2d m_field = new Field2d();
       FerryAmount = 0;
     }
 // diamond 
-newDiamond = (m_gyro.getAngle()-45) % 90;
-    if (newDiamond >= 45){
-      newDiamond = -(45-(newAngle - 45));
-    } else if(newDiamond <= -45){
-      newDiamond = 45-(newAngle + 45);
+// newDiamond = (m_gyro.getAngle()-45) % 90;
+//     if (newDiamond >= 45){
+//       newDiamond = -(45-(newAngle - 45));
+//     } else if(newDiamond <= -45){
+//       newDiamond = 45-(newAngle + 45);
+//     }
+//     if (newDiamond >= 10 || newDiamond <= -10){
+//       setDiamond = (((newDiamond)) * 0.005);
+//       if (setDiamond >= .4){
+//         setDiamond = .4;
+//       } else if( setDiamond <=-0.5){
+//         setDiamond = -.4;
+//       }
+//     } else {
+//       setDiamond = 0;
+//     }
+//aiming
+    targetingAngularVelocity = LimelightHelpers.getTX("limelight-four") * aimkp;
+    targetingAngularVelocity *= -1.0;
+    if (LimelightHelpers.getTX("limelight-four") <= 20 && LimelightHelpers.getTX("limelight-four") >= -20){
+      targetingAngularVelocity = 0;
     }
-    if (newDiamond >= 10 || newDiamond <= -10){
-      setDiamond = (((newDiamond)) * 0.005);
-      if (setDiamond >= .4){
-        setDiamond = .4;
-      } else if( setDiamond <=-0.5){
-        setDiamond = -.4;
-      }
-    } else {
-      setDiamond = 0;
-    }
+
 
     m_poseEstimator.update(
         getHeading(),
@@ -380,7 +385,7 @@ private SwerveModuleState[] getModuleStates() {
    * @return the robot's heading, type: Rotational2d
    */
   public Rotation2d getHeading() {
-    return Rotation2d.fromDegrees(-m_gyro.getAngle());
+    return Rotation2d.fromDegrees(m_gyro.getAngle());
   }
 
   /**

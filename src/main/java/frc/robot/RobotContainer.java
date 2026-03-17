@@ -13,7 +13,6 @@ import frc.robot.commands.Aim;
 import frc.robot.commands.Autos;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Intake;
-import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.Shoot;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -93,7 +92,6 @@ public class RobotContainer {
                   true),
               m_robotDrive));
       m_intake.setDefaultCommand(new RunCommand(()-> {m_intake.intakeOff();m_intake.stopIntake();},m_intake));  //stopIntake method broken up to 2 separate methods, this one controls intaker position
-      m_indexer.setDefaultCommand(new RunCommand(()-> {m_indexer.stopIndexHori();m_indexer.stopIndexVert();},m_indexer));
       m_climber.setDefaultCommand(new RunCommand(()-> m_climber.stopClimber(),m_climber));
       m_shooter.setDefaultCommand(new RunCommand(()-> m_shooter.stopShooter(),m_shooter));
 
@@ -102,10 +100,10 @@ public class RobotContainer {
     Trigger aimingTrigger = new Trigger (()-> m_driverController0.getLeftTriggerAxis() > 0.5 && LimelightHelpers.getFiducialID("limelight-four") > 0);
     aimingTrigger.whileTrue(new RunCommand(
       () -> m_robotDrive.drive(
-          -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
+          m_robotDrive.rangingVelocity,
           -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
           m_robotDrive.targetingAngularVelocity,
-          true)));
+          false)));
   
     Trigger ferryTrigger = new Trigger(() -> m_driverController0.getRightTriggerAxis() > 0.5);
     ferryTrigger.whileTrue(new RunCommand(
@@ -136,10 +134,10 @@ public class RobotContainer {
     
     //internal system command
     m_driverController0.x()
-    .toggleOnTrue(new Intake(m_intake,m_indexer)); //command is scheduled while x is held
+    .toggleOnTrue(new Intake(m_intake,m_indexer, false)); //command is scheduled while x is held
   
     m_driverController0.b()
-    .toggleOnTrue(new ReverseIntake(m_intake));
+    .toggleOnTrue(new Intake(m_intake, m_indexer, true));
     //shooter command
     m_driverController0.y()
     .toggleOnTrue(new Shoot(m_indexer,m_shooter,1));

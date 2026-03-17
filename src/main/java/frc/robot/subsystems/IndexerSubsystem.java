@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IndexerConstants;
 
 public class IndexerSubsystem extends SubsystemBase {
-  private final SparkMax m_hori = new SparkMax(IndexerConstants.kbeltID, MotorType.kBrushless);
   private final SparkMax m_vert= new SparkMax(IndexerConstants.kwheelVertID, MotorType.kBrushless);
   //pid unused
   private final SparkClosedLoopController m_pidController1 = m_vert.getClosedLoopController();
@@ -25,21 +24,12 @@ public class IndexerSubsystem extends SubsystemBase {
 
   public void runIndexVert()
   {
-  //  m_pidController1.setSetpoint(.67,ControlType.kDutyCycle); //commented out temporarily
-  m_vert.setVoltage(6);
+   m_pidController1.setSetpoint(0.67,ControlType.kDutyCycle); //commented out temporarily
   }
 
-   public void runIndexHori()
-  {
-      m_hori.setVoltage(4);
-  }
 
   public void stopIndexVert() {
-    m_hori.setVoltage(0);
-  }
-  
-  public void stopIndexHori() {
     m_vert.setVoltage(0);
   }
-
+  
 }

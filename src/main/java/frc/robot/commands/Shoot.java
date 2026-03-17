@@ -15,10 +15,11 @@ package frc.robot.commands;
 import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.IntakeConstants;
+// import frc.robot.Constants.IntakeConstants;     currently unused
 import edu.wpi.first.wpilibj.Timer;
 
 public class Shoot extends Command {
+
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})  //remove later
   
 
@@ -43,6 +44,7 @@ public class Shoot extends Command {
   @Override     // Called when the command is initially scheduled.
   public void initialize() {
     System.out.println("shoot initialized");
+    timer.stop();
     timer.reset();
     timer.start();
     
@@ -57,19 +59,20 @@ public class Shoot extends Command {
     {
       m_shoot.shooterMedium();
     }
-    if(m_shoot.m_Encoder.getVelocity()<=-3090)
-    {
+    if(timer.get() > 2.5){ // tried making the vIndex run on time not rpms - Langgang
       m_indexer.runIndexVert();
-      m_indexer.runIndexHori();
+    }
+    /*if(m_shoot.m_Encoder.getVelocity()<=-2445){
+      m_indexer.runIndexVert();
+      } */
     }
     
     
-  }
+  
   
   @Override  // Called once the command ends or is interrupted.
   public void end(boolean interrupted) {
     m_indexer.stopIndexVert();
-    m_indexer.stopIndexHori();
     m_shoot.stopShooter();
     timer.stop();
   }
@@ -79,6 +82,7 @@ public class Shoot extends Command {
   @Override
   public boolean isFinished() {
     return false;
+
   }
 
 }//end of class
