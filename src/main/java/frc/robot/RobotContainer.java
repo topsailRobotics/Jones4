@@ -52,7 +52,7 @@ public class RobotContainer {
   private final ShootSubsystem m_shooter = new ShootSubsystem(); //actions not declared yet in shootersubsystem
 
   //autos
-  private final String m_defaultAuto = "New Auto";
+  private final String m_defaultAuto = "Blue 2 Auto";
   private final String m_TestAuto = "test";
 
   // A chooser for autonomous commands
@@ -173,14 +173,15 @@ public class RobotContainer {
 
     m_driverController0.povDown().onTrue(new InstantCommand(()->m_robotDrive.zeroHeading(), m_robotDrive));
 
+    m_driverController0.y()
+    .toggleOnTrue(new Shoot(m_indexer,m_shooter,2));
 
     //shooter commands
-    m_driverController1.x()
+    m_driverController0.povDown() //originally driver controller 2 x
     .toggleOnTrue(new Shoot(m_indexer,m_shooter,1));
-    m_driverController1.y()
-    .toggleOnTrue(new Shoot(m_indexer,m_shooter,2));
-    m_driverController1.a()
-    .toggleOnTrue(new Shoot(m_indexer,m_shooter,3));
+    
+     m_driverController1.a()
+     .toggleOnTrue(new Shoot(m_indexer,m_shooter,3));
   }
 
   /**

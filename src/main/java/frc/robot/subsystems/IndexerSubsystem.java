@@ -29,7 +29,7 @@ public class IndexerSubsystem extends SubsystemBase {
    */
   public void runIndexVert()
   {
-   m_pidController1.setSetpoint(0.67,ControlType.kDutyCycle); //commented out temporarily
+   m_pidController1.setSetpoint(0.75,ControlType.kDutyCycle); //commented out temporarily
   }
 
   /**
