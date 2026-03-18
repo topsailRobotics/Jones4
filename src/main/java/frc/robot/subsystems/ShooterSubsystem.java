@@ -42,7 +42,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public double CalculateWheelVelocity(double distance) {
-    double output = (96.04 * distance * distance * (Math.atan(Math.toRadians(Constants.ShooterConstants.lockedAngle)))) + (96.04 * distance) + (-9.8 * Constants.ShooterConstants.netHeight);
+    double output = (96.04 * distance * distance * (Math.atan(Math.toRadians(Constants.ShooterConstants.lockedAngle)))) + (96.04 * distance) + (-9.8 * ClimberConstants.ShooterConstants.netHeight);
     output /= 2;
     return Constants.ShooterConstants.relationModification * Math.pow(output,0.25);
   }
