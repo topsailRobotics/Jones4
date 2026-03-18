@@ -11,10 +11,10 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.Util.LimelightHelpers;
 import frc.robot.commands.Aim;
 import frc.robot.commands.Autos;
-import frc.robot.commands.Climb;
+//import frc.robot.commands.Climb;
 import frc.robot.commands.Intake;
 import frc.robot.commands.Shoot;
-import frc.robot.subsystems.ClimberSubsystem;
+//import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
@@ -48,7 +48,7 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final IndexerSubsystem m_indexer = new IndexerSubsystem();
-  private final ClimberSubsystem m_climber = new ClimberSubsystem();
+  //private final ClimberSubsystem m_climber = new ClimberSubsystem();
   private final ShootSubsystem m_shooter = new ShootSubsystem(); //actions not declared yet in shootersubsystem
 
   //autos
@@ -120,7 +120,7 @@ public class RobotContainer {
                   true),
               m_robotDrive));
       m_intake.setDefaultCommand(new RunCommand(()-> {m_intake.intakeOff();m_intake.stopIntake();},m_intake));  //stopIntake method broken up to 2 separate methods, this one controls intaker position
-      m_climber.setDefaultCommand(new RunCommand(()-> m_climber.stopClimber(),m_climber));
+      //m_climber.setDefaultCommand(new RunCommand(()-> m_climber.stopClimber(),m_climber));
       m_shooter.setDefaultCommand(new RunCommand(()-> m_shooter.stopShooter(),m_shooter));
 
       

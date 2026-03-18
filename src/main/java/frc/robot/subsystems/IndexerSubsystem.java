@@ -39,7 +39,6 @@ public class IndexerSubsystem extends SubsystemBase {
    */
    public void runIndexHori()
   {
-      m_hori.setVoltage(8);
   }
 
   /**
@@ -48,7 +47,7 @@ public class IndexerSubsystem extends SubsystemBase {
    * @author UNKOWN
    */
   public void stopIndexVert() {
-    m_hori.setVoltage(0);
+    m_vert.setVoltage(0);
   }
   
   /**
