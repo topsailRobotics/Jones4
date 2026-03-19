@@ -32,6 +32,10 @@ public class IndexerSubsystem extends SubsystemBase {
    m_pidController1.setSetpoint(0.75,ControlType.kDutyCycle); //commented out temporarily
   }
 
+  public void reverseIndex(){
+    m_pidController1.setSetpoint(-0.75, ControlType.kDutyCycle);
+  }
+
   /**
    * Method to run the horizontal indexer.
    * 

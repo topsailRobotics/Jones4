@@ -98,10 +98,6 @@ public class Shoot extends Command {
     {
        m_shoot.shooterHigh();
     }
-
-    if(timer.get() > 2.5){ // tried making the vIndex run on time not rpms - Langgang
-      m_indexer.runIndexVert();
-    }
     /*if(m_shoot.m_Encoder.getVelocity()<=-2445){
       m_indexer.runIndexVert();
       } */
