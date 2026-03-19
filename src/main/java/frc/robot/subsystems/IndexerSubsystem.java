@@ -29,7 +29,11 @@ public class IndexerSubsystem extends SubsystemBase {
    */
   public void runIndexVert()
   {
-   m_pidController1.setSetpoint(0.67,ControlType.kDutyCycle); //commented out temporarily
+   m_pidController1.setSetpoint(0.75,ControlType.kDutyCycle); //commented out temporarily
+  }
+
+  public void reverseIndex(){
+    m_pidController1.setSetpoint(-0.75, ControlType.kDutyCycle);
   }
 
   /**
@@ -39,7 +43,6 @@ public class IndexerSubsystem extends SubsystemBase {
    */
    public void runIndexHori()
   {
-      m_hori.setVoltage(8);
   }
 
   /**
@@ -48,7 +51,7 @@ public class IndexerSubsystem extends SubsystemBase {
    * @author UNKOWN
    */
   public void stopIndexVert() {
-    m_hori.setVoltage(0);
+    m_vert.setVoltage(0);
   }
   
   /**

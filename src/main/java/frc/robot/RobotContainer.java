@@ -11,10 +11,11 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.Util.LimelightHelpers;
 import frc.robot.commands.Aim;
 import frc.robot.commands.Autos;
-import frc.robot.commands.Climb;
+//import frc.robot.commands.Climb;
 import frc.robot.commands.Intake;
 import frc.robot.commands.Shoot;
-import frc.robot.subsystems.ClimberSubsystem;
+//import frc.robot.subsystems.BlinkinSubsystem;
+//import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
@@ -48,11 +49,12 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final IndexerSubsystem m_indexer = new IndexerSubsystem();
-  private final ClimberSubsystem m_climber = new ClimberSubsystem();
+  //private final BlinkinSubsystem m_BlinkinSubsystem = new BlinkinSubsystem();
+  //private final ClimberSubsystem m_climber = new ClimberSubsystem();
   private final ShootSubsystem m_shooter = new ShootSubsystem(); //actions not declared yet in shootersubsystem
 
   //autos
-  private final String m_defaultAuto = "default";
+  private final String m_defaultAuto = "Blue 3 public";
   private final String m_TestAuto = "test";
 
   // A chooser for autonomous commands
@@ -86,6 +88,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("ShootMedium", new Shoot(m_indexer,m_shooter,2));
     NamedCommands.registerCommand("ShootHigh", new Shoot(m_indexer,m_shooter,3));
     NamedCommands.registerCommand("Intake", new Intake(m_intake,m_indexer, false));
+    NamedCommands.registerCommand("Lift Intake", new RunCommand( () -> m_intake.intakeUp(0.85), m_intake));
+        NamedCommands.registerCommand("Intake Down", new RunCommand( () -> m_intake.intakeUp(0.62), m_intake));
     //NamedCommands.registerCommand("ReverseIntake", new Intake(m_intake,m_indexer, true));
 
     // Configure the trigger bindings
@@ -120,12 +124,12 @@ public class RobotContainer {
                   true),
               m_robotDrive));
       m_intake.setDefaultCommand(new RunCommand(()-> {m_intake.intakeOff();m_intake.stopIntake();},m_intake));  //stopIntake method broken up to 2 separate methods, this one controls intaker position
-      m_climber.setDefaultCommand(new RunCommand(()-> m_climber.stopClimber(),m_climber));
+     // m_climber.setDefaultCommand(new RunCommand(()-> m_climber.stopClimber(),m_climber));
       m_shooter.setDefaultCommand(new RunCommand(()-> m_shooter.stopShooter(),m_shooter));
-
+      m_indexer.setDefaultCommand(new RunCommand(()-> m_indexer.stopIndexVert(),m_indexer));
       
 
-    Trigger aimingTrigger = new Trigger (()-> m_driverController0.getLeftTriggerAxis() > 0.5 && LimelightHelpers.getFiducialID("limelight-four") > 0);
+    Trigger aimingTrigger = new Trigger (()->LimelightHelpers.getFiducialID("limelight-four") > 0).and(m_driverController0.y());
     aimingTrigger.whileTrue(new RunCommand(
       () -> m_robotDrive.drive(
           m_robotDrive.rangingVelocity,
@@ -133,21 +137,16 @@ public class RobotContainer {
           m_robotDrive.targetingAngularVelocity,
           false)));
   
-    Trigger ferryTrigger = new Trigger(() -> m_driverController0.getRightTriggerAxis() > 0.5);
-    ferryTrigger.whileTrue(new RunCommand(
-      () -> m_robotDrive.drive(
-          -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
-          -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
-          m_robotDrive.FerryAmount,
-          true)));
+    Trigger rightTrigger = new Trigger(() -> m_driverController0.getRightTriggerAxis() > 0.5);
+    rightTrigger.toggleOnTrue(new Intake(m_intake, m_indexer, true));
     
    
-    m_driverController0.rightBumper().whileTrue(new RunCommand(
-      () -> m_robotDrive.drive(
-          -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
-          -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
-          m_robotDrive.setDiamond,
-          true)));
+    // m_driverController0.rightBumper().whileTrue(new RunCommand(
+    //   () -> m_robotDrive.drive(
+    //       -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
+    //       -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
+    //       m_robotDrive.setDiamond,
+    //       true)));
       
     m_driverController0.leftBumper().toggleOnTrue(new RunCommand(  //changed from RunCommand to Instant Command, control loop should do the job
               () -> m_robotDrive.setX(),
@@ -161,11 +160,15 @@ public class RobotContainer {
     //y to turn on both indexer and shooter, fuels are pushed into the shooter and launched out
     
     //internal system command
-    m_driverController0.x()
+    m_driverController0.rightBumper()
     .toggleOnTrue(new Intake(m_intake,m_indexer, false)); //command is scheduled while x is held
   
-    m_driverController0.b()
-    .toggleOnTrue(new Intake(m_intake, m_indexer, true));
+   m_driverController0.x().whileTrue(new RunCommand(
+      () -> m_robotDrive.drive(
+          -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
+          -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
+          m_robotDrive.FerryAmount,
+          true)));
     
     m_driverController0.a().whileTrue(new RunCommand(  //changed from RunCommand to Instant Command, control loop should do the job
               () -> m_intake.intakeUp(0.85),
@@ -175,13 +178,16 @@ public class RobotContainer {
 
 
     //shooter commands
-    m_driverController1.x()
-    .toggleOnTrue(new Shoot(m_indexer,m_shooter,1));
-    m_driverController1.y()
-    .toggleOnTrue(new Shoot(m_indexer,m_shooter,2));
     m_driverController1.a()
+    .toggleOnTrue(new Shoot(m_indexer,m_shooter,1));
+    m_driverController1.x()
+    .toggleOnTrue(new Shoot(m_indexer,m_shooter,2));
+    m_driverController1.y()
     .toggleOnTrue(new Shoot(m_indexer,m_shooter,3));
+    m_driverController1.leftBumper().toggleOnTrue(new RunCommand(()-> m_indexer.reverseIndex()));
+    m_driverController1.rightBumper().toggleOnTrue(new RunCommand(()-> m_indexer.runIndexVert()));
   }
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
