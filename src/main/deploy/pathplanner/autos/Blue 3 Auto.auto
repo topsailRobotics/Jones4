@@ -5,9 +5,34 @@
     "data": {
       "commands": [
         {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.5
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Down"
+                }
+              }
+            ]
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "Blue 2 part 4"
+            "pathName": "Blue 3 part 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Blue 3 part 2"
           }
         },
         {
@@ -21,9 +46,123 @@
                 }
               },
               {
+                "type": "path",
+                "data": {
+                  "pathName": "Blue 3 part 3"
+                }
+              },
+              {
                 "type": "named",
                 "data": {
-                  "name": "ShootMedium"
+                  "name": "Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Blue 3 part 4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Blue 3 part 5"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Blue 3 part 6"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "deadline",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 7.0
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "ShootMedium"
+                      }
+                    },
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 2.0
+                            }
+                          },
+                          {
+                            "type": "deadline",
+                            "data": {
+                              "commands": [
+                                {
+                                  "type": "wait",
+                                  "data": {
+                                    "waitTime": 5.0
+                                  }
+                                },
+                                {
+                                  "type": "named",
+                                  "data": {
+                                    "name": "Run Indexer"
+                                  }
+                                },
+                                {
+                                  "type": "sequential",
+                                  "data": {
+                                    "commands": [
+                                      {
+                                        "type": "wait",
+                                        "data": {
+                                          "waitTime": 2.0
+                                        }
+                                      },
+                                      {
+                                        "type": "deadline",
+                                        "data": {
+                                          "commands": [
+                                            {
+                                              "type": "wait",
+                                              "data": {
+                                                "waitTime": 3.0
+                                              }
+                                            },
+                                            {
+                                              "type": "named",
+                                              "data": {
+                                                "name": "Lift Intake"
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
                 }
               }
             ]

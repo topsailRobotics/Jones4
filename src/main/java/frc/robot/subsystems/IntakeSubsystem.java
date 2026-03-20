@@ -65,11 +65,11 @@ m_IntakeArm.configure(config,ResetMode.kResetSafeParameters, com.revrobotics.Per
    * @author Larry9297
    */
   public void runIntake() {
-    m_IntakeWheel.setVoltage(-10);
+    m_IntakeWheel.setVoltage(-8);
     }
 
   public void reverseIntake() {
-    m_IntakeWheel.setVoltage(10);
+    m_IntakeWheel.setVoltage(5);
     }
 
   /**
