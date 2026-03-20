@@ -17,20 +17,27 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  /**
+   * Constants used for being able to use controllers
+   */
   public static class OperatorConstants {
     public static final int kDriverControllerPort1 = 0;
     public static final int kDriverControllerPort2 = 1;
   }
+
+  /**
+   * Constant values used for driving accross entire robot.
+   */
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 7.6; //7.60 based on documents but need to be sure - Willemqaswe
+    public static final double kMaxSpeedMetersPerSecond = 7.60; //7.60 based on documents but need to be sure - Willemqaswe
     public static final double kMaxAngularSpeed = 8 * Math.PI; // radians per second
 
     // Chassis configuration
     public static final double kTrackWidth = Units.inchesToMeters(26.5);
     // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = Units.inchesToMeters(21.5);
+    public static final double kWheelBase = Units.inchesToMeters(21.8);
     // Distance between front and back wheels on robot
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
         new Translation2d(kWheelBase / 2, kTrackWidth / 2),
@@ -59,6 +66,10 @@ public final class Constants {
     public static final boolean kGyroReversed = false;
     
   }
+
+  /**
+   * Constants purpose is unkown. This is currently used in configs file exclusively.
+   */
   public static final class ModuleConstants {
     // The MAXSwerve module can be configured with one of three pinion gears: 12T,
     // 13T, or 14T. This changes the drive speed of the module (a pinion gear with
@@ -69,23 +80,35 @@ public final class Constants {
     public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;
     public static final double kWheelDiameterMeters = 0.0762;
     public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
-    // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15
+    // 45 teeth on the wheel's bevel gear, 20 teeth on the first-stage spur gear, 16
     // teeth on the bevel pinion
-    public static final double kDrivingMotorReduction = (45.0 * 22) / (kDrivingMotorPinionTeeth * 15);
+
+    
+    public static final double kDrivingMotorReduction = (45.0 * 19) / (kDrivingMotorPinionTeeth * 16);
     public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters)
         / kDrivingMotorReduction;
   }
 
+  /**
+   * To be honest I have no clue why this class exists since its only recorded use is in another constants class.
+   */
   public static final class NeoMotorConstants {
-    public static final double kFreeSpeedRpm = 5676;
+    public static final double kFreeSpeedRpm = 6784;//changed this to the neo vortex speed 
   }
 
+  /**
+   * UNKOWN PURPOSE OF CLASS (PLEASE FILL IN DEV DOCS)
+   */
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
     public static final double kDriveDeadband = 0.05;
   }
+
+  /**
+    * Constants used in aligning the robot to the hub via apriltags.
+  */
   public static final class AAConstants {
-    public static final double X_REEF_ALIGNMENT_P = .05; 
+    public static final double X_REEF_ALIGNMENT_P = .05; //Should we change all instance of reef to hub?
     public static final double Y_REEF_ALIGNMENT_P = .05;
     public static final double ROT_REEF_ALIGNMENT_P = .01;
 
@@ -101,17 +124,28 @@ public final class Constants {
     public static final double X_TOLERANCE_REEF_ALIGNMENT = .5; //1 is placeholder
     public static final double ROT_TOLERANCE_REEF_ALIGNMENT = .5; //1 is placeholder
   }
-    public static final class IntakeConstants { //change the constants
+
+  /**
+   * Constants used in the intake process.
+  */
+  public static final class IntakeConstants { //change the constants
     public static final int kIntakeWheelID = 51;
     public static final int kIntakeArmID = 52;
     public static final double kIntakeSetpoint = 3;
   }
 
+  /**
+   * Constants used for the CAN IDs of the wheels in the index (system that cycles balls thorugh the center of the robot to eventually shoot them out).
+   */
   public static final class IndexerConstants{ //change IDS
     public static final int kbeltID = 53; 
     public static final int kwheelVertID = 54; 
   }
-    public static final class ShooterConstants{
+
+  /**
+   * constants used to help calulate the shooter to aim correctly. ALso has CAN ID values for shooter motors.
+   */
+  public static final class ShooterConstants{
     public static final double shooterHeight = 0; //in meters
     public static final double targetHeight = 0; //in meters
     public static final double netHeight = targetHeight - shooterHeight;
@@ -121,11 +155,13 @@ public final class Constants {
     public static final int krightshootermotorID = 56; 
 
   }
-  public static final class ClimberConstants{
-    public static final int kclimberMotorID = 57;
-    public static final double kclimberUpperThreshhold = 0.99; //change is necessary, previous .55
-    public static final double kclimberLowerThreshhold = 0.2;
-    }
 
+  /**
+   * Constants used to help in the climbing process. Also has CAN ID value for the motor used.
+   */
+  //public static final class ClimberConstants{
+  //  public static final int kclimberMotorID = 57;
+  //  public static final double kclimberUpperThreshhold = 0.99; //change is necessary, previous .55
+  //  public static final double kclimberLowerThreshhold = 0.2;
+  //}
 }
-

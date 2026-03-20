@@ -29,7 +29,7 @@ private final AbsoluteEncoder m_AbsoluteEncoder = m_IntakeArm.getAbsoluteEncoder
 SparkMaxConfig config = new SparkMaxConfig();
 config.closedLoop.
 feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-.pid(1, 0, 0.05)
+.pid(1, 0.0025, 0.05)
 .outputRange(-1,1);
 m_IntakeArm.configure(config,ResetMode.kResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
   
@@ -39,6 +39,8 @@ m_IntakeArm.configure(config,ResetMode.kResetSafeParameters, com.revrobotics.Per
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
    *
    * @return value of some boolean subsystem state, such as a digital sensor.
+   * 
+   * @author Larry9297
    */
   public boolean exampleCondition() {
     // Query some boolean state, such as a digital sensor.
@@ -57,14 +59,28 @@ m_IntakeArm.configure(config,ResetMode.kResetSafeParameters, com.revrobotics.Per
  * default state will be intakeIn(), and it will later be called again at the end of auto and teleop for climb
  */
 
+  /**
+   * Method used to run intake
+   * 
+   * @author Larry9297
+   */
   public void runIntake() {
-    m_IntakeWheel.setVoltage(-10.5);
+    m_IntakeWheel.setVoltage(-8);
     }
 
+  public void reverseIntake() {
+    m_IntakeWheel.setVoltage(5);
+    }
+
+  /**
+   * Method used to stop intake
+   * 
+   * @author Larry9297
+   */
   public void stopIntake() {
     m_IntakeWheel.setVoltage(0);
   }
-  
+
   //intake out will be scheduled separately using on true logic
   public void intakeUp(double setposition)
   {
@@ -74,7 +90,7 @@ m_IntakeArm.configure(config,ResetMode.kResetSafeParameters, com.revrobotics.Per
   //default state is set point 0, parameter omitted
   public void intakeOff()
   {
-    m_pidController1.setSetpoint(0.65, com.revrobotics.spark.SparkBase.ControlType.kPosition); //0.85 is at 0ish
+    m_pidController1.setSetpoint(0, com.revrobotics.spark.SparkBase.ControlType.kDutyCycle); //0.85 is at 0ish
   }
 
   

@@ -13,54 +13,114 @@
 //imports
 package frc.robot.commands;
 import frc.robot.subsystems.ShootSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.IntakeConstants;
+// import frc.robot.Constants.IntakeConstants;     currently unused
+import edu.wpi.first.wpilibj.Timer;
 
+/**
+ * Class that is used to command the robot to shoot.
+ * 
+ * @author ziwei8658
+ */
 public class Shoot extends Command {
+
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})  //remove later
   
+
   //instance variables
-  private final IndexerSubsystem m_indexer;
   private final ShootSubsystem m_shoot;
-  
-  /*
-   * constructor
+  private DriveSubsystem m_drive;
+  private int range;
+  private final Timer timer = new Timer();
+
+  /**
+   * The constructor for the Shoot class.
+   * 
+   * @param m_intake UNKNOWN PURPOSE OF PARAMETER (PLEASE FILL IN DOCUMENTATION)
+   * @param m_shoot UNKNOWN PURPOSE OF PARAMETER (PLEASE FILL IN DOCUMENTATION)
+   * @author ziwei8658
    */
-  public Shoot(IndexerSubsystem m_indexer, ShootSubsystem m_shoot) {
-    this.m_indexer = m_indexer;
+  public Shoot(ShootSubsystem m_shoot,int range) {
     this.m_shoot = m_shoot;
-    addRequirements(m_indexer, m_shoot); //declare exclusive subsystem control
+    this.range = range;
+    addRequirements(m_shoot); //declare exclusive subsystem control
   }
 
   /*
    * methods
    */
+
+  /**
+   * Called when the intake command is initially scheduled to confirm that the command has been initialized.
+   * 
+   * @author ziwei8658
+   */
   @Override     // Called when the command is initially scheduled.
   public void initialize() {
     System.out.println("shoot initialized");
+   // timer.stop();
+    timer.reset();
+    timer.start();
     
   }
-  //release intake and run internal wheels
-  @Override  // Called every time the scheduler runs while the command is scheduled.
+
+  /**
+   * Release intake and run internal wheels. Called every time the scheduler runs while the shoot command is scheduled.
+   * 
+   * @author ziwei8658
+   */
+  @Override
   public void execute() {
-    m_indexer.runIndexVert();
-    m_indexer.runIndexHori();
-    m_shoot.shooterTest();
+    /* 
+    range = m_drive.getRange();
+    if(range>=5) //specific ranges to be changed
+    {
+      m_shoot.shooterHigh();
+    }else if(range>=4)
+    {
+      m_shoot.shooterMedium();
+    }else if(range>=3)
+    {
+      m_shoot.shooterLow();
+    }
+    */
+    if(range == 1)
+    {
+       m_shoot.shooterLow();
+    } else if (range == 2){
+      m_shoot.shooterMediumLow();
+    } else  if(range==3){
+       m_shoot.shooterMedium();
+    }else if(range==4)
+    {
+       m_shoot.shooterHigh();
+    }
+    /*if(m_shoot.m_Encoder.getVelocity()<=-2445){
+      m_indexer.runIndexVert();
+      } */
+    // m_indexer.runIndexVert();
+    // m_indexer.runIndexHori();
+    // m_shoot.shooterTest();
   }
   
   @Override  // Called once the command ends or is interrupted.
   public void end(boolean interrupted) {
-    m_indexer.stopIndexVert();
-    m_indexer.stopIndexHori();
     m_shoot.stopShooter();
+    timer.stop();
   }
 
-  // Returns true when the command should end.
-  //does not end on its own, the command is ended when external schedules are false(see robot container)
+  /**
+   * Returns true when the command should end. Does not end on its own, the command is ended when external schedules are false(see robot container)
+   * 
+   * @return Will return false when called.
+   * @author ziwei8658
+   */
   @Override
   public boolean isFinished() {
     return false;
+
   }
 
 }//end of class
