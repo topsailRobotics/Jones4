@@ -58,6 +58,7 @@ public class DriveSubsystem extends SubsystemBase {
   public double aimkp = .01;
   public double targetingAngularVelocity;
   public double rangingVelocity;
+  public double rangingVelocity2;
   public double FerryAmount;
   public double setDiamond;
   public double newDiamond;
@@ -164,7 +165,10 @@ AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k
   public void periodic() {
     //ranging 
     
-    rangingVelocity = (LimelightHelpers.getTY("limelight-four")-13.5)* 0.075;
+    rangingVelocity2 = (LimelightHelpers.getTY("limelight-four")+2.47)* 0.075;
+    rangingVelocity2 *= -1.0;
+
+    rangingVelocity = (LimelightHelpers.getTY("limelight-four")-13.5)* 0.07;
     rangingVelocity *= -1.0;
     //ferry
     newAngle = (-(m_gyro.getAngle())-180) % 360;
@@ -203,7 +207,7 @@ AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k
 //aiming
     targetingAngularVelocity = LimelightHelpers.getTX("limelight-four") * aimkp;
     targetingAngularVelocity *= -1.0;
-    if (LimelightHelpers.getTX("limelight-four") <= 20 && LimelightHelpers.getTX("limelight-four") >= -20){
+    if (LimelightHelpers.getTX("limelight-four") <= 7 && LimelightHelpers.getTX("limelight-four") >= -7){
       targetingAngularVelocity = 0;
     }
 

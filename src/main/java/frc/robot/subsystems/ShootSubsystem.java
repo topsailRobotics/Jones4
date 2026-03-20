@@ -57,6 +57,14 @@ private final SparkClosedLoopController m_pidController2 = m_ShootRight.getClose
       m_pidController2.setSetpoint(-2500, ControlType.kVelocity);
 
   }
+
+    public void shooterMediumLow()
+  {
+      m_pidController1.setSetpoint(-3100, ControlType.kVelocity); //
+      m_pidController2.setSetpoint(-3100, ControlType.kVelocity);
+  }
+
+
   
   public void shooterMedium()
   {

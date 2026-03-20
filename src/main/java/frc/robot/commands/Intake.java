@@ -55,9 +55,7 @@ public class Intake extends Command {
    * @author ziwei8658
    */
   @Override     
-  public void initialize() {
-    System.out.println("Intake On");
-    
+  public void initialize() {    
   }
   /**
    * Releases intake and runs internal wheels. This is called every time the scheduler runs while the command is scheduled.
@@ -72,7 +70,6 @@ public class Intake extends Command {
       m_intake.runIntake(); 
     }
 
-    m_intake.intakeUp(0.62);  
   }
   
     /**
@@ -84,8 +81,6 @@ public class Intake extends Command {
   @Override
   public void end(boolean interrupted) {
       m_intake.stopIntake();
-      m_intake.intakeOff();
-      System.out.println("Intake off");
   }
 
     /**

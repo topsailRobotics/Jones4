@@ -30,7 +30,6 @@ public class Shoot extends Command {
   
 
   //instance variables
-  private final IndexerSubsystem m_indexer;
   private final ShootSubsystem m_shoot;
   private DriveSubsystem m_drive;
   private int range;
@@ -43,11 +42,10 @@ public class Shoot extends Command {
    * @param m_shoot UNKNOWN PURPOSE OF PARAMETER (PLEASE FILL IN DOCUMENTATION)
    * @author ziwei8658
    */
-  public Shoot(IndexerSubsystem m_indexer, ShootSubsystem m_shoot,int range) {
-    this.m_indexer = m_indexer;
+  public Shoot(ShootSubsystem m_shoot,int range) {
     this.m_shoot = m_shoot;
     this.range = range;
-    addRequirements(m_indexer, m_shoot); //declare exclusive subsystem control
+    addRequirements(m_shoot); //declare exclusive subsystem control
   }
 
   /*
@@ -91,10 +89,11 @@ public class Shoot extends Command {
     if(range == 1)
     {
        m_shoot.shooterLow();
-    }else if(range==2)
-    {
+    } else if (range == 2){
+      m_shoot.shooterMediumLow();
+    } else  if(range==3){
        m_shoot.shooterMedium();
-    }else if(range==3)
+    }else if(range==4)
     {
        m_shoot.shooterHigh();
     }
@@ -108,7 +107,6 @@ public class Shoot extends Command {
   
   @Override  // Called once the command ends or is interrupted.
   public void end(boolean interrupted) {
-    m_indexer.stopIndexVert();
     m_shoot.stopShooter();
     timer.stop();
   }

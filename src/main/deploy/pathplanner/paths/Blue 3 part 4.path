@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 8.3,
-        "y": 4.5
+        "y": 4.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 9.3,
-        "y": 4.5
+        "x": 8.108621085934201,
+        "y": 3.839145683144669
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 2.5
       },
       "prevControl": {
-        "x": 4.971144578313252,
-        "y": 2.53278313253012
+        "x": 5.684319745714961,
+        "y": 2.32163217581871
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
     "rotation": 90.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Blue 3 public",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 90.0
