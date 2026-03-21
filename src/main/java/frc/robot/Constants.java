@@ -67,6 +67,28 @@ public final class Constants {
     
   }
 
+  public static final class BlinkinConstants {
+    public static final double Gold = 0.67;
+    public static final double Black = 0.99;
+    public static final double Blue = .87;
+    public static final double Blue_Violet = .89;
+    public static final double Violet = .91;
+    public static final double Hot_Pink = .57;
+    public static final double Dark_Red = .59;
+    public static final double Red = -.61;
+    public static final double Green = .77;
+    public static final double White = .93;
+
+    // testing /cool values
+    public static final double Rainbowlava = -.93;
+    public static final double Confetti = -.87;
+    public static final double Heartbeatblue = -.25;
+    public static final double Heartbeatred = -.23;
+    public static final double Breathslow = .29;
+    public static final double Breathfast = .31;
+    public static final double Strobe = .35;
+    
+  }
   /**
    * Constants purpose is unkown. This is currently used in configs file exclusively.
    */

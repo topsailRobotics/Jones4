@@ -9,30 +9,30 @@ package frc.robot;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Util.LimelightHelpers;
-import frc.robot.commands.Aim;
-import frc.robot.commands.Autos;
+//import frc.robot.commands.Aim;
+//import frc.robot.commands.Autos;
 //import frc.robot.commands.Climb;
 import frc.robot.commands.Intake;
 import frc.robot.commands.Shoot;
-//import frc.robot.subsystems.BlinkinSubsystem;
+import frc.robot.subsystems.BlinkinSubsystem;
 //import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+//import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Button;
+//import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+//import edu.wpi.first.wpilibj.XboxController;
+//import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
+//import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+//import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -49,7 +49,7 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final IndexerSubsystem m_indexer = new IndexerSubsystem();
-  //private final BlinkinSubsystem m_BlinkinSubsystem = new BlinkinSubsystem();
+  private final BlinkinSubsystem m_BlinkinSubsystem = new BlinkinSubsystem();
   //private final ClimberSubsystem m_climber = new ClimberSubsystem();
   private final ShootSubsystem m_shooter = new ShootSubsystem(); //actions not declared yet in shootersubsystem
 
@@ -59,7 +59,7 @@ public class RobotContainer {
   private final String m_Auto2 = "Blue 3 Alternative Auto";
   private final String m_Auto3 = "Blue 3 Auto";
 
-  private final String m_TestAuto = "test";
+  //private final String m_TestAuto = "test";
 
   // A chooser for autonomous commands
   SendableChooser<String> m_chooser = new SendableChooser<>();
@@ -133,6 +133,8 @@ public class RobotContainer {
      // m_climber.setDefaultCommand(new RunCommand(()-> m_climber.stopClimber(),m_climber));
       m_shooter.setDefaultCommand(new RunCommand(()-> m_shooter.stopShooter(),m_shooter));
       m_indexer.setDefaultCommand(new RunCommand(()-> m_indexer.stopIndexVert(),m_indexer));
+      m_BlinkinSubsystem.setDefaultCommand(new RunCommand(()-> m_BlinkinSubsystem.idleBlinkin(),m_BlinkinSubsystem));
+
       
 
     Trigger aimingTrigger1 = new Trigger (()->LimelightHelpers.getFiducialID("limelight-four") > 0).and(m_driverController0.y());
@@ -196,11 +198,11 @@ public class RobotContainer {
 
     //shooter commands
     m_driverController1.a()
-    .toggleOnTrue(new Shoot(m_shooter,1));
+    .toggleOnTrue(new Shoot(m_shooter,1).alongWith(new RunCommand(() -> m_BlinkinSubsystem.slowBlinkin())));
     m_driverController1.x()
-    .toggleOnTrue(new Shoot(m_shooter,2));
+    .toggleOnTrue(new Shoot(m_shooter,2).alongWith(new RunCommand(() -> m_BlinkinSubsystem.mediumBlinkin())));
     m_driverController1.y()
-    .toggleOnTrue(new Shoot(m_shooter,4));
+    .toggleOnTrue(new Shoot(m_shooter,4).alongWith(new RunCommand(() -> m_BlinkinSubsystem.fastBlinkin())));
     m_driverController1.leftBumper().whileTrue(new RunCommand(()-> m_indexer.reverseIndex()));
     m_driverController1.rightBumper().whileTrue(new RunCommand(()-> m_indexer.runIndexVert()));
   }
