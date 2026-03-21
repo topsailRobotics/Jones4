@@ -54,10 +54,10 @@ public class RobotContainer {
   private final ShootSubsystem m_shooter = new ShootSubsystem(); //actions not declared yet in shootersubsystem
 
   //autos
-  private final String m_defaultAuto = "Blue 2 Auto";
-  private final String m_Auto1 = "Blue 1 Auto";
-  private final String m_Auto2 = "Blue 3 Alternative Auto";
-  private final String m_Auto3 = "Blue 3 Auto";
+  private final String m_defaultAuto = "Blue 1 close shoot";
+  private final String m_Auto1 = "Blue 3 close Auto";
+  private final String m_Auto2 = "Blue 1 far shoot";
+  private final String m_Auto3 = "Blue 2 Auto";
 
   //private final String m_TestAuto = "test";
 
@@ -92,10 +92,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("ShootMedium", new RunCommand( () -> m_shooter.shooterMediumLow(), m_shooter));// only run shooter
     NamedCommands.registerCommand("ShootHigh", new Shoot(m_shooter,4));
     NamedCommands.registerCommand("Intake", new Intake(m_intake,m_indexer, false));
-    NamedCommands.registerCommand("Lift Intake", new RunCommand( () -> m_intake.intakeUp(0.85), m_intake));
+    NamedCommands.registerCommand("Lift Intake", new RunCommand( () -> m_intake.intakeUp(0.15), m_intake));
     NamedCommands.registerCommand("Run Indexer", new RunCommand( () -> m_indexer.runIndexVert(), m_indexer));
     NamedCommands.registerCommand("Stop Indexer", new RunCommand( () -> m_indexer.stopIndexVert(), m_indexer));
-    NamedCommands.registerCommand("Intake Down", new RunCommand( () -> m_intake.intakeUp(0.62), m_intake));
+    NamedCommands.registerCommand("Intake Down", new RunCommand( () -> m_intake.intakeUp(-0.15), m_intake));
     //NamedCommands.registerCommand("ReverseIntake", new Intake(m_intake,m_indexer, true));
 
     // Configure the trigger bindings
@@ -158,7 +158,7 @@ public class RobotContainer {
 
     Trigger leftTrigger = new Trigger(() -> m_driverController0.getLeftTriggerAxis() > 0.5);
     
-    leftTrigger.whileTrue(new RunCommand(() -> m_intake.intakeUp(0.62)));
+    leftTrigger.whileTrue(new RunCommand(() -> m_intake.intakeUp(-0.15)));
    
     // m_driverController0.rightBumper().whileTrue(new RunCommand(
     //   () -> m_robotDrive.drive(
@@ -190,7 +190,7 @@ public class RobotContainer {
           true)));
     
     m_driverController0.a().whileTrue(new RunCommand(  //changed from RunCommand to Instant Command, control loop should do the job
-              () -> m_intake.intakeUp(0.85),
+              () -> m_intake.intakeUp(0.15),
               m_intake));
 
     m_driverController0.povDown().onTrue(new InstantCommand(()->m_robotDrive.zeroHeading(), m_robotDrive));

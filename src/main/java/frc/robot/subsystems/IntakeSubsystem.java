@@ -84,7 +84,7 @@ m_IntakeArm.configure(config,ResetMode.kResetSafeParameters, com.revrobotics.Per
   //intake out will be scheduled separately using on true logic
   public void intakeUp(double setposition)
   {
-    m_pidController1.setSetpoint(setposition, com.revrobotics.spark.SparkBase.ControlType.kPosition);
+    m_pidController1.setSetpoint(setposition, com.revrobotics.spark.SparkBase.ControlType.kDutyCycle);
   }
   
   //default state is set point 0, parameter omitted
