@@ -60,9 +60,6 @@ public class Shoot extends Command {
   @Override     // Called when the command is initially scheduled.
   public void initialize() {
     System.out.println("shoot initialized");
-   // timer.stop();
-    timer.reset();
-    timer.start();
     
   }
 
@@ -108,7 +105,7 @@ public class Shoot extends Command {
   @Override  // Called once the command ends or is interrupted.
   public void end(boolean interrupted) {
     m_shoot.stopShooter();
-    timer.stop();
+    System.out.println("back up shooter off");
   }
 
   /**

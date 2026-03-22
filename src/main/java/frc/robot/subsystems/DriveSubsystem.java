@@ -165,10 +165,10 @@ AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k
   public void periodic() {
     //ranging 
     
-    rangingVelocity2 = (LimelightHelpers.getTY("limelight-four")+2.47)* 0.075;
+    rangingVelocity2 = (LimelightHelpers.getTY("limelight-four")+2.47)* 0.035;
     rangingVelocity2 *= -1.0;
 
-    rangingVelocity = (LimelightHelpers.getTY("limelight-four")-13.5)* 0.07;
+    rangingVelocity = (LimelightHelpers.getTY("limelight-four")-13.5)* 0.03;
     rangingVelocity *= -1.0;
     //ferry
     newAngle = (-(m_gyro.getAngle())-180) % 360;
@@ -247,11 +247,13 @@ AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k
     
     if(!mt2_reject)
     {
+      
       m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
       m_poseEstimator.addVisionMeasurement(
           mt2_visionEstimate.pose,
           mt2_visionEstimate.timestampSeconds);
     }
+          
   //mt1
   if(mt2_reject)
   {
@@ -268,13 +270,14 @@ AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k
         reject = true;
       }
     }
-
+ 
     if (!reject) {
       m_poseEstimator.addVisionMeasurement(
           visionEstimate.pose,
           visionEstimate.timestampSeconds);
     }
   }
+    
  m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());//update robot position in field, further reviews needed
   SmartDashboard.putNumber("NavX Gyro", m_gyro.getAngle());
   }

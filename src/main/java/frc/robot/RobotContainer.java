@@ -14,6 +14,7 @@ import frc.robot.Util.LimelightHelpers;
 //import frc.robot.commands.Climb;
 import frc.robot.commands.Intake;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.ShootBackUp;
 import frc.robot.subsystems.BlinkinSubsystem;
 //import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -56,8 +57,9 @@ public class RobotContainer {
   //autos
   private final String m_defaultAuto = "Blue 1 close shoot";
   private final String m_Auto1 = "Blue 3 close Auto";
-  private final String m_Auto2 = "Blue 1 far shoot";
-  private final String m_Auto3 = "Blue 2 Auto";
+  private final String m_Auto2 = "Red 1 close Auto";
+  private final String m_Auto3 = "Red 3 close Auto";
+  private final String m_Auto4 = "Blue 2 Auto";
 
   //private final String m_TestAuto = "test";
 
@@ -84,6 +86,7 @@ public class RobotContainer {
   m_chooser.addOption(m_Auto1, m_Auto1);
   m_chooser.addOption(m_Auto2, m_Auto2);
   m_chooser.addOption(m_Auto3, m_Auto3);
+  m_chooser.addOption(m_Auto4, m_Auto4);
 
   // Put the chooser on the dashboard
   SmartDashboard.putData(m_chooser);
@@ -194,6 +197,7 @@ public class RobotContainer {
               m_intake));
 
     m_driverController0.povDown().onTrue(new InstantCommand(()->m_robotDrive.zeroHeading(), m_robotDrive));
+    m_driverController0.povUp().whileTrue(new ShootBackUp(m_shooter,m_indexer));
 
 
     //shooter commands
