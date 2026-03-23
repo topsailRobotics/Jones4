@@ -1,20 +1,20 @@
 package frc.robot.subsystems;
 
-import java.io.ObjectInputFilter.Config;
+//import java.io.ObjectInputFilter.Config;
 
-import com.revrobotics.AbsoluteEncoder;
+//import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.FeedbackSensor;
-import com.revrobotics.spark.SparkAnalogSensor;
+//import com.revrobotics.spark.SparkAnalogSensor;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.SparkBase.PersistMode;
+//import com.revrobotics.spark.SparkBase.ControlType;
+//import com.revrobotics.spark.SparkBase.PersistMode;
 
-import edu.wpi.first.units.measure.Velocity;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.units.measure.Velocity;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 public class IntakeSubsystem extends SubsystemBase {
@@ -24,7 +24,7 @@ public class IntakeSubsystem extends SubsystemBase {
 private final SparkMax m_IntakeArm = new SparkMax(IntakeConstants.kIntakeArmID, MotorType.kBrushless);
 private final SparkMax m_IntakeWheel= new SparkMax(IntakeConstants.kIntakeWheelID, MotorType.kBrushless);
 private final SparkClosedLoopController m_pidController1 = m_IntakeArm.getClosedLoopController();
-private final AbsoluteEncoder m_AbsoluteEncoder = m_IntakeArm.getAbsoluteEncoder();
+//private final AbsoluteEncoder m_AbsoluteEncoder = m_IntakeArm.getAbsoluteEncoder();
   public IntakeSubsystem() {
 SparkMaxConfig config = new SparkMaxConfig();
 config.closedLoop.
@@ -84,7 +84,7 @@ m_IntakeArm.configure(config,ResetMode.kResetSafeParameters, com.revrobotics.Per
   //intake out will be scheduled separately using on true logic
   public void intakeUp(double setposition)
   {
-    m_pidController1.setSetpoint(setposition, com.revrobotics.spark.SparkBase.ControlType.kPosition);
+    m_pidController1.setSetpoint(setposition, com.revrobotics.spark.SparkBase.ControlType.kDutyCycle);
   }
   
   //default state is set point 0, parameter omitted

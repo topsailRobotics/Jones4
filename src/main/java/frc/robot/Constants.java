@@ -31,7 +31,9 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 7.60; //7.60 based on documents but need to be sure - Willemqaswe
+    public static final double kMaxSpeedMetersPerSecond = 24.93; //7.60 based on documents but need to be sure - Willem
+
+    // changed it to 24.93 (feet)
     public static final double kMaxAngularSpeed = 8 * Math.PI; // radians per second
 
     // Chassis configuration
@@ -67,6 +69,28 @@ public final class Constants {
     
   }
 
+  public static final class BlinkinConstants {
+    public static final double Gold = 0.67;
+    public static final double Black = 0.99;
+    public static final double Blue = .87;
+    public static final double Blue_Violet = .89;
+    public static final double Violet = .91;
+    public static final double Hot_Pink = .57;
+    public static final double Dark_Red = .59;
+    public static final double Red = -.61;
+    public static final double Green = .77;
+    public static final double White = .93;
+
+    // testing /cool values
+    public static final double Rainbowlava = -.93;
+    public static final double Confetti = -.87;
+    public static final double Heartbeatblue = -.25;
+    public static final double Heartbeatred = -.23;
+    public static final double Breathslow = .29;
+    public static final double Breathfast = .31;
+    public static final double Strobe = .35;
+    
+  }
   /**
    * Constants purpose is unkown. This is currently used in configs file exclusively.
    */

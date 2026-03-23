@@ -3,9 +3,11 @@
   "robotLength": 0.9,
   "holonomicMode": true,
   "pathFolders": [
+    "Blue 1 public",
     "Blue 2",
     "Blue 3 public",
-    "Blue 1 public"
+    "Red 3 Auto",
+    "Red 1 Auto"
   ],
   "autoFolders": [],
   "defaultMaxVel": 3.0,
@@ -13,7 +15,7 @@
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
   "defaultNominalVoltage": 12.0,
-  "robotMass": 45.5,
+  "robotMass": 54.0,
   "robotMOI": 6.883,
   "robotTrackwidth": 0.546,
   "driveWheelRadius": 0.0381,

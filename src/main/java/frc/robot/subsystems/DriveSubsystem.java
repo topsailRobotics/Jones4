@@ -8,7 +8,7 @@ import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
 
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
@@ -17,7 +17,7 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
 
-import edu.wpi.first.math.MathUtil;
+//import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -25,11 +25,11 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+//import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.ADIS16470_IMU;
-import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
+//import edu.wpi.first.wpilibj.ADIS16470_IMU;
+//import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -165,10 +165,10 @@ AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k
   public void periodic() {
     //ranging 
     
-    rangingVelocity2 = (LimelightHelpers.getTY("limelight-four")+2.47)* 0.075;
+    rangingVelocity2 = (LimelightHelpers.getTY("limelight-four")+2.47)* 0.035;
     rangingVelocity2 *= -1.0;
 
-    rangingVelocity = (LimelightHelpers.getTY("limelight-four")-13.5)* 0.07;
+    rangingVelocity = (LimelightHelpers.getTY("limelight-four")-13.5)* 0.03;
     rangingVelocity *= -1.0;
     //ferry
     newAngle = (-(m_gyro.getAngle())-180) % 360;
@@ -245,13 +245,15 @@ AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k
       mt2_reject = true;
     }
     
-    if(!mt2_reject)
-    {
-      m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-      m_poseEstimator.addVisionMeasurement(
-          mt2_visionEstimate.pose,
-          mt2_visionEstimate.timestampSeconds);
-    }
+    // if(!mt2_reject)
+    // {
+      
+    //   m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+    //   m_poseEstimator.addVisionMeasurement(
+    //       mt2_visionEstimate.pose,
+    //       mt2_visionEstimate.timestampSeconds);
+    // }
+          
   //mt1
   if(mt2_reject)
   {
@@ -268,13 +270,14 @@ AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k
         reject = true;
       }
     }
-
-    if (!reject) {
-      m_poseEstimator.addVisionMeasurement(
-          visionEstimate.pose,
-          visionEstimate.timestampSeconds);
-    }
+ 
+    // if (!reject) {
+    //   m_poseEstimator.addVisionMeasurement(
+    //       visionEstimate.pose,
+    //       visionEstimate.timestampSeconds);
+    // }
   }
+    
  m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());//update robot position in field, further reviews needed
   SmartDashboard.putNumber("NavX Gyro", m_gyro.getAngle());
   }

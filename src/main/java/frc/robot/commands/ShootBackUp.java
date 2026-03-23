@@ -24,15 +24,14 @@ import edu.wpi.first.wpilibj.Timer;
  * 
  * @author ziwei8658
  */
-public class Shoot extends Command {
+public class ShootBackUp extends Command {
 
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})  //remove later
   
 
   //instance variables
   private final ShootSubsystem m_shoot;
-  private DriveSubsystem m_drive;
-  private int range;
+  private IndexerSubsystem m_indexer;
   private final Timer timer = new Timer();
 
   /**
@@ -42,10 +41,10 @@ public class Shoot extends Command {
    * @param m_shoot UNKNOWN PURPOSE OF PARAMETER (PLEASE FILL IN DOCUMENTATION)
    * @author ziwei8658
    */
-  public Shoot(ShootSubsystem m_shoot,int range) {
+  public ShootBackUp(ShootSubsystem m_shoot, IndexerSubsystem m_indexer) {
     this.m_shoot = m_shoot;
-    this.range = range;
-    addRequirements(m_shoot); //declare exclusive subsystem control
+    this.m_indexer = m_indexer;
+    addRequirements(m_shoot,m_indexer); //declare exclusive subsystem control
   }
 
   /*
@@ -59,7 +58,10 @@ public class Shoot extends Command {
    */
   @Override     // Called when the command is initially scheduled.
   public void initialize() {
-    System.out.println("shoot initialized");
+    System.out.println("back up shoot initialized");
+   // timer.stop();
+    timer.reset();
+    timer.start();
     
   }
 
@@ -70,41 +72,16 @@ public class Shoot extends Command {
    */
   @Override
   public void execute() {
-    /* 
-    range = m_drive.getRange();
-    if(range>=5) //specific ranges to be changed
-    {
-      m_shoot.shooterHigh();
-    }else if(range>=4)
-    {
-      m_shoot.shooterMedium();
-    }else if(range>=3)
-    {
-      m_shoot.shooterLow();
-    }
-    */
-    if(range == 1)
-    {
-       m_shoot.shooterLow();
-    } else if (range == 2){
-      m_shoot.shooterMediumLow();
-    } else  if(range==3){
-       m_shoot.shooterMedium();
-    }else if(range==4)
-    {
-       m_shoot.shooterHigh();
-    }
-    /*if(m_shoot.m_Encoder.getVelocity()<=-2445){
+     m_shoot.shooterTest();
+    if(timer.get()>=1.5){
       m_indexer.runIndexVert();
-      } */
-    // m_indexer.runIndexVert();
-    // m_indexer.runIndexHori();
-    // m_shoot.shooterTest();
+      } 
   }
   
   @Override  // Called once the command ends or is interrupted.
   public void end(boolean interrupted) {
     m_shoot.stopShooter();
+    timer.stop();
     System.out.println("back up shooter off");
   }
 
