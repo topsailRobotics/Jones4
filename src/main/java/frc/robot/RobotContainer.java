@@ -60,6 +60,7 @@ public class RobotContainer {
   private final String m_Auto2 = "Red 1 close Auto";
   private final String m_Auto3 = "Red 3 close Auto";
   private final String m_Auto4 = "Blue 2 Auto";
+    private final String m_Auto5 = "Middle Simple";
 
   //private final String m_TestAuto = "test";
 
@@ -87,6 +88,7 @@ public class RobotContainer {
   m_chooser.addOption(m_Auto2, m_Auto2);
   m_chooser.addOption(m_Auto3, m_Auto3);
   m_chooser.addOption(m_Auto4, m_Auto4);
+    m_chooser.addOption(m_Auto5, m_Auto5);
 
   // Put the chooser on the dashboard
   SmartDashboard.putData(m_chooser);
@@ -97,8 +99,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("Intake", new Intake(m_intake,m_indexer, false));
     NamedCommands.registerCommand("Lift Intake", new RunCommand( () -> m_intake.intakeUp(0.15), m_intake));
     NamedCommands.registerCommand("Run Indexer", new RunCommand( () -> m_indexer.runIndexVert(), m_indexer));
-    NamedCommands.registerCommand("Stop Indexer", new RunCommand( () -> m_indexer.stopIndexVert(), m_indexer));
+    NamedCommands.registerCommand("Stop Indexer", new InstantCommand( () -> m_indexer.stopIndexVert(), m_indexer));
     NamedCommands.registerCommand("Intake Down", new RunCommand( () -> m_intake.intakeUp(-0.15), m_intake));
+    NamedCommands.registerCommand("Stop Shooter", new InstantCommand( () -> m_shooter.stopShooter(), m_shooter));// only run shooter
+
     //NamedCommands.registerCommand("ReverseIntake", new Intake(m_intake,m_indexer, true));
 
     // Configure the trigger bindings

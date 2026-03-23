@@ -245,14 +245,14 @@ AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k
       mt2_reject = true;
     }
     
-    if(!mt2_reject)
-    {
+    // if(!mt2_reject)
+    // {
       
-      m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-      m_poseEstimator.addVisionMeasurement(
-          mt2_visionEstimate.pose,
-          mt2_visionEstimate.timestampSeconds);
-    }
+    //   m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+    //   m_poseEstimator.addVisionMeasurement(
+    //       mt2_visionEstimate.pose,
+    //       mt2_visionEstimate.timestampSeconds);
+    // }
           
   //mt1
   if(mt2_reject)
@@ -271,11 +271,11 @@ AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k
       }
     }
  
-    if (!reject) {
-      m_poseEstimator.addVisionMeasurement(
-          visionEstimate.pose,
-          visionEstimate.timestampSeconds);
-    }
+    // if (!reject) {
+    //   m_poseEstimator.addVisionMeasurement(
+    //       visionEstimate.pose,
+    //       visionEstimate.timestampSeconds);
+    // }
   }
     
  m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());//update robot position in field, further reviews needed
