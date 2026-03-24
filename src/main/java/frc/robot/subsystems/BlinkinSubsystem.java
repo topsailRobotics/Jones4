@@ -13,7 +13,7 @@ public class BlinkinSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
 
   // Initilization
-private final Spark Blinkin = new Spark(1);
+private final Spark Blinkin = new Spark(8);
 
 public BlinkinSubsystem() {
 
@@ -46,12 +46,17 @@ if (ally.isPresent()) {
     Blinkin.set(BlinkinConstants.Dark_Red); //<RED ACTION>
     }
     if (ally.get() == Alliance.Blue) {
-    Blinkin.set(BlinkinConstants.Blue);    //<BLUE ACTION>
+    Blinkin.set(BlinkinConstants.Blue);
+    //<BLUE ACTION>
     }
 }
 else {
   Blinkin.set(BlinkinConstants.White);
 }
+  }
+
+  public void intakeBlinkinF() {
+    Blinkin.set(BlinkinConstants.Green);
   }
 
   public void slowBlinkin() {
