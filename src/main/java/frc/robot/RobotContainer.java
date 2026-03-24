@@ -175,18 +175,9 @@ public class RobotContainer {
     m_driverController0.leftBumper().toggleOnTrue(new RunCommand(  //changed from RunCommand to Instant Command, control loop should do the job
               () -> m_robotDrive.setX(),
               m_robotDrive));
-    
-    //true for climer up, false for down, independent commands sharing same command file
-    //m_driverController0.povUp().whileTrue(new Climb(m_climber, true));
-    //m_driverController0.povDown().whileTrue(new Climb(m_climber, false));
-    
-    //x to turn on intake and horizontal indexer to collect and store fuels, click again to turn off
-    //y to turn on both indexer and shooter, fuels are pushed into the shooter and launched out
-    
-    //internal system command
+
     m_driverController0.rightBumper()
-    .toggleOnTrue(new Intake(m_intake,m_indexer, false)); //command is scheduled while x is held
-  
+    .toggleOnTrue(new Intake(m_intake,m_indexer, false).alongWith(new InstantCommand(() -> m_BlinkinSubsystem.intakeBlinkinFwrd()))); 
    m_driverController0.x().whileTrue(new RunCommand(
       () -> m_robotDrive.drive(
           -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
