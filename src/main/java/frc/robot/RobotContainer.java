@@ -15,6 +15,7 @@ import frc.robot.Util.LimelightHelpers;
 import frc.robot.commands.Intake;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.ShootBackUp;
+import frc.robot.commands.SmartShoot;
 import frc.robot.subsystems.BlinkinSubsystem;
 //import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -192,6 +193,9 @@ public class RobotContainer {
     m_driverController0.povDown().onTrue(new InstantCommand(()->m_robotDrive.zeroHeading(), m_robotDrive));
     m_driverController0.povUp().whileTrue(new ShootBackUp(m_shooter,m_indexer));
 
+    //SmartShoot command
+    m_driverController0.y()
+    .toggleOnTrue(new SmartShoot(m_shooter,m_indexer).alongWith(new InstantCommand(() -> m_BlinkinSubsystem.slowBlinkin())));
 
     //shooter commands
     m_driverController1.a()
