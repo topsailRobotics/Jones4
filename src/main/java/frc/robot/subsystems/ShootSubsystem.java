@@ -40,11 +40,6 @@ private final SparkClosedLoopController m_pidController2 = m_ShootRight.getClose
   //For now, use 4 distinct outputs based on distance ranges from the hub. 
   //Use shooterTest for testing
 
- /**
-   * Method used to test the shooter. Will probably get deleted or not be used in final robot.
-   * 
-   * @author Carter
- */
 /**
  *smart shoot method
  *try interpolation and wpilib mapping later
@@ -63,6 +58,20 @@ public double getShooterRPM(double distance)
   //ferry, when distance too far, most likely unused
   return 5000;
 }
+
+public void smartShoot(double rpm)
+{
+  m_pidController1.setSetpoint(-rpm, ControlType.kVelocity);
+  m_pidController2.setSetpoint(rpm, ControlType.kVelocity);
+
+}
+
+
+ /**
+   * Method used to test the shooter. Will probably get deleted or not be used in final robot.
+   * 
+   * @author Carter
+ */
   public void shooterTest()
   {
       m_pidController1.setSetpoint(-2500, ControlType.kVelocity);
