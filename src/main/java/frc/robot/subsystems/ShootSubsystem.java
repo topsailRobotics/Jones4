@@ -45,6 +45,19 @@ private final SparkClosedLoopController m_pidController2 = m_ShootRight.getClose
    * 
    * @author Carter
  */
+
+ //smart shoot method
+ //try interpolation and wpilib mapping later
+public double getShooterRPM(double distance)
+{
+  //default case
+  if (distance == -1) return 0;
+
+  if (distance >= 5) return 3000;
+  if (distance >= 4) return 2500;
+  if (distance >= 3) return 2000;
+  return 0;
+}
   public void shooterTest()
   {
       m_pidController1.setSetpoint(-2500, ControlType.kVelocity);
