@@ -51,6 +51,7 @@ public class SmartShoot extends Command {
     //end current cycle if no tag detected
     if(distance==-1)
     {
+        timer.reset();
         return;
     }
 
