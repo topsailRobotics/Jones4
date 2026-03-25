@@ -8,6 +8,8 @@ import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
 
+import java.util.Optional;
+
 //import java.util.logging.Logger;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -21,6 +23,7 @@ import com.studica.frc.AHRS.NavXComType;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -336,13 +339,28 @@ private SwerveModuleState[] getModuleStates() {
  //method to get range 
  public double getRange()
  {
+  //get bot translation
   Pose2d robotPose = m_poseEstimator.getEstimatedPosition();
   Translation2d robotTranslation = robotPose.getTranslation();
   
+  //get tag id from limelight
   double tagID = LimelightHelpers.getFiducialID("limelight-four");
-  Pose2d tagPose = fieldLayout.getTagPose((int)tagID).get().toPose2d();
-  Translation2d tagTranslation = tagPose.getTranslation();
 
+  //return -1 if tag not seen 
+  if (tagID == -1)
+   {
+    return -1;
+   }
+
+  // If the tag is not in the field layout, return invalid value
+  Optional<Pose3d> tagPose = fieldLayout.getTagPose((int)tagID);
+  if (tagPose.isEmpty())
+  {
+    return -1;
+  }
+
+  //calculate distance between bot and tag
+  Translation2d tagTranslation = tagPose.get().toPose2d().getTranslation();
   return(robotTranslation.getDistance(tagTranslation));
  }
 

@@ -55,7 +55,7 @@ else {
 }
   }
 
-  public void intakeBlinkinF() {
+  public void intakeBlinkinFwrd() {
     Blinkin.set(BlinkinConstants.Green);
   }
 
