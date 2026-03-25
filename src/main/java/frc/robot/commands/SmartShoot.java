@@ -38,7 +38,8 @@ public class SmartShoot extends Command {
   public void initialize() {
     timer.reset();
     timer.start();
-    System.out.println("SmartShoot initialized");
+    //examine range accuracy
+    System.out.println("" + m_drive.getRange());
     
   }
 
@@ -59,6 +60,8 @@ public class SmartShoot extends Command {
     //use timer temporarily, change to rpm setpoint-based when tuned
     if(timer.get()>=2){
       m_indexer.runIndexVert();
+      //examine rpm accuracy
+      System.out.println("" + rpm);
       } 
   }
   /*alternative:
