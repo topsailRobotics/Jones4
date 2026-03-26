@@ -193,9 +193,9 @@ public class RobotContainer {
     m_driverController0.povDown().onTrue(new InstantCommand(()->m_robotDrive.zeroHeading(), m_robotDrive));
     m_driverController0.povUp().whileTrue(new ShootBackUp(m_shooter,m_indexer));
 
-    //SmartShoot command
-    m_driverController0.y()
-    .toggleOnTrue(new SmartShoot(m_shooter,m_indexer).alongWith(new InstantCommand(() -> m_BlinkinSubsystem.slowBlinkin())));
+    //SmartShoot command, disabled now, field relative ranging inaccurate
+    //m_driverController0.povLeft()
+    //.toggleOnTrue(new SmartShoot(m_shooter,m_indexer,m_robotDrive).alongWith(new InstantCommand(() -> m_BlinkinSubsystem.slowBlinkin())));
 
     //shooter commands
     m_driverController1.a()

@@ -24,9 +24,10 @@ public class SmartShoot extends Command {
   /*
    * regression shoot
    */
-  public SmartShoot(ShootSubsystem m_shoot, IndexerSubsystem m_indexer) {
+  public SmartShoot(ShootSubsystem m_shoot, IndexerSubsystem m_indexer, DriveSubsystem m_drive) {
     this.m_shoot = m_shoot;
     this.m_indexer = m_indexer;
+    this.m_drive = m_drive;
     addRequirements(m_shoot,m_indexer); 
   }
   

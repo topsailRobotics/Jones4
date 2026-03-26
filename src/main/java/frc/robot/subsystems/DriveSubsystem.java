@@ -8,6 +8,7 @@ import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
 
+import java.io.File;
 import java.util.Optional;
 
 //import java.util.logging.Logger;
@@ -43,8 +44,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import java.io.File;
-
 /*
  * "IMUAxis.kZ" was removed from all versions of m_gyro.getAngle because we use a NavX gyro
  * 
@@ -101,15 +100,13 @@ private final Field2d m_field = new Field2d();
 private AprilTagFieldLayout fieldLayout;
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
-    //
-    try {
+
+ try {
           //try loading 2026 field through json file
             fieldLayout = new AprilTagFieldLayout(new File(Filesystem.getDeployDirectory(),"2026-rebuilt-andymark.json").getAbsolutePath());
         } catch (Exception e) {
             e.printStackTrace();
         }
-    
-
 //put pathplanner stuff here
 //
 
@@ -161,8 +158,8 @@ private AprilTagFieldLayout fieldLayout;
 
     // Initialize Pose Estimator
     m_poseEstimator = new SwerveDrivePoseEstimator(
-        DriveConstants.kDriveKinematics,
-        Rotation2d.fromDegrees((m_gyro.getAngle()) + 180),
+        DriveConstants.kDriveKinematics, 
+       getHeading(),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -238,9 +235,10 @@ private AprilTagFieldLayout fieldLayout;
       return;
     }
     
-    LimelightHelpers.SetRobotOrientation("limelight-four", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+    LimelightHelpers.SetRobotOrientation("limelight-four", m_gyro.getAngle(), 0, 0, 0, 0, 0);
     var mt2_visionEstimate = 
         LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-four");
+
     var visionEstimate =
         LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-four");//use limelight host name
     
@@ -284,11 +282,12 @@ private AprilTagFieldLayout fieldLayout;
       }
     }
  
-    // if (!reject) {
-    //   m_poseEstimator.addVisionMeasurement(
-    //       visionEstimate.pose,
-    //       visionEstimate.timestampSeconds);
-    // }
+    if (!reject) {
+      m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.5,.5,9999999)); //unsure, copied from mt2
+      m_poseEstimator.addVisionMeasurement(
+          visionEstimate.pose,
+          visionEstimate.timestampSeconds);
+    }
   }
     
  m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());//update robot position in field, further reviews needed
@@ -345,16 +344,17 @@ private SwerveModuleState[] getModuleStates() {
         },
         pose);
   }
-  public AprilTagFieldLayout getFieldLayout() {
-        return fieldLayout;
-    }
 
  //method to get range 
  public double getRange()
  {
+  if (m_poseEstimator == null) {
+    DriverStation.reportError("poseEstimator null!", false);
+    return -1;
+}
   //debug for fieldLayout
   if (fieldLayout == null) {
-        DriverStation.reportError("Range Error: fieldLayout is NULL", false);
+        DriverStation.reportError("field layout null", false);
         return -1;
     }
   //get bot translation
