@@ -62,7 +62,7 @@ public double getShooterRPM(double distance)
 public void smartShoot(double rpm)
 {
   m_pidController1.setSetpoint(-rpm, ControlType.kVelocity);
-  m_pidController2.setSetpoint(rpm, ControlType.kVelocity);
+  m_pidController2.setSetpoint(-rpm, ControlType.kVelocity);
 
 }
 

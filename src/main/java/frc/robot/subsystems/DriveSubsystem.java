@@ -34,6 +34,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 //import edu.wpi.first.wpilibj.ADIS16470_IMU;
 //import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
@@ -42,6 +43,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import java.io.File;
+
 /*
  * "IMUAxis.kZ" was removed from all versions of m_gyro.getAngle because we use a NavX gyro
  * 
@@ -95,10 +98,17 @@ private SwerveDrivePoseEstimator m_poseEstimator;
 
 private final Field2d m_field = new Field2d();
 //get this year's field map
-AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark);
+private AprilTagFieldLayout fieldLayout;
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
-
+    //
+    try {
+          //try loading 2026 field through json file
+            fieldLayout = new AprilTagFieldLayout(new File(Filesystem.getDeployDirectory(),"2026-rebuilt-andymark.json").getAbsolutePath());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    
 
 //put pathplanner stuff here
 //
@@ -335,10 +345,18 @@ private SwerveModuleState[] getModuleStates() {
         },
         pose);
   }
+  public AprilTagFieldLayout getFieldLayout() {
+        return fieldLayout;
+    }
 
  //method to get range 
  public double getRange()
  {
+  //debug for fieldLayout
+  if (fieldLayout == null) {
+        DriverStation.reportError("Range Error: fieldLayout is NULL", false);
+        return -1;
+    }
   //get bot translation
   Pose2d robotPose = m_poseEstimator.getEstimatedPosition();
   Translation2d robotTranslation = robotPose.getTranslation();
