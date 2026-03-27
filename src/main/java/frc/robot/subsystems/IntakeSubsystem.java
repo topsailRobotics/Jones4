@@ -1,38 +1,41 @@
 package frc.robot.subsystems;
 
-import java.io.ObjectInputFilter.Config;
+//import java.io.ObjectInputFilter.Config;
 
-import com.revrobotics.AbsoluteEncoder;
+//import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.FeedbackSensor;
-import com.revrobotics.spark.SparkAnalogSensor;
+//import com.revrobotics.spark.SparkAnalogSensor;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.SparkBase.PersistMode;
+//import com.revrobotics.spark.SparkBase.ControlType;
+//import com.revrobotics.spark.SparkBase.PersistMode;
 
-import edu.wpi.first.units.measure.Velocity;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.units.measure.Velocity;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
 
   // Initilization
-private final SparkMax m_IntakeArm = new SparkMax(IntakeConstants.kIntakeArmID, MotorType.kBrushless);
-private final SparkMax m_IntakeWheel= new SparkMax(IntakeConstants.kIntakeWheelID, MotorType.kBrushless);
-private final SparkClosedLoopController m_pidController1 = m_IntakeArm.getClosedLoopController();
-private final AbsoluteEncoder m_AbsoluteEncoder = m_IntakeArm.getAbsoluteEncoder();
-  public IntakeSubsystem() {
+private final SparkMax m_IntakeLeft = new SparkMax(IntakeConstants.kIntakeArmID, MotorType.kBrushless);
+private final SparkMax m_IntakeRight= new SparkMax(IntakeConstants.kIntakeWheelID, MotorType.kBrushless);
+
+//private final SparkClosedLoopController m_pidController1 = m_IntakeArm.getClosedLoopController();
+//private final AbsoluteEncoder m_AbsoluteEncoder = m_IntakeArm.getAbsoluteEncoder();
+  
+public IntakeSubsystem() {
+  /* 
 SparkMaxConfig config = new SparkMaxConfig();
 config.closedLoop.
 feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
 .pid(1, 0.0025, 0.05)
 .outputRange(-1,1);
 m_IntakeArm.configure(config,ResetMode.kResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
-  
+  */
   }
 
   /**
@@ -65,11 +68,13 @@ m_IntakeArm.configure(config,ResetMode.kResetSafeParameters, com.revrobotics.Per
    * @author Larry9297
    */
   public void runIntake() {
-    m_IntakeWheel.setVoltage(-8);
+    m_IntakeLeft.setVoltage(-4);
+    m_IntakeRight.setVoltage(4);
     }
 
   public void reverseIntake() {
-    m_IntakeWheel.setVoltage(5);
+    m_IntakeLeft.setVoltage(6.5);
+    m_IntakeRight.setVoltage(-6.5);
     }
 
   /**
@@ -78,19 +83,21 @@ m_IntakeArm.configure(config,ResetMode.kResetSafeParameters, com.revrobotics.Per
    * @author Larry9297
    */
   public void stopIntake() {
-    m_IntakeWheel.setVoltage(0);
+    m_IntakeLeft.setVoltage(0);
+    m_IntakeRight.setVoltage(0);
   }
 
   //intake out will be scheduled separately using on true logic
   public void intakeUp(double setposition)
   {
-    m_pidController1.setSetpoint(setposition, com.revrobotics.spark.SparkBase.ControlType.kPosition);
+    //set point .15
+    //m_pidController1.setSetpoint(setposition, com.revrobotics.spark.SparkBase.ControlType.kDutyCycle);
   }
   
   //default state is set point 0, parameter omitted
   public void intakeOff()
   {
-    m_pidController1.setSetpoint(0, com.revrobotics.spark.SparkBase.ControlType.kDutyCycle); //0.85 is at 0ish
+    //m_pidController1.setSetpoint(0, com.revrobotics.spark.SparkBase.ControlType.kDutyCycle); //0.85 is at 0ish
   }
 
   

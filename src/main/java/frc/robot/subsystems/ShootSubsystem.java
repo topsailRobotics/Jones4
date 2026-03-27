@@ -4,11 +4,11 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.Command;
+//import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkAnalogSensor;
+//import com.revrobotics.spark.SparkAnalogSensor;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
@@ -39,6 +39,33 @@ private final SparkClosedLoopController m_pidController2 = m_ShootRight.getClose
   }
   //For now, use 4 distinct outputs based on distance ranges from the hub. 
   //Use shooterTest for testing
+
+/**
+ *smart shoot method
+ *try interpolation and wpilib mapping later
+ *@param distance : in meters between robot and 
+ *{@link https://firstfrc.blob.core.windows.net/frc2026/FieldAssets/2026-field-dimension-dwgs.pdf}
+ */
+public double getShooterRPM(double distance)
+{
+  //default case
+  if (distance == -1) return 0;
+  //simple interpolation
+  if (distance >= 12.5 && distance <=14.7 )//magical numbers obtained by testing
+  {
+    return 2500 + 300 * (distance-12.5);
+  }
+  //ferry, when distance too far, most likely unused
+  return 100;
+}
+
+public void smartShoot(double rpm)
+{
+  m_pidController1.setSetpoint(-rpm, ControlType.kVelocity);
+  m_pidController2.setSetpoint(-rpm, ControlType.kVelocity);
+
+}
+
 
  /**
    * Method used to test the shooter. Will probably get deleted or not be used in final robot.

@@ -5,19 +5,64 @@
     "data": {
       "commands": [
         {
-          "type": "deadline",
+          "type": "sequential",
           "data": {
             "commands": [
               {
-                "type": "wait",
+                "type": "deadline",
                 "data": {
-                  "waitTime": 0.5
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake Down"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 4.0
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "ShootLow"
+                      }
+                    },
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 2.0
+                            }
+                          },
+                          {
+                            "type": "deadline",
+                            "data": {
+                              "commands": [
+                                {
+                                  "type": "wait",
+                                  "data": {
+                                    "waitTime": 5.0
+                                  }
+                                },
+                                {
+                                  "type": "named",
+                                  "data": {
+                                    "name": "Run Indexer"
+                                  }
+                                },
+                                {
+                                  "type": "named",
+                                  "data": {
+                                    "name": "Intake"
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -26,13 +71,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Blue 3 part 1"
+            "pathName": "red 3 part -1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Blue 3 part 2"
+            "pathName": "Red 3 part 0"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red 3 part 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red 3 part 2"
           }
         },
         {
@@ -48,7 +105,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Blue 3 part 3"
+                  "pathName": "Red 3 part 3"
                 }
               },
               {
@@ -63,19 +120,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Blue 3 part 4"
+            "pathName": "Red 3 part 4"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Blue 3 part 5"
+            "pathName": "Red 3 part 5"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Blue 3 part 6 alternative"
+            "pathName": "Red 3 part 6"
           }
         },
         {
@@ -146,6 +203,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Red",
   "choreoAuto": false
 }

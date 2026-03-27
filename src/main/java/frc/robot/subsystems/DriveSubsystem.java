@@ -8,7 +8,10 @@ import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
 
-import java.util.logging.Logger;
+import java.io.File;
+import java.util.Optional;
+
+//import java.util.logging.Logger;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
@@ -17,20 +20,23 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
 
-import edu.wpi.first.math.MathUtil;
+//import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+//import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.ADIS16470_IMU;
-import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
+//import edu.wpi.first.wpilibj.ADIS16470_IMU;
+//import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
@@ -92,11 +98,16 @@ private SwerveDrivePoseEstimator m_poseEstimator;
 
 private final Field2d m_field = new Field2d();
 //get this year's field map
-AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark);
+private AprilTagFieldLayout fieldLayout;
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
 
-
+ try {
+          //try loading 2026 field through json file
+            fieldLayout = new AprilTagFieldLayout(new File(Filesystem.getDeployDirectory(),"2026-rebuilt-andymark.json").getAbsolutePath());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 //put pathplanner stuff here
 //
 
@@ -148,8 +159,8 @@ AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k
 
     // Initialize Pose Estimator
     m_poseEstimator = new SwerveDrivePoseEstimator(
-        DriveConstants.kDriveKinematics,
-        Rotation2d.fromDegrees((m_gyro.getAngle()) + 180),
+        DriveConstants.kDriveKinematics, 
+       getHeading(),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -165,13 +176,13 @@ AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k
   public void periodic() {
     //ranging 
     
-    rangingVelocity2 = (LimelightHelpers.getTY("limelight-four")+2.47)* 0.075;
+    rangingVelocity2 = (LimelightHelpers.getTY("limelight-four")-0.6)* 0.035;
     rangingVelocity2 *= -1.0;
 
-    rangingVelocity = (LimelightHelpers.getTY("limelight-four")-13.5)* 0.07;
+    rangingVelocity = (LimelightHelpers.getTY("limelight-four")-15.5)* 0.03; //old was 16
     rangingVelocity *= -1.0;
     //ferry
-    newAngle = (-(m_gyro.getAngle())-180) % 360;
+    newAngle = ((m_gyro.getAngle())-180) % 360;
     if (newAngle >= 180){
       newAngle = -(180-(newAngle - 180));
     } else if(newAngle <= -180){
@@ -210,6 +221,8 @@ AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k
     if (LimelightHelpers.getTX("limelight-four") <= 7 && LimelightHelpers.getTX("limelight-four") >= -7){
       targetingAngularVelocity = 0;
     }
+//
+
 
 
     m_poseEstimator.update(
@@ -221,13 +234,17 @@ AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k
             m_rearRight.getPosition()
         });
      //poseEstimation using megatag1 and 2
+
+
+
     if (m_poseEstimator == null || m_gyro == null) { //prevent null pointer exception in disabled periodic
       return;
     }
     
-    LimelightHelpers.SetRobotOrientation("limelight-four", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-    var mt2_visionEstimate = 
-        LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-four");
+    LimelightHelpers.SetRobotOrientation("limelight-four", -m_gyro.getAngle(), 0, 0, 0, 0, 0);
+//    var mt2_visionEstimate = 
+//        LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-four");
+
     var visionEstimate =
         LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-four");//use limelight host name
     
@@ -237,24 +254,28 @@ AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k
     boolean reject = false;
     
     //mt2
-    if (mt2_visionEstimate == null || mt2_visionEstimate.tagCount == 0) {
-      mt2_reject = true;
-    }
-    if(Math.abs(m_gyro.getRate()) > 360)
-    {
-      mt2_reject = true;
-    }
+    // if (mt2_visionEstimate == null || mt2_visionEstimate.tagCount == 0) {
+    //   mt2_reject = true;
+    // }
+    // if(Math.abs(m_gyro.getRate()) > 360)
+    // {
+    //   mt2_reject = true;
+    // }
     
-    if(!mt2_reject)
-    {
-      m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-      m_poseEstimator.addVisionMeasurement(
-          mt2_visionEstimate.pose,
-          mt2_visionEstimate.timestampSeconds);
-    }
+    // if(!mt2_reject)
+    // {
+      
+    //   m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+    //   m_poseEstimator.addVisionMeasurement(
+    //       mt2_visionEstimate.pose,
+    //       mt2_visionEstimate.timestampSeconds);
+    // }
+          
+
   //mt1
-  if(mt2_reject)
-  {
+SmartDashboard.putData(m_field);
+SmartDashboard.putBoolean("mt1 reject",reject);
+
     if (visionEstimate == null || visionEstimate.tagCount == 0) { //prevent null initialization, short-circuits
       reject = true;
     }
@@ -264,17 +285,19 @@ AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k
       if (visionEstimate.rawFiducials[0].ambiguity > 0.7) {
         reject = true;
       }
-      if (visionEstimate.rawFiducials[0].distToCamera > 3) {
+      if (visionEstimate.rawFiducials[0].distToCamera > 1) {
         reject = true;
       }
     }
-
+ ///* 
     if (!reject) {
+      m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.25,.25, Math.PI/6)); //unsure, copied from mt2
       m_poseEstimator.addVisionMeasurement(
           visionEstimate.pose,
-          visionEstimate.timestampSeconds);
+          visionEstimate.timestampSeconds);          
     }
-  }
+  //*/
+    
  m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());//update robot position in field, further reviews needed
   SmartDashboard.putNumber("NavX Gyro", m_gyro.getAngle());
   }
@@ -333,13 +356,37 @@ private SwerveModuleState[] getModuleStates() {
  //method to get range 
  public double getRange()
  {
+  if (m_poseEstimator == null) {
+    DriverStation.reportError("poseEstimator null!", false);
+    return -1;
+}
+  //debug for fieldLayout
+  if (fieldLayout == null) {
+        DriverStation.reportError("field layout null", false);
+        return -1;
+    }
+  //get bot translation
   Pose2d robotPose = m_poseEstimator.getEstimatedPosition();
   Translation2d robotTranslation = robotPose.getTranslation();
   
+  //get tag id from limelight
   double tagID = LimelightHelpers.getFiducialID("limelight-four");
-  Pose2d tagPose = fieldLayout.getTagPose((int)tagID).get().toPose2d();
-  Translation2d tagTranslation = tagPose.getTranslation();
 
+  //return -1 if tag not seen 
+  if (tagID == -1)
+   {
+    return -1;
+   }
+
+  // If the tag is not in the field layout, return invalid value
+  Optional<Pose3d> tagPose = fieldLayout.getTagPose((int)tagID);
+  if (tagPose.isEmpty())
+  {
+    return -1;
+  }
+
+  //calculate distance between bot and tag
+  Translation2d tagTranslation = tagPose.get().toPose2d().getTranslation();
   return(robotTranslation.getDistance(tagTranslation));
  }
 
@@ -429,7 +476,7 @@ private SwerveModuleState[] getModuleStates() {
    * @author septiceyesam2049-bot
    */
   public Rotation2d getHeading() {
-    return Rotation2d.fromDegrees(m_gyro.getAngle());
+    return Rotation2d.fromDegrees(-m_gyro.getAngle());  //change perhaps
   }
 
   /**
