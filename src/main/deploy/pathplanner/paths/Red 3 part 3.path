@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.312686146775057,
-        "y": 8.000307353695476
+        "x": 8.33556626506024,
+        "y": 5.739722891566265
       },
       "isLocked": false,
       "linkedName": null
@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 8.3,
-        "y": 4.0
+        "y": 5.0
       },
       "prevControl": {
         "x": 8.291266052260635,
-        "y": 3.6806380495221056
+        "y": 4.680638049522106
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
     "rotation": -90.0
   },
   "reversed": false,
-  "folder": "Red 3 Auto",
+  "folder": "Red 3",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -90.0

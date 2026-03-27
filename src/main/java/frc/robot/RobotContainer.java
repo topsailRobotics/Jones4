@@ -61,7 +61,7 @@ public class RobotContainer {
   private final String m_Auto2 = "Red 1 close Auto";
   private final String m_Auto3 = "Red 3 close Auto";
   private final String m_Auto4 = "Blue 2 Auto";
-    private final String m_Auto5 = "Middle Simple";
+    private final String m_Auto5 = "Red Test 3 debig duplicate";
 
   //private final String m_TestAuto = "test";
 
