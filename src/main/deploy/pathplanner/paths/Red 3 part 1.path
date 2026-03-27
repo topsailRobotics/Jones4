@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 15.0,
+        "x": 13.5,
         "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 12.643266761768901,
+        "x": 11.143266761768901,
         "y": 5.490599144079885
       },
       "isLocked": false,
@@ -45,7 +45,7 @@
     "rotation": -90.0
   },
   "reversed": false,
-  "folder": "Red 3 Auto",
+  "folder": "Red 3",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -90.0

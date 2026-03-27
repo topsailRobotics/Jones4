@@ -15,6 +15,7 @@ import frc.robot.Util.LimelightHelpers;
 import frc.robot.commands.Intake;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.ShootBackUp;
+import frc.robot.commands.SmartShoot;
 import frc.robot.subsystems.BlinkinSubsystem;
 //import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -60,7 +61,7 @@ public class RobotContainer {
   private final String m_Auto2 = "Red 1 close Auto";
   private final String m_Auto3 = "Red 3 close Auto";
   private final String m_Auto4 = "Blue 2 Auto";
-    private final String m_Auto5 = "Middle Simple";
+    private final String m_Auto5 = "Red Test 3 debig duplicate";
 
   //private final String m_TestAuto = "test";
 
@@ -192,6 +193,9 @@ public class RobotContainer {
     m_driverController0.povDown().onTrue(new InstantCommand(()->m_robotDrive.zeroHeading(), m_robotDrive));
     m_driverController0.povUp().whileTrue(new ShootBackUp(m_shooter,m_indexer));
 
+    //SmartShoot command, disabled now, field relative ranging inaccurate
+    //m_driverController0.povLeft()
+    //.toggleOnTrue(new SmartShoot(m_shooter,m_indexer,m_robotDrive).alongWith(new InstantCommand(() -> m_BlinkinSubsystem.slowBlinkin())));
 
     //shooter commands
     m_driverController1.a()

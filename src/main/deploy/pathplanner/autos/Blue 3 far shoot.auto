@@ -128,7 +128,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Blue 3 part 2"
+            "pathName": "Blue 3 Part 2"
           }
         },
         {
@@ -268,6 +268,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Blue",
   "choreoAuto": false
 }

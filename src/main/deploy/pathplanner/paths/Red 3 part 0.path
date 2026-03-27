@@ -16,11 +16,11 @@
     },
     {
       "anchor": {
-        "x": 15.0,
+        "x": 13.5,
         "y": 5.5
       },
       "prevControl": {
-        "x": 15.308366443079793,
+        "x": 13.808366443079793,
         "y": 5.517080927691872
       },
       "nextControl": null,
@@ -45,7 +45,7 @@
     "rotation": -90.0
   },
   "reversed": false,
-  "folder": "Red 3 Auto",
+  "folder": "Red 3",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -90.0
