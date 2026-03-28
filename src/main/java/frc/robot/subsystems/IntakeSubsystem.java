@@ -68,14 +68,20 @@ m_IntakeArm.configure(config,ResetMode.kResetSafeParameters, com.revrobotics.Per
    * @author Larry9297
    */
   public void runIntake() {
-    m_IntakeLeft.setVoltage(-4);
-    m_IntakeRight.setVoltage(4);
+    m_IntakeLeft.setVoltage(-4.3);
+    m_IntakeRight.setVoltage(4.3);
     }
 
   public void reverseIntake() {
     m_IntakeLeft.setVoltage(6.5);
     m_IntakeRight.setVoltage(-6.5);
     }
+  
+    public void superCharge() {
+    m_IntakeLeft.setVoltage(-6.5);
+    m_IntakeRight.setVoltage(6.5);
+    }
+
 
   /**
    * Method used to stop intake

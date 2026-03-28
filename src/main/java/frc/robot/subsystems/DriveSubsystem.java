@@ -249,6 +249,8 @@ private AprilTagFieldLayout fieldLayout;
 
     var visionEstimate =
         LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-four");//use limelight host name
+
+
     
     // if our angular velocity is greater than 360 degrees per second, ignore vision updates
     //rejection booleans
@@ -287,7 +289,7 @@ SmartDashboard.putBoolean("mt1 reject",reject);
       if (visionEstimate.rawFiducials[0].ambiguity > 0.7) {
         reject = true;
       }
-      if (visionEstimate.rawFiducials[0].distToCamera > 1) {
+      if (visionEstimate.rawFiducials[0].distToCamera > 3) {
         reject = true;
       }
     }
@@ -297,6 +299,10 @@ SmartDashboard.putBoolean("mt1 reject",reject);
       m_poseEstimator.addVisionMeasurement(
           visionEstimate.pose,
           visionEstimate.timestampSeconds);          
+     m_field.getObject("limelight estimate").setPose(visionEstimate.pose);
+    }
+    else{
+      m_field.getObject("limelight estimate").setPose(new Pose2d());
     }
   //*/
     

@@ -181,9 +181,13 @@ NamedCommands.registerCommand("ShootLow", new Shoot(m_shooter,1));
           false)));
 
     Trigger rightTrigger = new Trigger(() -> m_driverController0.getRightTriggerAxis() > 0.5);
-    rightTrigger.toggleOnTrue(new Intake(m_intake, m_indexer, true));
+    rightTrigger.whileTrue(new Intake(m_intake, m_indexer, true));
 
-    
+    Trigger leftTrigger = new Trigger(() -> m_driverController0.getLeftTriggerAxis() > 0.5);
+
+    leftTrigger.toggleOnTrue(new RunCommand(  //changed from RunCommand to Instant Command, control loop should do the job
+              () -> m_intake.superCharge(),
+              m_intake));
    
     // m_driverController0.rightBumper().whileTrue(new RunCommand(
     //   () -> m_robotDrive.drive(
