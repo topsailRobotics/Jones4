@@ -30,12 +30,15 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 //import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 //import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
@@ -51,25 +54,29 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final IndexerSubsystem m_indexer = new IndexerSubsystem();
-  private final BlinkinSubsystem m_BlinkinSubsystem = new BlinkinSubsystem();
+  //private final BlinkinSubsystem m_BlinkinSubsystem = new BlinkinSubsystem();
   //private final ClimberSubsystem m_climber = new ClimberSubsystem();
   private final ShootSubsystem m_shooter = new ShootSubsystem(); //actions not declared yet in shootersubsystem
 
-  //autos
-  private final String m_defaultAuto = "Blue 1 close shoot";
+  //autos, only run blue, reflect around origin
+  private final String m_defaultAuto = "Blue 1 close Auto";
+  private final String m_Auto2 = "Blue 2 Auto";
   private final String m_Auto1 = "Blue 3 close Auto";
-  private final String m_Auto2 = "Red 1 close Auto";
-  private final String m_Auto3 = "Red 3 close Auto";
-  private final String m_Auto4 = "Blue 2 Auto";
-    private final String m_Auto5 = "Red Test 3 debig duplicate";
+  private final String m_Auto6 = "Copy of Blue 2 Auto";
+    private final String m_Auto7 = "Lynk Blue 3 close Auto";
+
+ // private final String m_Auto3 = "Red 3 close Auto";
+ // private final String m_Auto5 = "Red Test 3 debig duplicate";
 
   //private final String m_TestAuto = "test";
 
   // A chooser for autonomous commands
-  SendableChooser<String> m_chooser = new SendableChooser<>();
-  
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  //  SendableChooser<String> m_chooser = new SendableChooser<>();
 
-   ;
+  //private final SendableChooser<String> m_chooser;
+
+   
     
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -83,18 +90,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Add commands to the autonomous command chooser
-  m_chooser.setDefaultOption(m_defaultAuto, m_defaultAuto);
-  m_chooser.addOption(m_Auto1, m_Auto1);
-  m_chooser.addOption(m_Auto2, m_Auto2);
-  m_chooser.addOption(m_Auto3, m_Auto3);
-  m_chooser.addOption(m_Auto4, m_Auto4);
-    m_chooser.addOption(m_Auto5, m_Auto5);
-
-  // Put the chooser on the dashboard
-  SmartDashboard.putData(m_chooser);
-
-    NamedCommands.registerCommand("ShootLow", new Shoot(m_shooter,1));
+NamedCommands.registerCommand("ShootLow", new Shoot(m_shooter,1));
     NamedCommands.registerCommand("ShootMedium", new RunCommand( () -> m_shooter.shooterMediumLow(), m_shooter));// only run shooter
     NamedCommands.registerCommand("ShootHigh", new Shoot(m_shooter,4));
     NamedCommands.registerCommand("Intake", new Intake(m_intake,m_indexer, false));
@@ -103,6 +99,29 @@ public class RobotContainer {
     NamedCommands.registerCommand("Stop Indexer", new InstantCommand( () -> m_indexer.stopIndexVert(), m_indexer));
     NamedCommands.registerCommand("Intake Down", new RunCommand( () -> m_intake.intakeUp(-0.15), m_intake));
     NamedCommands.registerCommand("Stop Shooter", new InstantCommand( () -> m_shooter.stopShooter(), m_shooter));// only run shooter
+    // Build an auto chooser. This will use Commands.none() as the default option.
+   // m_chooser = AutoBuilder.buildAutoChooser();
+    // Add commands to the autonomous command chooser
+  //  m_chooser.setDefaultOption(m_defaultAuto, m_defaultAuto);
+  //   m_chooser.addOption(m_Auto1,m_Auto1);
+  //   m_chooser.addOption(m_Auto2, m_Auto2);
+  //   m_chooser.addOption(m_Auto6, m_Auto6);
+      m_chooser.addOption(m_Auto6, AutoBuilder.buildAuto(m_Auto6));
+            m_chooser.addOption(m_Auto1, AutoBuilder.buildAuto(m_Auto1));
+            m_chooser.addOption(m_Auto2, AutoBuilder.buildAuto(m_Auto2));
+            m_chooser.addOption(m_Auto7, AutoBuilder.buildAuto(m_Auto7));
+
+            m_chooser.addOption(m_defaultAuto, AutoBuilder.buildAuto(m_defaultAuto));
+
+      m_chooser.addOption("None", Commands.none());
+
+//  // m_chooser.addOption(m_Auto3, m_Auto3);
+//   m_chooser.addOption(m_Auto6, m_Auto6);
+//  // m_chooser.addOption(m_Auto5, m_Auto5);
+    SmartDashboard.putData("Auto Chooser", m_chooser);
+  // Put the chooser on the dashboard
+
+    
 
     //NamedCommands.registerCommand("ReverseIntake", new Intake(m_intake,m_indexer, true));
 
@@ -141,7 +160,7 @@ public class RobotContainer {
      // m_climber.setDefaultCommand(new RunCommand(()-> m_climber.stopClimber(),m_climber));
       m_shooter.setDefaultCommand(new RunCommand(()-> m_shooter.stopShooter(),m_shooter));
       m_indexer.setDefaultCommand(new RunCommand(()-> m_indexer.stopIndexVert(),m_indexer));
-      m_BlinkinSubsystem.setDefaultCommand(new RunCommand(()-> m_BlinkinSubsystem.idleBlinkin(),m_BlinkinSubsystem));
+      //m_BlinkinSubsystem.setDefaultCommand(new RunCommand(()-> m_BlinkinSubsystem.idleBlinkin(),m_BlinkinSubsystem));
 
       
 
@@ -178,7 +197,7 @@ public class RobotContainer {
               m_robotDrive));
 
     m_driverController0.rightBumper()
-    .toggleOnTrue(new Intake(m_intake,m_indexer, false).alongWith(new InstantCommand(() -> m_BlinkinSubsystem.intakeBlinkinFwrd()))); 
+    .toggleOnTrue(new Intake(m_intake,m_indexer, false)); 
    m_driverController0.x().whileTrue(new RunCommand(
       () -> m_robotDrive.drive(
           -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
@@ -199,11 +218,11 @@ public class RobotContainer {
 
     //shooter commands
     m_driverController1.a()
-    .toggleOnTrue(new Shoot(m_shooter,1).alongWith(new InstantCommand(() -> m_BlinkinSubsystem.slowBlinkin())));
+    .toggleOnTrue(new Shoot(m_shooter,1));
     m_driverController1.x()
-    .toggleOnTrue(new Shoot(m_shooter,2).alongWith(new InstantCommand(() -> m_BlinkinSubsystem.mediumBlinkin())));
+    .toggleOnTrue(new Shoot(m_shooter,2));
     m_driverController1.y()
-    .toggleOnTrue(new Shoot(m_shooter,4).alongWith(new InstantCommand(() -> m_BlinkinSubsystem.fastBlinkin())));
+    .toggleOnTrue(new Shoot(m_shooter,4));
     m_driverController1.leftBumper().whileTrue(new RunCommand(()-> m_indexer.reverseIndex()));
     m_driverController1.rightBumper().whileTrue(new RunCommand(()-> m_indexer.runIndexVert()));
   }
@@ -218,7 +237,10 @@ public class RobotContainer {
     // This method loads the auto when it is called, however, it is recommended
     // to first load your paths/autos when code starts, then return the
     // pre-loaded auto/path
-    return new PathPlannerAuto(m_chooser.getSelected());
+    
+    return m_chooser.getSelected();
+
+    //return new PathPlannerAuto(m_chooser.getSelected());
   }
 
 }//end of class

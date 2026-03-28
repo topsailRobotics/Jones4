@@ -98,8 +98,10 @@ private SwerveDrivePoseEstimator m_poseEstimator;
 
 private final Field2d m_field = new Field2d();
 //get this year's field map
+
 private AprilTagFieldLayout fieldLayout;
   /** Creates a new DriveSubsystem. */
+  
   public DriveSubsystem() {
 
  try {
@@ -241,7 +243,7 @@ private AprilTagFieldLayout fieldLayout;
       return;
     }
     
-    LimelightHelpers.SetRobotOrientation("limelight-four", -m_gyro.getAngle(), 0, 0, 0, 0, 0);
+//    LimelightHelpers.SetRobotOrientation("limelight-four", -m_gyro.getAngle(), 0, 0, 0, 0, 0);
 //    var mt2_visionEstimate = 
 //        LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-four");
 
@@ -250,7 +252,7 @@ private AprilTagFieldLayout fieldLayout;
     
     // if our angular velocity is greater than 360 degrees per second, ignore vision updates
     //rejection booleans
-    boolean mt2_reject = false;
+//    boolean mt2_reject = false;
     boolean reject = false;
     
     //mt2
@@ -291,7 +293,7 @@ SmartDashboard.putBoolean("mt1 reject",reject);
     }
  ///* 
     if (!reject) {
-      m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.25,.25, Math.PI/6)); //unsure, copied from mt2
+      m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.25,.25, .25)); //hitchhikers  0.5,0.5,1
       m_poseEstimator.addVisionMeasurement(
           visionEstimate.pose,
           visionEstimate.timestampSeconds);          
