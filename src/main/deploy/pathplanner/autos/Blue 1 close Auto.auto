@@ -83,19 +83,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SBlue 3 part 0"
+            "pathName": "SBlue 1 part 0"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "SBlue 3 part 1"
+            "pathName": "SBlue 1 part 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Blue 3 part 1.5"
+            "pathName": "SBlue 1 part 2"
           }
         },
         {
@@ -111,7 +111,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Blue 3 part 3"
+                  "pathName": "Copy of Blue 1 part 3"
                 }
               },
               {
@@ -126,19 +126,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Blue 3 part 4"
+            "pathName": "Copy of Blue 1 part 4"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Blue 3 part 5"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Blue 3 part 6 alternative"
+            "pathName": "Copy of Blue 1 part 5"
           }
         }
       ]

@@ -95,7 +95,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Blue 3 part 1.5"
+            "pathName": "SLynk Blue 3 part 1.5"
           }
         },
         {
@@ -111,7 +111,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Blue 3 part 3"
+                  "pathName": "SCopy of Lynk Blue 3 part 3"
                 }
               },
               {
@@ -126,25 +126,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Blue 3 part 4"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Blue 3 part 5"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Blue 3 part 6 alternative"
+            "pathName": "SBlue 3 rotate"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Blue",
+  "folder": null,
   "choreoAuto": false
 }
