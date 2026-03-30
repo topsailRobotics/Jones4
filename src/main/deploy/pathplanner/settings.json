@@ -3,10 +3,10 @@
   "robotLength": 0.9,
   "holonomicMode": true,
   "pathFolders": [
+    "Blue 1",
     "Blue 1(old)",
     "Blue 2",
     "Blue 3",
-    "Blue 1",
     "Red 1",
     "Red 3"
   ],

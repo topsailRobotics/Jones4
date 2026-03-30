@@ -15,7 +15,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 3.5
+                        "waitTime": 4.0
                       }
                     },
                     {
@@ -41,7 +41,7 @@
                                 {
                                   "type": "wait",
                                   "data": {
-                                    "waitTime": 3.0
+                                    "waitTime": 3.5
                                   }
                                 },
                                 {
@@ -130,9 +130,28 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "SBlue 1 part 5"
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 4.0
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "SBlue 1 part 5"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "SuperCharge"
+                }
+              }
+            ]
           }
         },
         {

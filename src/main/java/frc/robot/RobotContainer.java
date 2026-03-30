@@ -59,11 +59,12 @@ public class RobotContainer {
   private final ShootSubsystem m_shooter = new ShootSubsystem(); //actions not declared yet in shootersubsystem
 
   //autos, only run blue, reflect around origin
-  private final String m_defaultAuto = "Blue 1 close Auto";
-  private final String m_Auto2 = "Blue 2 Auto";
-  private final String m_Auto1 = "Blue 3 close Auto";
-  private final String m_Auto6 = "Copy of Blue 2 Auto";
-    private final String m_Auto7 = "Lynk Blue 3 close Auto";
+  private final String m_defaultAuto = "Blue 3 double sweep";
+  private final String m_Auto1 = "Blue 3 single sweep";
+  private final String m_Auto2 = "Blue 1 double sweep";
+  private final String m_Auto3 = "Copy of Blue 2 Auto";
+  private final String m_Auto4 = "Lynk Blue 3 close Auto";
+  private final String m_Auto5 = "Blue 3 close Auto";
 
  // private final String m_Auto3 = "Red 3 close Auto";
  // private final String m_Auto5 = "Red Test 3 debig duplicate";
@@ -94,6 +95,7 @@ NamedCommands.registerCommand("ShootLow", new Shoot(m_shooter,1));
     NamedCommands.registerCommand("ShootMedium", new RunCommand( () -> m_shooter.shooterMediumLow(), m_shooter));// only run shooter
     NamedCommands.registerCommand("ShootHigh", new Shoot(m_shooter,4));
     NamedCommands.registerCommand("Intake", new Intake(m_intake,m_indexer, false));
+    NamedCommands.registerCommand("SuperCharge", new RunCommand( ()->m_intake.superCharge(), m_intake));
     NamedCommands.registerCommand("Lift Intake", new RunCommand( () -> m_intake.intakeUp(0.15), m_intake));
     NamedCommands.registerCommand("Run Indexer", new RunCommand( () -> m_indexer.runIndexVert(), m_indexer));
     NamedCommands.registerCommand("Stop Indexer", new InstantCommand( () -> m_indexer.stopIndexVert(), m_indexer));
@@ -106,12 +108,14 @@ NamedCommands.registerCommand("ShootLow", new Shoot(m_shooter,1));
   //   m_chooser.addOption(m_Auto1,m_Auto1);
   //   m_chooser.addOption(m_Auto2, m_Auto2);
   //   m_chooser.addOption(m_Auto6, m_Auto6);
-      m_chooser.addOption(m_Auto6, AutoBuilder.buildAuto(m_Auto6));
-            m_chooser.addOption(m_Auto1, AutoBuilder.buildAuto(m_Auto1));
-            m_chooser.addOption(m_Auto2, AutoBuilder.buildAuto(m_Auto2));
-            m_chooser.addOption(m_Auto7, AutoBuilder.buildAuto(m_Auto7));
+      m_chooser.addOption(m_defaultAuto, AutoBuilder.buildAuto(m_defaultAuto));
 
-            m_chooser.addOption(m_defaultAuto, AutoBuilder.buildAuto(m_defaultAuto));
+      m_chooser.addOption(m_Auto1, AutoBuilder.buildAuto(m_Auto1));
+      m_chooser.addOption(m_Auto2, AutoBuilder.buildAuto(m_Auto2));
+      m_chooser.addOption(m_Auto3, AutoBuilder.buildAuto(m_Auto3));
+      m_chooser.addOption(m_Auto4, AutoBuilder.buildAuto(m_Auto4));
+      m_chooser.addOption(m_Auto4, AutoBuilder.buildAuto(m_Auto5));
+
 
       m_chooser.addOption("None", Commands.none());
 
@@ -215,6 +219,8 @@ NamedCommands.registerCommand("ShootLow", new Shoot(m_shooter,1));
 
     m_driverController0.povDown().onTrue(new InstantCommand(()->m_robotDrive.zeroHeading(), m_robotDrive));
     m_driverController0.povUp().whileTrue(new ShootBackUp(m_shooter,m_indexer));
+    m_driverController0.povLeft().whileTrue(new RunCommand(()-> m_indexer.reverseIndex()));
+    m_driverController0.povRight().whileTrue(new RunCommand(()-> m_indexer.runIndexVert()));
 
     //SmartShoot command, disabled now, field relative ranging inaccurate
     //m_driverController0.povLeft()

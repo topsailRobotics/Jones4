@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -22,6 +23,7 @@ public class ShootSubsystem extends SubsystemBase {
     // back: electricals
     // left: climber
     // right: battery
+    public boolean m_Shooteron = false;
   private final SparkMax m_ShootLeft = new SparkMax(ShooterConstants.kleftshootermotorID, MotorType.kBrushless);
   private final SparkMax m_ShootRight= new SparkMax(ShooterConstants.krightshootermotorID, MotorType.kBrushless);
   public final RelativeEncoder m_Encoder = m_ShootLeft.getEncoder();
@@ -35,6 +37,9 @@ private final SparkClosedLoopController m_pidController2 = m_ShootRight.getClose
 
   @Override
   public void periodic() {
+     SmartDashboard.putNumber("left shooter", m_ShootLeft.getAppliedOutput());
+     SmartDashboard.putBoolean("shooteron?", m_Shooteron);
+
     // This method will be called once per scheduler run
   }
   //For now, use 4 distinct outputs based on distance ranges from the hub. 
@@ -82,13 +87,15 @@ public void smartShoot(double rpm)
   {
       m_pidController1.setSetpoint(-2500, ControlType.kVelocity); // straight in front of the hub
       m_pidController2.setSetpoint(-2500, ControlType.kVelocity);
-
+ m_Shooteron = true;
   }
 
     public void shooterMediumLow()
   {
       m_pidController1.setSetpoint(-3100, ControlType.kVelocity); //
       m_pidController2.setSetpoint(-3100, ControlType.kVelocity);
+       m_Shooteron = true;
+
   }
 
 
@@ -97,6 +104,8 @@ public void smartShoot(double rpm)
   {
       m_pidController1.setSetpoint(-3300, ControlType.kVelocity); //
       m_pidController2.setSetpoint(-3300, ControlType.kVelocity);
+       m_Shooteron = true;
+
   }
 
    /**
@@ -109,6 +118,8 @@ public void smartShoot(double rpm)
         // add constants for voltage setpoint later
       m_pidController1.setSetpoint(-5000, ControlType.kVelocity); //ferry 18-16 feet
       m_pidController2.setSetpoint(-5000, ControlType.kVelocity);
+       m_Shooteron = true;
+
   }
 
   /**
@@ -121,6 +132,8 @@ public void smartShoot(double rpm)
         // add constants for voltage setpoint later
         m_ShootLeft.setVoltage(-7);
         m_ShootRight.setVoltage(7);
+         m_Shooteron = true;
+
   }
 
   /**
@@ -133,6 +146,8 @@ public void smartShoot(double rpm)
         // add constants for voltage setpoint later
         m_ShootLeft.setVoltage(0);
         m_ShootRight.setVoltage(0);
+         m_Shooteron = false;
+
   }
   
   @Override
