@@ -97,7 +97,8 @@ public final class Constants {
     // The MAXSwerve module can be configured with one of three pinion gears: 12T,
     // 13T, or 14T. This changes the drive speed of the module (a pinion gear with
     // more teeth will result in a robot that drives faster).
-    public static final int kDrivingMotorPinionTeeth = 16; //high reduction --- changed this to 16 for the new gear ratio - Willem
+    public static final int kDrivingMotorPinionTeeth = 14;
+    public static final int kDrivingMotorDrivenTeeth = 21; //high reduction --- changed this to 16 for the new gear ratio - Willem
 
     // Calculations required for driving motor conversion factors and feed forward
     public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;
@@ -107,7 +108,7 @@ public final class Constants {
     // teeth on the bevel pinion
 
     
-    public static final double kDrivingMotorReduction = (45.0 * 19) / (kDrivingMotorPinionTeeth * 16);
+    public static final double kDrivingMotorReduction = (45.0 * kDrivingMotorDrivenTeeth) / (kDrivingMotorPinionTeeth * 15);
     public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters)
         / kDrivingMotorReduction;
   }

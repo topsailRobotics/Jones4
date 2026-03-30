@@ -14,7 +14,6 @@ package frc.robot.commands;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.IntakeSubsystem;
 
 /**
  * This command combines actions from indexer subsystem and intake subsystem for internal fuel storage.
