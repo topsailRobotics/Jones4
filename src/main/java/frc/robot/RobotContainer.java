@@ -223,8 +223,8 @@ NamedCommands.registerCommand("ShootLow", new Shoot(m_shooter,1));
     m_driverController0.povRight().whileTrue(new RunCommand(()-> m_indexer.runIndexVert()));
 
     //SmartShoot command, disabled now, field relative ranging inaccurate
-    //m_driverController0.povLeft()
-    //.toggleOnTrue(new SmartShoot(m_shooter,m_indexer,m_robotDrive).alongWith(new InstantCommand(() -> m_BlinkinSubsystem.slowBlinkin())));
+    m_driverController1.povDown()
+    .toggleOnTrue(new SmartShoot(m_shooter,m_indexer,m_robotDrive));
 
     //shooter commands
     m_driverController1.a()

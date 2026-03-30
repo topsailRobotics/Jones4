@@ -56,7 +56,7 @@ public double getShooterRPM(double distance)
   //default case
   if (distance == -1) return 0;
   //simple interpolation
-  if (distance >= 12.5 && distance <=14.7 )//magical numbers obtained by testing
+  if (distance >= 1.5 && distance <=4 )//magical numbers obtained by testing
   {
     return 2500 + 300 * (distance-12.5);
   }

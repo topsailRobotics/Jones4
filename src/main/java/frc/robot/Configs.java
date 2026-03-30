@@ -23,7 +23,7 @@ public final class Configs {
             double drivingFactor = ModuleConstants.kWheelDiameterMeters * Math.PI
                     / ModuleConstants.kDrivingMotorReduction;
             double turningFactor = 2 * Math.PI;
-            double drivingVelocityFeedForward = 1 / ModuleConstants.kDriveWheelFreeSpeedRps;
+            double drivingVelocityFeedForward = 12 / ModuleConstants.kDriveWheelFreeSpeedRps; //was originally 1 - larry
 
             drivingConfig
                     .idleMode(IdleMode.kBrake)
