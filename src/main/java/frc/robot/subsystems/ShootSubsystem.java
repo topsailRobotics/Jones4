@@ -56,19 +56,19 @@ public double getShooterRPM(double distance)
   //default case
   if (distance == -1) return 0;
   //simple interpolation
-  if (distance >= 1.5 && distance <=4 )//magical numbers obtained by testing
+  if (distance >= .8 && distance <=3.5 )//magical numbers obtained by testing
   {
-    return 2500 + 300 * (distance-12.5);
+    return 2500 + 320 * (distance-.8);
   }
   //ferry, when distance too far, most likely unused
-  return 100;
+  return 2000;
 }
 
 public void smartShoot(double rpm)
 {
   m_pidController1.setSetpoint(-rpm, ControlType.kVelocity);
   m_pidController2.setSetpoint(-rpm, ControlType.kVelocity);
-
+   m_Shooteron = true;
 }
 
 

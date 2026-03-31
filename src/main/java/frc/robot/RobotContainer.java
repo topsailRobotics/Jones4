@@ -155,9 +155,9 @@ NamedCommands.registerCommand("ShootLow", new Shoot(m_shooter,1));
           // Turning is controlled by the X axis of the right stick.
           new RunCommand(
               () -> m_robotDrive.drive(
-                  -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
-                  -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
-                  -MathUtil.applyDeadband(m_driverController0.getRightX(), OIConstants.kDriveDeadband),
+                  MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
+                  MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
+                  MathUtil.applyDeadband(m_driverController0.getRightX(), OIConstants.kDriveDeadband),
                   true),
               m_robotDrive));
       m_intake.setDefaultCommand(new RunCommand(()-> {m_intake.intakeOff();m_intake.stopIntake();},m_intake));  //stopIntake method broken up to 2 separate methods, this one controls intaker position
@@ -171,17 +171,17 @@ NamedCommands.registerCommand("ShootLow", new Shoot(m_shooter,1));
     Trigger aimingTrigger1 = new Trigger (()->LimelightHelpers.getFiducialID("limelight-four") > 0).and(m_driverController0.y());
     aimingTrigger1.whileTrue(new RunCommand(
       () -> m_robotDrive.drive(
-          m_robotDrive.rangingVelocity,
-          -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
-          m_robotDrive.targetingAngularVelocity,
+          -m_robotDrive.rangingVelocity,
+          MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
+          -m_robotDrive.targetingAngularVelocity,
           false)));
   
     Trigger aimingTrigger2 = new Trigger (()->LimelightHelpers.getFiducialID("limelight-four") > 0).and(m_driverController0.b());
     aimingTrigger2.whileTrue(new RunCommand(
       () -> m_robotDrive.drive(
-          m_robotDrive.rangingVelocity2,
-          -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
-          m_robotDrive.targetingAngularVelocity,
+          -m_robotDrive.rangingVelocity2,
+          MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
+          -m_robotDrive.targetingAngularVelocity,
           false)));
 
     Trigger rightTrigger = new Trigger(() -> m_driverController0.getRightTriggerAxis() > 0.5);
@@ -208,9 +208,9 @@ NamedCommands.registerCommand("ShootLow", new Shoot(m_shooter,1));
     .toggleOnTrue(new Intake(m_intake,m_indexer, false)); 
    m_driverController0.x().whileTrue(new RunCommand(
       () -> m_robotDrive.drive(
-          -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
-          -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
-          m_robotDrive.FerryAmount,
+          MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
+          MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
+          -m_robotDrive.FerryAmount,
           true)));
     
     m_driverController0.a().whileTrue(new RunCommand(  //changed from RunCommand to Instant Command, control loop should do the job
@@ -224,7 +224,7 @@ NamedCommands.registerCommand("ShootLow", new Shoot(m_shooter,1));
 
     //SmartShoot command, disabled now, field relative ranging inaccurate
     m_driverController1.povDown()
-    .toggleOnTrue(new SmartShoot(m_shooter,m_indexer,m_robotDrive));
+    .whileTrue(new SmartShoot(m_shooter,m_indexer,m_robotDrive));
 
     //shooter commands
     m_driverController1.a()

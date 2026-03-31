@@ -84,8 +84,8 @@ m_IntakeArm.configure(config,ResetMode.kResetSafeParameters, com.revrobotics.Per
     }
   
     public void superCharge() {
-    m_IntakeLeft.setVoltage(-6.5);
-    m_IntakeRight.setVoltage(6.5);
+    m_IntakeLeft.setVoltage(-5.5);
+    m_IntakeRight.setVoltage(5.5);
     m_intakeOn = "SUPERCHARGE";
     }
 
