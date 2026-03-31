@@ -91,11 +91,11 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-NamedCommands.registerCommand("ShootLow", new Shoot(m_shooter,1));
-    NamedCommands.registerCommand("ShootMedium", new RunCommand( () -> m_shooter.shooterMediumLow(), m_shooter));// only run shooter
-    NamedCommands.registerCommand("ShootHigh", new Shoot(m_shooter,4));
+NamedCommands.registerCommand("Shoot Low", new Shoot(m_shooter,1));
+    NamedCommands.registerCommand("Shoot Medium", new RunCommand( () -> m_shooter.shooterMediumLow(), m_shooter));// only run shooter
+    NamedCommands.registerCommand("Shoot High", new Shoot(m_shooter,4));
     NamedCommands.registerCommand("Intake", new Intake(m_intake,m_indexer, false));
-    NamedCommands.registerCommand("SuperCharge", new RunCommand( ()->m_intake.superCharge(), m_intake));
+    NamedCommands.registerCommand("Super Charge", new RunCommand( ()->m_intake.superCharge(), m_intake));
     NamedCommands.registerCommand("Lift Intake", new RunCommand( () -> m_intake.intakeUp(0.15), m_intake));
     NamedCommands.registerCommand("Run Indexer", new RunCommand( () -> m_indexer.runIndexVert(), m_indexer));
     NamedCommands.registerCommand("Stop Indexer", new InstantCommand( () -> m_indexer.stopIndexVert(), m_indexer));
