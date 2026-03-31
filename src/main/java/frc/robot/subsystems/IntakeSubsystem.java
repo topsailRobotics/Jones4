@@ -86,7 +86,7 @@ m_IntakeArm.configure(config,ResetMode.kResetSafeParameters, com.revrobotics.Per
     public void superCharge() {
     m_IntakeLeft.setVoltage(-5.5);
     m_IntakeRight.setVoltage(5.5);
-    m_intakeOn = "SUPERCHARGE";
+    m_intakeOn = "super charge";
     }
 
 
@@ -98,7 +98,7 @@ m_IntakeArm.configure(config,ResetMode.kResetSafeParameters, com.revrobotics.Per
   public void stopIntake() {
     m_IntakeLeft.setVoltage(0);
     m_IntakeRight.setVoltage(0);
-    m_intakeOn = "Off";
+    m_intakeOn = "off";
   }
 
   //intake out will be scheduled separately using on true logic
