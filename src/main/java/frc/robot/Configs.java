@@ -27,7 +27,7 @@ public final class Configs {
 
             drivingConfig
                     .idleMode(IdleMode.kBrake)
-                    .smartCurrentLimit(50,50); //added extra parameter for freelimit
+                    .smartCurrentLimit(50,50); //added extra parameter for freelimit maybe increase it
             drivingConfig.encoder
                     .positionConversionFactor(drivingFactor) // meters
                     .velocityConversionFactor(drivingFactor / 60.0); // meters per second
