@@ -13,11 +13,14 @@ import com.revrobotics.spark.SparkMax;
 //import com.revrobotics.spark.SparkBase.ControlType;
 //import com.revrobotics.spark.SparkBase.PersistMode;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.units.measure.Velocity;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 public class IntakeSubsystem extends SubsystemBase {
+      public String m_intakeOn = "Off";
+
   /** Creates a new ExampleSubsystem. */
 
   // Initilization
@@ -52,6 +55,7 @@ m_IntakeArm.configure(config,ResetMode.kResetSafeParameters, com.revrobotics.Per
 
   @Override
   public void periodic() {
+    SmartDashboard.putString("intakeon?", m_intakeOn);
     // This method will be called once per scheduler run
   }
 
@@ -68,14 +72,23 @@ m_IntakeArm.configure(config,ResetMode.kResetSafeParameters, com.revrobotics.Per
    * @author Larry9297
    */
   public void runIntake() {
-    m_IntakeLeft.setVoltage(-4);
-    m_IntakeRight.setVoltage(4);
+    m_IntakeLeft.setVoltage(-4.3);
+    m_IntakeRight.setVoltage(4.3);
+    m_intakeOn = "normal";
     }
 
   public void reverseIntake() {
     m_IntakeLeft.setVoltage(6.5);
     m_IntakeRight.setVoltage(-6.5);
+    m_intakeOn = "reverse";
     }
+  
+    public void superCharge() {
+    m_IntakeLeft.setVoltage(-5.5);
+    m_IntakeRight.setVoltage(5.5);
+    m_intakeOn = "super charge";
+    }
+
 
   /**
    * Method used to stop intake
@@ -85,6 +98,7 @@ m_IntakeArm.configure(config,ResetMode.kResetSafeParameters, com.revrobotics.Per
   public void stopIntake() {
     m_IntakeLeft.setVoltage(0);
     m_IntakeRight.setVoltage(0);
+    m_intakeOn = "off";
   }
 
   //intake out will be scheduled separately using on true logic

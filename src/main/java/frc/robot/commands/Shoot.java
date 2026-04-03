@@ -105,7 +105,7 @@ public class Shoot extends Command {
   @Override  // Called once the command ends or is interrupted.
   public void end(boolean interrupted) {
     m_shoot.stopShooter();
-    System.out.println("back up shooter off");
+    System.out.println("shooter off");
   }
 
   /**
