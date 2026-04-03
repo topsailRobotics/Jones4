@@ -13,11 +13,10 @@
 //imports
 package frc.robot.commands;
 import frc.robot.subsystems.ShootSubsystem;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.IndexerSubsystem;
+//import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 // import frc.robot.Constants.IntakeConstants;     currently unused
-import edu.wpi.first.wpilibj.Timer;
+//import edu.wpi.first.wpilibj.Timer;
 
 /**
  * Class that is used to command the robot to shoot.
@@ -31,9 +30,9 @@ public class Shoot extends Command {
 
   //instance variables
   private final ShootSubsystem m_shoot;
-  private DriveSubsystem m_drive;
+  //private DriveSubsystem m_drive;
   private int range;
-  private final Timer timer = new Timer();
+  //private final Timer timer = new Timer();
 
   /**
    * The constructor for the Shoot class.

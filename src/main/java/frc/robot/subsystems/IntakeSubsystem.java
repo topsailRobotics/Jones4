@@ -3,16 +3,12 @@ package frc.robot.subsystems;
 //import java.io.ObjectInputFilter.Config;
 
 //import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.ResetMode;
-import com.revrobotics.spark.FeedbackSensor;
 //import com.revrobotics.spark.SparkAnalogSensor;
-import com.revrobotics.spark.SparkClosedLoopController;
+//import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkMax;
 //import com.revrobotics.spark.SparkBase.ControlType;
 //import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ControlType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.units.measure.Velocity;
@@ -27,8 +23,8 @@ public class IntakeSubsystem extends SubsystemBase {
   // Initilization
 private final SparkMax m_IntakeLeft = new SparkMax(IntakeConstants.kIntakeArmID, MotorType.kBrushless);
 private final SparkMax m_IntakeRight= new SparkMax(IntakeConstants.kIntakeWheelID, MotorType.kBrushless);
-private final SparkClosedLoopController m_pidController1 = m_IntakeLeft.getClosedLoopController();
-private final SparkClosedLoopController m_pidController2 = m_IntakeRight.getClosedLoopController();
+//private final SparkClosedLoopController m_pidController1 = m_IntakeLeft.getClosedLoopController();
+//private final SparkClosedLoopController m_pidController2 = m_IntakeRight.getClosedLoopController();
 
 //private final SparkClosedLoopController m_pidController1 = m_IntakeArm.getClosedLoopController();
 //private final AbsoluteEncoder m_AbsoluteEncoder = m_IntakeArm.getAbsoluteEncoder();
