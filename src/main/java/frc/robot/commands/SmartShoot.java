@@ -40,7 +40,7 @@ public class SmartShoot extends Command {
     timer.reset();
     timer.start();
     //examine range accuracy
-    System.out.println("" + m_drive.getRange());
+    System.out.println(m_drive.getRange());
     
   }
 
