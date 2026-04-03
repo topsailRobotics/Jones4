@@ -16,7 +16,6 @@ import frc.robot.commands.Intake;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.ShootBackUp;
 import frc.robot.commands.SmartShoot;
-import frc.robot.subsystems.BlinkinSubsystem;
 //import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
@@ -40,7 +39,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -91,7 +89,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-NamedCommands.registerCommand("Shoot Low", new Shoot(m_shooter,1));
+NamedCommands.registerCommand("ShootLow", new Shoot(m_shooter,1));
     NamedCommands.registerCommand("Shoot Medium", new RunCommand( () -> m_shooter.shooterMediumLow(), m_shooter));// only run shooter
     NamedCommands.registerCommand("Shoot High", new Shoot(m_shooter,4));
     NamedCommands.registerCommand("Intake", new Intake(m_intake,m_indexer, false));

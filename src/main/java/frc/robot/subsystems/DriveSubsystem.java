@@ -22,7 +22,6 @@ import com.studica.frc.AHRS.NavXComType;
 
 //import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -44,7 +43,6 @@ import frc.robot.Util.LimelightHelpers;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 /*
  * "IMUAxis.kZ" was removed from all versions of m_gyro.getAngle because we use a NavX gyro
  * 
