@@ -20,9 +20,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class ShooterSubsystem extends SubsystemBase {
+public class badSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  public ShooterSubsystem() {}
+  public badSubsystem() {}
 
   /**
    * Example command factory method.
