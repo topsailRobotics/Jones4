@@ -9,13 +9,12 @@
  * this command only controls wheels spinning
  */
 
-//try having timer in execute only for indexer to make it wait
 //imports
+//use timer
 package frc.robot.commands;
 import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-// import frc.robot.Constants.IntakeConstants;     currently unused
 import edu.wpi.first.wpilibj.Timer;
 
 /**
@@ -45,10 +44,6 @@ public class ShootBackUp extends Command {
     this.m_indexer = m_indexer;
     addRequirements(m_shoot,m_indexer); //declare exclusive subsystem control
   }
-
-  /*
-   * methods
-   */
 
   /**
    * Called when the intake command is initially scheduled to confirm that the command has been initialized.
