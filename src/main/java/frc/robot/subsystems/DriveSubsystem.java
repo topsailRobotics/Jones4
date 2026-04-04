@@ -7,20 +7,14 @@ package frc.robot.subsystems;
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
-
 import java.io.File;
 import java.util.Optional;
-
-//import java.util.logging.Logger;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
-
-//import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -29,11 +23,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-//import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-//import edu.wpi.first.wpilibj.ADIS16470_IMU;
-//import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -41,7 +32,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Util.LimelightHelpers;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 /*
  * "IMUAxis.kZ" was removed from all versions of m_gyro.getAngle because we use a NavX gyro
@@ -49,10 +39,6 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
  * 
  * 
  */
-
-
-
-
 /**
  * The class that is used for moving the wheels on the bottom of the robot, so it is capable of being driven the robot.
  * 
@@ -198,23 +184,7 @@ private AprilTagFieldLayout fieldLayout;
     } else {
       FerryAmount = 0;
     }
-// diamond 
-// newDiamond = (m_gyro.getAngle()-45) % 90;
-//     if (newDiamond >= 45){
-//       newDiamond = -(45-(newAngle - 45));
-//     } else if(newDiamond <= -45){
-//       newDiamond = 45-(newAngle + 45);
-//     }
-//     if (newDiamond >= 10 || newDiamond <= -10){
-//       setDiamond = (((newDiamond)) * 0.005);
-//       if (setDiamond >= .4){
-//         setDiamond = .4;
-//       } else if( setDiamond <=-0.5){
-//         setDiamond = -.4;
-//       }
-//     } else {
-//       setDiamond = 0;
-//     }
+
 //aiming
     targetingAngularVelocity = LimelightHelpers.getTX("limelight-four") * aimkp;
     targetingAngularVelocity *= -1.0;
@@ -233,47 +203,16 @@ private AprilTagFieldLayout fieldLayout;
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
-     //poseEstimation using megatag1 and 2
-
-
-
+     //poseEstimation using megatag1
     if (m_poseEstimator == null || m_gyro == null) { //prevent null pointer exception in disabled periodic
       return;
     }
-    
-//    LimelightHelpers.SetRobotOrientation("limelight-four", -m_gyro.getAngle(), 0, 0, 0, 0, 0);
-//    var mt2_visionEstimate = 
-//        LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-four");
-
     var visionEstimate =
         LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-four");//use limelight host name
-
-
-    
     // if our angular velocity is greater than 360 degrees per second, ignore vision updates
     //rejection booleans
-//    boolean mt2_reject = false;
     boolean reject = false;
-    
-    //mt2
-    // if (mt2_visionEstimate == null || mt2_visionEstimate.tagCount == 0) {
-    //   mt2_reject = true;
-    // }
-    // if(Math.abs(m_gyro.getRate()) > 360)
-    // {
-    //   mt2_reject = true;
-    // }
-    
-    // if(!mt2_reject)
-    // {
-      
-    //   m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-    //   m_poseEstimator.addVisionMeasurement(
-    //       mt2_visionEstimate.pose,
-    //       mt2_visionEstimate.timestampSeconds);
-    // }
-          
-
+   
   //mt1
 SmartDashboard.putData(m_field);
 SmartDashboard.putBoolean("mt1 reject",reject);
@@ -291,7 +230,7 @@ SmartDashboard.putBoolean("mt1 reject",reject);
         reject = true;
       }
     }
- ///* 
+    
     if (!reject) {
       m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.25,.25, .25)); //hitchhikers  0.5,0.5,1
       m_poseEstimator.addVisionMeasurement(

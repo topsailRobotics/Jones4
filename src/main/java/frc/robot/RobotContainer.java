@@ -92,12 +92,10 @@ public class RobotContainer {
 NamedCommands.registerCommand("ShootLow", new Shoot(m_shooter,1));
     NamedCommands.registerCommand("Shoot Medium", new RunCommand( () -> m_shooter.shooterMediumLow(), m_shooter));// only run shooter
     NamedCommands.registerCommand("Shoot High", new Shoot(m_shooter,4));
-    NamedCommands.registerCommand("Intake", new Intake(m_intake,m_indexer, false));
+    NamedCommands.registerCommand("Intake", new Intake(m_intake, false));
     NamedCommands.registerCommand("Super Charge", new RunCommand( ()->m_intake.superCharge(), m_intake));
-    NamedCommands.registerCommand("Lift Intake", new RunCommand( () -> m_intake.intakeUp(0.15), m_intake));
     NamedCommands.registerCommand("Run Indexer", new RunCommand( () -> m_indexer.runIndexVert(), m_indexer));
     NamedCommands.registerCommand("Stop Indexer", new InstantCommand( () -> m_indexer.stopIndexVert(), m_indexer));
-    NamedCommands.registerCommand("Intake Down", new RunCommand( () -> m_intake.intakeUp(-0.15), m_intake));
     NamedCommands.registerCommand("Stop Shooter", new InstantCommand( () -> m_shooter.stopShooter(), m_shooter));// only run shooter
     // Build an auto chooser. This will use Commands.none() as the default option.
    // m_chooser = AutoBuilder.buildAutoChooser();
@@ -158,11 +156,8 @@ NamedCommands.registerCommand("ShootLow", new Shoot(m_shooter,1));
                   -MathUtil.applyDeadband(m_driverController0.getRightX(), OIConstants.kDriveDeadband),
                   true),
               m_robotDrive));
-      m_intake.setDefaultCommand(new RunCommand(()-> {m_intake.intakeOff();m_intake.stopIntake();},m_intake));  //stopIntake method broken up to 2 separate methods, this one controls intaker position
-     // m_climber.setDefaultCommand(new RunCommand(()-> m_climber.stopClimber(),m_climber));
       m_shooter.setDefaultCommand(new RunCommand(()-> m_shooter.stopShooter(),m_shooter));
       m_indexer.setDefaultCommand(new RunCommand(()-> m_indexer.stopIndexVert(),m_indexer));
-      //m_BlinkinSubsystem.setDefaultCommand(new RunCommand(()-> m_BlinkinSubsystem.idleBlinkin(),m_BlinkinSubsystem));
 
       
 
@@ -186,7 +181,7 @@ NamedCommands.registerCommand("ShootLow", new Shoot(m_shooter,1));
           false)));
 
     Trigger rightTrigger = new Trigger(() -> m_driverController0.getRightTriggerAxis() > 0.5);
-    rightTrigger.whileTrue(new Intake(m_intake, m_indexer, true));
+    rightTrigger.whileTrue(new Intake(m_intake, true));
 
     Trigger leftTrigger = new Trigger(() -> m_driverController0.getLeftTriggerAxis() > 0.5);
 
@@ -206,17 +201,13 @@ NamedCommands.registerCommand("ShootLow", new Shoot(m_shooter,1));
               m_robotDrive));
 
     m_driverController0.rightBumper()
-    .toggleOnTrue(new Intake(m_intake,m_indexer, false)); 
+    .toggleOnTrue(new Intake(m_intake, false)); 
    m_driverController0.x().whileTrue(new RunCommand(
       () -> m_robotDrive.drive(
           -MathUtil.applyDeadband(m_driverController0.getLeftY(), OIConstants.kDriveDeadband),
           -MathUtil.applyDeadband(m_driverController0.getLeftX(), OIConstants.kDriveDeadband),
           m_robotDrive.FerryAmount,
           true)));
-    
-    m_driverController0.a().whileTrue(new RunCommand(  //changed from RunCommand to Instant Command, control loop should do the job
-              () -> m_intake.intakeUp(0.15),
-              m_intake));
 
     m_driverController0.povDown().onTrue(new InstantCommand(()->m_robotDrive.zeroHeading(), m_robotDrive));
     m_driverController0.povUp().whileTrue(new ShootBackUp(m_shooter,m_indexer));

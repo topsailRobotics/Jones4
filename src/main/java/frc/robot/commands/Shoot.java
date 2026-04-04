@@ -9,15 +9,10 @@
  * this command only controls wheels spinning
  */
 
-//try having timer in execute only for indexer to make it wait
 //imports
 package frc.robot.commands;
 import frc.robot.subsystems.ShootSubsystem;
-//import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-// import frc.robot.Constants.IntakeConstants;     currently unused
-//import edu.wpi.first.wpilibj.Timer;
-
 /**
  * Class that is used to command the robot to shoot.
  * 
@@ -30,10 +25,7 @@ public class Shoot extends Command {
 
   //instance variables
   private final ShootSubsystem m_shoot;
-  //private DriveSubsystem m_drive;
   private int range;
-  //private final Timer timer = new Timer();
-
   /**
    * The constructor for the Shoot class.
    * 
@@ -47,10 +39,6 @@ public class Shoot extends Command {
     addRequirements(m_shoot); //declare exclusive subsystem control
   }
 
-  /*
-   * methods
-   */
-
   /**
    * Called when the intake command is initially scheduled to confirm that the command has been initialized.
    * 
@@ -58,8 +46,7 @@ public class Shoot extends Command {
    */
   @Override     // Called when the command is initially scheduled.
   public void initialize() {
-    System.out.println("shoot initialized");
-    
+    System.out.println("shoot initialized"); 
   }
 
   /**
@@ -69,19 +56,6 @@ public class Shoot extends Command {
    */
   @Override
   public void execute() {
-    /* 
-    range = m_drive.getRange();
-    if(range>=5) //specific ranges to be changed
-    {
-      m_shoot.shooterHigh();
-    }else if(range>=4)
-    {
-      m_shoot.shooterMedium();
-    }else if(range>=3)
-    {
-      m_shoot.shooterLow();
-    }
-    */
     if(range == 1)
     {
        m_shoot.shooterLow();
@@ -93,12 +67,6 @@ public class Shoot extends Command {
     {
        m_shoot.shooterHigh();
     }
-    /*if(m_shoot.m_Encoder.getVelocity()<=-2445){
-      m_indexer.runIndexVert();
-      } */
-    // m_indexer.runIndexVert();
-    // m_indexer.runIndexHori();
-    // m_shoot.shooterTest();
   }
   
   @Override  // Called once the command ends or is interrupted.

@@ -131,23 +131,6 @@ public final class Constants {
   /**
     * Constants used in aligning the robot to the hub via apriltags.
   */
-  public static final class AAConstants {
-    public static final double X_REEF_ALIGNMENT_P = .05; //Should we change all instance of reef to hub?
-    public static final double Y_REEF_ALIGNMENT_P = .05;
-    public static final double ROT_REEF_ALIGNMENT_P = .01;
-
-    public static final double POSE_VALIDATION_TIME = 2;
-    public static final double DONT_SEE_TAG_WAIT_TIME = 5;
-
-    
-    public static final double Y_SETPOINT_REEF_ALIGNMENT = -1.11;//0.76
-    public static final double ROT_SETPOINT_REEF_ALIGNMENT = -1.82; //0
-    public static final double X_SETPOINT_REEF_ALIGNMENT = .43; //
-
-    public static final double Y_TOLERANCE_REEF_ALIGNMENT = .5; //should have a 5-10 mm tolerance (I think), 1 is a placeholder
-    public static final double X_TOLERANCE_REEF_ALIGNMENT = .5; //1 is placeholder
-    public static final double ROT_TOLERANCE_REEF_ALIGNMENT = .5; //1 is placeholder
-  }
 
   /**
    * Constants used in the intake process.
@@ -180,12 +163,4 @@ public final class Constants {
 
   }
 
-  /**
-   * Constants used to help in the climbing process. Also has CAN ID value for the motor used.
-   */
-  //public static final class ClimberConstants{
-  //  public static final int kclimberMotorID = 57;
-  //  public static final double kclimberUpperThreshhold = 0.99; //change is necessary, previous .55
-  //  public static final double kclimberLowerThreshhold = 0.2;
-  //}
 }
