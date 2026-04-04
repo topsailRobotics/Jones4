@@ -28,7 +28,6 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     DataLogManager.start();
     m_robotContainer = new RobotContainer();
-    CameraServer.startAutomaticCapture();
 
   }
 

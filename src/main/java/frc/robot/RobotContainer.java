@@ -158,6 +158,8 @@ NamedCommands.registerCommand("ShootLow", new Shoot(m_shooter,1));
               m_robotDrive));
       m_shooter.setDefaultCommand(new RunCommand(()-> m_shooter.stopShooter(),m_shooter));
       m_indexer.setDefaultCommand(new RunCommand(()-> m_indexer.stopIndexVert(),m_indexer));
+      m_intake.setDefaultCommand(new RunCommand(()-> m_intake.stopIntake(),m_intake));
+
 
       
 
