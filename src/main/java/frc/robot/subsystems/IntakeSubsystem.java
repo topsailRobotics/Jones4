@@ -58,8 +58,8 @@ public IntakeSubsystem() {
     }
   
     public void superCharge() {
-    m_IntakeLeft.setVoltage(-7);
-    m_IntakeRight.setVoltage(7);
+    m_IntakeLeft.setVoltage(-5);
+    m_IntakeRight.setVoltage(5); // Messing with values for 2" - Langgang
     m_intakeOn = "super charge";
     }
 
