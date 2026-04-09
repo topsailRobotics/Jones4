@@ -162,7 +162,7 @@ private AprilTagFieldLayout fieldLayout;
   public void periodic() {
     //ranging 
     
-    rangingVelocity2 = (LimelightHelpers.getTY("limelight-four")-0.6)* 0.035;
+    rangingVelocity2 = (LimelightHelpers.getTY("limelight-four"))* 0.035;
     rangingVelocity2 *= -1.0;
 
     rangingVelocity = (LimelightHelpers.getTY("limelight-four")-15.5)* 0.03; //old was 16

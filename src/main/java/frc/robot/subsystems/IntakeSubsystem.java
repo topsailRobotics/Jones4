@@ -46,8 +46,8 @@ public IntakeSubsystem() {
    * @author Larry9297
    */
   public void runIntake() {
-    m_IntakeLeft.setVoltage(-6);
-    m_IntakeRight.setVoltage(6);
+    m_IntakeLeft.setVoltage(-5);
+    m_IntakeRight.setVoltage(5);
     m_intakeOn = "running";
     }
 
