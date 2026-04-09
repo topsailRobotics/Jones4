@@ -162,7 +162,7 @@ private AprilTagFieldLayout fieldLayout;
   public void periodic() {
     //ranging 
     
-    rangingVelocity2 = (LimelightHelpers.getTY("limelight-four")-0.6)* 0.035;
+    rangingVelocity2 = (LimelightHelpers.getTY("limelight-four"))* 0.035;
     rangingVelocity2 *= -1.0;
 
     rangingVelocity = (LimelightHelpers.getTY("limelight-four")-15.5)* 0.03; //old was 16
@@ -212,14 +212,23 @@ private AprilTagFieldLayout fieldLayout;
     // if our angular velocity is greater than 360 degrees per second, ignore vision updates
     //rejection booleans
     boolean reject = false;
+    boolean onBump = false;
    
   //mt1
 SmartDashboard.putData(m_field);
-SmartDashboard.putBoolean("mt1 reject",reject);
+
+
+
 
     if (visionEstimate == null || visionEstimate.tagCount == 0) { //prevent null initialization, short-circuits
       reject = true;
     }
+
+    // if(m_gyro.getPitch()>=3 || m_gyro.getRoll()>=3 ||m_gyro.getPitch()<=-3||m_gyro.getRoll()<=-3)
+    // {
+    //   reject = true;
+    //   onBump = true;
+    // }
 
     if (visionEstimate.tagCount == 1 &&
                visionEstimate.rawFiducials.length == 1) {
@@ -230,7 +239,7 @@ SmartDashboard.putBoolean("mt1 reject",reject);
         reject = true;
       }
     }
-    
+
     if (!reject) {
       m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.25,.25, .25)); //hitchhikers  0.5,0.5,1
       m_poseEstimator.addVisionMeasurement(
@@ -242,7 +251,8 @@ SmartDashboard.putBoolean("mt1 reject",reject);
       m_field.getObject("limelight estimate").setPose(new Pose2d());
     }
   //*/
-    
+  SmartDashboard.putBoolean("mt1 reject",reject);
+  SmartDashboard.putBoolean("robot on bump",onBump);
  m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());//update robot position in field, further reviews needed
   SmartDashboard.putNumber("NavX Gyro", m_gyro.getAngle());
   }

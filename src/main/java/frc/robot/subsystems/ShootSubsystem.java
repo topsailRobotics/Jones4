@@ -39,6 +39,7 @@ private final SparkClosedLoopController m_pidController2 = m_ShootRight.getClose
   public void periodic() {
      SmartDashboard.putNumber("left shooter", m_ShootLeft.getAppliedOutput());
      SmartDashboard.putBoolean("shooteron?", m_Shooteron);
+    SmartDashboard.putNumber("Shooter Velocity", m_Encoder.getVelocity());
 
     // This method will be called once per scheduler run
   }
@@ -66,7 +67,7 @@ public double getShooterRPM(double distance)
 
 public void smartShoot(double rpm)
 {
-  m_pidController1.setSetpoint(-rpm, ControlType.kVelocity);
+  m_pidController1.setSetpoint(rpm, ControlType.kVelocity);
   m_pidController2.setSetpoint(-rpm, ControlType.kVelocity);
    m_Shooteron = true;
 }
@@ -79,21 +80,21 @@ public void smartShoot(double rpm)
  */
   public void shooterTest()
   {
-      m_pidController1.setSetpoint(-2500, ControlType.kVelocity);
+      m_pidController1.setSetpoint(2500, ControlType.kVelocity);
       m_pidController2.setSetpoint(-2500, ControlType.kVelocity);
       System.out.println(m_Encoder.getVelocity());// add constants for voltage setpoint later
   }
   public void shooterLow()
   {
-      m_pidController1.setSetpoint(-2500, ControlType.kVelocity); // straight in front of the hub
+      m_pidController1.setSetpoint(2500, ControlType.kVelocity); // straight in front of the hub
       m_pidController2.setSetpoint(-2500, ControlType.kVelocity);
  m_Shooteron = true;
   }
 
     public void shooterMediumLow()
   {
-      m_pidController1.setSetpoint(-3100, ControlType.kVelocity); 
-      m_pidController2.setSetpoint(-3100, ControlType.kVelocity);
+      m_pidController1.setSetpoint(3150, ControlType.kVelocity); 
+      m_pidController2.setSetpoint(-3150, ControlType.kVelocity);
        m_Shooteron = true;
 
   }
@@ -102,7 +103,7 @@ public void smartShoot(double rpm)
   
   public void shooterMedium()
   {
-      m_pidController1.setSetpoint(-3300, ControlType.kVelocity); 
+      m_pidController1.setSetpoint(3300, ControlType.kVelocity); 
       m_pidController2.setSetpoint(-3300, ControlType.kVelocity);
        m_Shooteron = true;
 
@@ -116,7 +117,7 @@ public void smartShoot(double rpm)
   public void shooterHigh()
   {
         // add constants for voltage setpoint later
-      m_pidController1.setSetpoint(-5000, ControlType.kVelocity); //ferry 18-16 feet
+      m_pidController1.setSetpoint(5000, ControlType.kVelocity); //ferry 18-16 feet
       m_pidController2.setSetpoint(-5000, ControlType.kVelocity);
        m_Shooteron = true;
 

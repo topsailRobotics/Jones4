@@ -46,9 +46,9 @@ public IntakeSubsystem() {
    * @author Larry9297
    */
   public void runIntake() {
-    m_IntakeLeft.setVoltage(-4.3);
-    m_IntakeRight.setVoltage(4.3);
-    m_intakeOn = "normal";
+    m_IntakeLeft.setVoltage(-5);
+    m_IntakeRight.setVoltage(5);
+    m_intakeOn = "running";
     }
 
   public void reverseIntake() {
@@ -57,12 +57,6 @@ public IntakeSubsystem() {
     m_intakeOn = "reverse";
     }
   
-    public void superCharge() {
-    m_IntakeLeft.setVoltage(-7);
-    m_IntakeRight.setVoltage(7);
-    m_intakeOn = "super charge";
-    }
-
 
   /**
    * Method used to stop intake
