@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -22,6 +23,7 @@ public class ShootSubsystem extends SubsystemBase {
     // back: electricals
     // left: climber
     // right: battery
+    public boolean m_Shooteron = false;
   private final SparkMax m_ShootLeft = new SparkMax(ShooterConstants.kleftshootermotorID, MotorType.kBrushless);
   private final SparkMax m_ShootRight= new SparkMax(ShooterConstants.krightshootermotorID, MotorType.kBrushless);
   public final RelativeEncoder m_Encoder = m_ShootLeft.getEncoder();
@@ -35,6 +37,10 @@ private final SparkClosedLoopController m_pidController2 = m_ShootRight.getClose
 
   @Override
   public void periodic() {
+     SmartDashboard.putNumber("left shooter", m_ShootLeft.getAppliedOutput());
+     SmartDashboard.putBoolean("shooteron?", m_Shooteron);
+    SmartDashboard.putNumber("Shooter Velocity", m_Encoder.getVelocity());
+
     // This method will be called once per scheduler run
   }
   //For now, use 4 distinct outputs based on distance ranges from the hub. 
@@ -51,19 +57,19 @@ public double getShooterRPM(double distance)
   //default case
   if (distance == -1) return 0;
   //simple interpolation
-  if (distance >= 12.5 && distance <=14.7 )//magical numbers obtained by testing
+  if (distance >= .8 && distance <=3.5 )//magical numbers obtained by testing
   {
-    return 2500 + 300 * (distance-12.5);
+    return 2500 + 320 * (distance-.8);
   }
   //ferry, when distance too far, most likely unused
-  return 100;
+  return 2000;
 }
 
 public void smartShoot(double rpm)
 {
-  m_pidController1.setSetpoint(-rpm, ControlType.kVelocity);
+  m_pidController1.setSetpoint(rpm, ControlType.kVelocity);
   m_pidController2.setSetpoint(-rpm, ControlType.kVelocity);
-
+   m_Shooteron = true;
 }
 
 
@@ -74,29 +80,33 @@ public void smartShoot(double rpm)
  */
   public void shooterTest()
   {
-      m_pidController1.setSetpoint(-2500, ControlType.kVelocity);
+      m_pidController1.setSetpoint(2500, ControlType.kVelocity);
       m_pidController2.setSetpoint(-2500, ControlType.kVelocity);
       System.out.println(m_Encoder.getVelocity());// add constants for voltage setpoint later
   }
   public void shooterLow()
   {
-      m_pidController1.setSetpoint(-2500, ControlType.kVelocity); // straight in front of the hub
+      m_pidController1.setSetpoint(2500, ControlType.kVelocity); // straight in front of the hub
       m_pidController2.setSetpoint(-2500, ControlType.kVelocity);
-
+ m_Shooteron = true;
   }
 
     public void shooterMediumLow()
   {
-      m_pidController1.setSetpoint(-3100, ControlType.kVelocity); //
-      m_pidController2.setSetpoint(-3100, ControlType.kVelocity);
+      m_pidController1.setSetpoint(3150, ControlType.kVelocity); 
+      m_pidController2.setSetpoint(-3150, ControlType.kVelocity);
+       m_Shooteron = true;
+
   }
 
 
   
   public void shooterMedium()
   {
-      m_pidController1.setSetpoint(-3300, ControlType.kVelocity); //
+      m_pidController1.setSetpoint(3300, ControlType.kVelocity); 
       m_pidController2.setSetpoint(-3300, ControlType.kVelocity);
+       m_Shooteron = true;
+
   }
 
    /**
@@ -107,8 +117,10 @@ public void smartShoot(double rpm)
   public void shooterHigh()
   {
         // add constants for voltage setpoint later
-      m_pidController1.setSetpoint(-5000, ControlType.kVelocity); //ferry 18-16 feet
+      m_pidController1.setSetpoint(5000, ControlType.kVelocity); //ferry 18-16 feet
       m_pidController2.setSetpoint(-5000, ControlType.kVelocity);
+       m_Shooteron = true;
+
   }
 
   /**
@@ -121,6 +133,8 @@ public void smartShoot(double rpm)
         // add constants for voltage setpoint later
         m_ShootLeft.setVoltage(-7);
         m_ShootRight.setVoltage(7);
+         m_Shooteron = true;
+
   }
 
   /**
@@ -133,6 +147,8 @@ public void smartShoot(double rpm)
         // add constants for voltage setpoint later
         m_ShootLeft.setVoltage(0);
         m_ShootRight.setVoltage(0);
+         m_Shooteron = false;
+
   }
   
   @Override

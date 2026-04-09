@@ -31,10 +31,9 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 24.93; //7.60 based on documents but need to be sure - Willem
-
+    public static final double kMaxSpeedMetersPerSecond = 6.01; //7.60 based on documents but need to be sure - Willem 
     // changed it to 24.93 (feet)
-    public static final double kMaxAngularSpeed = 8 * Math.PI; // radians per second
+    public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second was 8 pi for comp
 
     // Chassis configuration
     public static final double kTrackWidth = Units.inchesToMeters(26.5);
@@ -98,7 +97,8 @@ public final class Constants {
     // The MAXSwerve module can be configured with one of three pinion gears: 12T,
     // 13T, or 14T. This changes the drive speed of the module (a pinion gear with
     // more teeth will result in a robot that drives faster).
-    public static final int kDrivingMotorPinionTeeth = 16; //high reduction --- changed this to 16 for the new gear ratio - Willem
+    public static final int kDrivingMotorPinionTeeth = 14;
+    public static final int kDrivingMotorDrivenTeeth = 21; //high reduction --- changed this to 16 for the new gear ratio - Willem
 
     // Calculations required for driving motor conversion factors and feed forward
     public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;
@@ -108,7 +108,7 @@ public final class Constants {
     // teeth on the bevel pinion
 
     
-    public static final double kDrivingMotorReduction = (45.0 * 19) / (kDrivingMotorPinionTeeth * 16);
+    public static final double kDrivingMotorReduction = (45.0 * kDrivingMotorDrivenTeeth) / (kDrivingMotorPinionTeeth * 15);
     public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters)
         / kDrivingMotorReduction;
   }
@@ -131,23 +131,6 @@ public final class Constants {
   /**
     * Constants used in aligning the robot to the hub via apriltags.
   */
-  public static final class AAConstants {
-    public static final double X_REEF_ALIGNMENT_P = .05; //Should we change all instance of reef to hub?
-    public static final double Y_REEF_ALIGNMENT_P = .05;
-    public static final double ROT_REEF_ALIGNMENT_P = .01;
-
-    public static final double POSE_VALIDATION_TIME = 2;
-    public static final double DONT_SEE_TAG_WAIT_TIME = 5;
-
-    
-    public static final double Y_SETPOINT_REEF_ALIGNMENT = -1.11;//0.76
-    public static final double ROT_SETPOINT_REEF_ALIGNMENT = -1.82; //0
-    public static final double X_SETPOINT_REEF_ALIGNMENT = .43; //
-
-    public static final double Y_TOLERANCE_REEF_ALIGNMENT = .5; //should have a 5-10 mm tolerance (I think), 1 is a placeholder
-    public static final double X_TOLERANCE_REEF_ALIGNMENT = .5; //1 is placeholder
-    public static final double ROT_TOLERANCE_REEF_ALIGNMENT = .5; //1 is placeholder
-  }
 
   /**
    * Constants used in the intake process.
@@ -180,12 +163,4 @@ public final class Constants {
 
   }
 
-  /**
-   * Constants used to help in the climbing process. Also has CAN ID value for the motor used.
-   */
-  //public static final class ClimberConstants{
-  //  public static final int kclimberMotorID = 57;
-  //  public static final double kclimberUpperThreshhold = 0.99; //change is necessary, previous .55
-  //  public static final double kclimberLowerThreshhold = 0.2;
-  //}
 }

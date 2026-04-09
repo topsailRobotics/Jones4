@@ -28,7 +28,6 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     DataLogManager.start();
     m_robotContainer = new RobotContainer();
-    CameraServer.startAutomaticCapture();
 
   }
 
@@ -88,7 +87,7 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
-    CommandScheduler.getInstance().cancelAll();
+    //CommandScheduler.getInstance().cancelAll();
   }
 
   /** This function is called periodically during test mode. */

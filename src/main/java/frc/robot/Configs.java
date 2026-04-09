@@ -23,11 +23,11 @@ public final class Configs {
             double drivingFactor = ModuleConstants.kWheelDiameterMeters * Math.PI
                     / ModuleConstants.kDrivingMotorReduction;
             double turningFactor = 2 * Math.PI;
-            double drivingVelocityFeedForward = 1 / ModuleConstants.kDriveWheelFreeSpeedRps;
+            double drivingVelocityFeedForward = 12 / ModuleConstants.kDriveWheelFreeSpeedRps; //was originally 1 - larry
 
             drivingConfig
                     .idleMode(IdleMode.kBrake)
-                    .smartCurrentLimit(50,50); //added extra parameter for freelimit
+                    .smartCurrentLimit(50,50); //changed back to 50 because motors were overheating and one fried - langgang
             drivingConfig.encoder
                     .positionConversionFactor(drivingFactor) // meters
                     .velocityConversionFactor(drivingFactor / 60.0); // meters per second
@@ -35,7 +35,7 @@ public final class Configs {
                     .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                     // These are example gains you may need to them for your own robot!
                     //TODO
-                    .pid(0.04, 0, 0)
+                    .pid(0.04, 0, 0) //originally 0.04
                     .velocityFF(drivingVelocityFeedForward)
                     .outputRange(-1, 1);
 
