@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import frc.robot.Util.LoggedTunableNumber;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -160,6 +161,10 @@ public final class Constants {
     public static final double relationModification = 1; //no unit; modifies ball exit velocity to wheel spin speed
     public static final int kleftshootermotorID = 55; 
     public static final int krightshootermotorID = 56; 
+
+    // logged tuneablenumber is a util variable that allows us to update it while running the robot, rather than having to deploy every iteration
+    public static LoggedTunableNumber kPReal = new LoggedTunableNumber("Flywheel/kP", 0.0003);
+    public static LoggedTunableNumber kDReal = new LoggedTunableNumber("Flywheel/kD", 0);
 
   }
 

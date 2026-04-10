@@ -4,17 +4,21 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-//import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import com.revrobotics.PersistMode;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.ResetMode;
+import com.revrobotics.spark.FeedbackSensor;
+import com.revrobotics.spark.SparkBase.ControlType;
 //import com.revrobotics.spark.SparkAnalogSensor;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 
 public class ShootSubsystem extends SubsystemBase {
@@ -27,11 +31,47 @@ public class ShootSubsystem extends SubsystemBase {
   private final SparkMax m_ShootLeft = new SparkMax(ShooterConstants.kleftshootermotorID, MotorType.kBrushless);
   private final SparkMax m_ShootRight= new SparkMax(ShooterConstants.krightshootermotorID, MotorType.kBrushless);
   public final RelativeEncoder m_Encoder = m_ShootLeft.getEncoder();
-private final SparkClosedLoopController m_pidController1 = m_ShootLeft.getClosedLoopController();
-private final SparkClosedLoopController m_pidController2 = m_ShootRight.getClosedLoopController();
+  private final SparkClosedLoopController m_pidController1 = m_ShootLeft.getClosedLoopController();
+  private final SparkClosedLoopController m_pidController2 = m_ShootRight.getClosedLoopController();
+  
   //default construcor
   public ShootSubsystem() {
 
+    var flywheelConfig = new SparkMaxConfig();
+
+    flywheelConfig
+        .idleMode(IdleMode.kBrake)
+        .smartCurrentLimit(ShooterConstants.flywheelCurrentLimit)
+        .voltageCompensation(12.0);
+
+    // flywheelConfig
+    //     .encoder
+    //     .positionConversionFactor((1.0 / 1) * 2 * Math.PI)
+    //     .velocityConversionFactor(
+    //         (1.0 / ShooterConstants.HoodConstants.gearRatio) * 2 * Math.PI / 60.0);
+
+    flywheelConfig
+        .closedLoop
+        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+        .pid(
+            ShooterConstants.kPReal.get(),
+            0.0,
+            ShooterConstants.kDReal.get())
+        .outputRange(-1, 1);
+
+    m_ShootLeft.configure(
+                flywheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    m_ShootRight.configure(
+                flywheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+
+    // SparkUtil.tryUntilOk(
+    //     hood,
+    //     5,
+    //     () ->
+    //         hood.configure(
+    //             hoodConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
+    
   }
 
 
@@ -40,6 +80,20 @@ private final SparkClosedLoopController m_pidController2 = m_ShootRight.getClose
      SmartDashboard.putNumber("left shooter", m_ShootLeft.getAppliedOutput());
      SmartDashboard.putBoolean("shooteron?", m_Shooteron);
     SmartDashboard.putNumber("Shooter Velocity", m_Encoder.getVelocity());
+
+    // push new config when tunable numbers change
+    if (ShooterConstants.kPReal.hasChanged(hashCode())
+        || ShooterConstants.kDReal.hasChanged(hashCode())) {
+      var updateConfig = new SparkMaxConfig();
+      updateConfig.closedLoop.pid(
+          ShooterConstants.kPReal.get(),
+          0.0,
+          ShooterConstants.kDReal.get());
+      m_ShootLeft.configure(
+          updateConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+      m_ShootRight.configure(
+          updateConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+    }
 
     // This method will be called once per scheduler run
   }
