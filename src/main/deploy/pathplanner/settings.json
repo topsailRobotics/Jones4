@@ -6,13 +6,11 @@
     "Blue 1",
     "Blue 1(old)",
     "Blue 2",
-    "Blue 3",
-    "Red 1",
-    "Red 3"
+    "Blue 3(old)",
+    "Blue 3"
   ],
   "autoFolders": [
-    "Blue",
-    "Red"
+    "Regional autos"
   ],
   "defaultMaxVel": 6.0,
   "defaultMaxAccel": 7.0,

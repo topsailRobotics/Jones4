@@ -57,12 +57,11 @@ public class RobotContainer {
   private final ShootSubsystem m_shooter = new ShootSubsystem(); //actions not declared yet in shootersubsystem
 
   //autos, only run blue, reflect around origin
-  private final String m_defaultAuto = "Blue 3 double sweep";
-  private final String m_Auto1 = "Blue 3 single sweep";
-  private final String m_Auto2 = "Blue 1 double sweep";
-  private final String m_Auto3 = "Copy of Blue 2 Auto";
-  private final String m_Auto4 = "Lynk Blue 3 close Auto";
-  private final String m_Auto5 = "Blue 3 close Auto";
+  private final String m_defaultAuto = "Blue 2 Auto";
+  private final String m_Auto1 = "Blue 1 Auto";
+  private final String m_Auto2 = "Blue 3 Auto";
+  private final String m_Auto3 = "Blue 1 double sweep";
+  private final String m_Auto4 = "Blue 3 double sweep";
 
  // private final String m_Auto3 = "Red 3 close Auto";
  // private final String m_Auto5 = "Red Test 3 debig duplicate";
@@ -109,7 +108,6 @@ NamedCommands.registerCommand("ShootLow", new Shoot(m_shooter,1));
       m_chooser.addOption(m_Auto2, AutoBuilder.buildAuto(m_Auto2));
       m_chooser.addOption(m_Auto3, AutoBuilder.buildAuto(m_Auto3));
       m_chooser.addOption(m_Auto4, AutoBuilder.buildAuto(m_Auto4));
-      m_chooser.addOption(m_Auto4, AutoBuilder.buildAuto(m_Auto5));
 
 
       m_chooser.addOption("None", Commands.none());

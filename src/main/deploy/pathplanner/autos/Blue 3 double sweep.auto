@@ -95,7 +95,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SLynk Blue 3 part 1.5"
+            "pathName": "SBlue 3 part 2"
           }
         },
         {
@@ -111,7 +111,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "SCopy of Lynk Blue 3 part 3"
+                  "pathName": "SBlue 3 part 3"
                 }
               },
               {
@@ -126,7 +126,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SBlue 3U turn"
+            "pathName": "SBlue 3 part 4"
           }
         },
         {
@@ -142,7 +142,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "SBlue 3double sweep"
+                  "pathName": "SBlue 3 part 5"
                 }
               },
               {
@@ -157,13 +157,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SBlue3 adjust"
+            "pathName": "SBlue3 part 6"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Regional autos",
   "choreoAuto": false
 }
