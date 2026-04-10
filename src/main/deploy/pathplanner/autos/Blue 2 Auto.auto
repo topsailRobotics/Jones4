@@ -98,7 +98,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 10.0
+                  "waitTime": 6.5
                 }
               },
               {
@@ -196,6 +196,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Regional autos",
+  "folder": null,
   "choreoAuto": false
 }
