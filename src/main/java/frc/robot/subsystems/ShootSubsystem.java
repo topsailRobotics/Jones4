@@ -154,6 +154,7 @@ public void smartShoot(double rpm)
   }
 
 
+
   
   public void shooterMedium()
   {
