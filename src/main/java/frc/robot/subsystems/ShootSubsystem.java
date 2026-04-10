@@ -93,8 +93,8 @@ public void smartShoot(double rpm)
 
     public void shooterMediumLow()
   {
-      m_pidController1.setSetpoint(3150, ControlType.kVelocity); 
-      m_pidController2.setSetpoint(-3150, ControlType.kVelocity);
+      m_pidController1.setSetpoint(3250, ControlType.kVelocity); 
+      m_pidController2.setSetpoint(-3250, ControlType.kVelocity);
        m_Shooteron = true;
 
   }
