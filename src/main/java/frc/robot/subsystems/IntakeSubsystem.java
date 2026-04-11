@@ -52,8 +52,8 @@ public IntakeSubsystem() {
     }
 
   public void reverseIntake() {
-    m_IntakeLeft.setVoltage(6.5);
-    m_IntakeRight.setVoltage(-6.5);
+    m_IntakeLeft.setVoltage(8);
+    m_IntakeRight.setVoltage(-8);
     m_intakeOn = "reverse";
     }
   

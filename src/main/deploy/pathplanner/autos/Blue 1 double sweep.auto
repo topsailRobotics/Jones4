@@ -164,6 +164,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Regional autos",
+  "folder": null,
   "choreoAuto": false
 }
