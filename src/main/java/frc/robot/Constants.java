@@ -138,7 +138,7 @@ public final class Constants {
   */
   public static final class IntakeConstants { //change the constants
     public static final int kIntakeWheelID = 51;
-    public static final int kIntakeArmID = 52;
+    public static final int kIntakeArmID = 53;
     public static final double kIntakeSetpoint = 3;
   }
 
