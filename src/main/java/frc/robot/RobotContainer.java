@@ -9,6 +9,7 @@ package frc.robot;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Util.LimelightHelpers;
+import frc.robot.commands.AlignToHub;
 //import frc.robot.commands.Aim;
 //import frc.robot.commands.Autos;
 //import frc.robot.commands.Climb;
@@ -187,10 +188,13 @@ NamedCommands.registerCommand("ShootLow", new Shoot(m_shooter,1));
     Trigger leftTrigger = new Trigger(() -> m_driverController0.getLeftTriggerAxis() > 0.5);
 
    
-      
+    /* 
     m_driverController0.leftBumper().toggleOnTrue(new RunCommand(  //changed from RunCommand to Instant Command, control loop should do the job
               () -> m_robotDrive.setX(),
               m_robotDrive));
+    */
+
+    m_driverController0.leftBumper().whileTrue(new AlignToHub(m_robotDrive));
 
     m_driverController0.rightBumper()
     .toggleOnTrue(new Intake(m_intake, false)); 
