@@ -68,6 +68,18 @@ public final class Constants {
     
   }
 
+  public static final class HubCenterConstants {
+    
+    private static final Translation2d BLUE_HUB =
+    new Translation2d(4.610, 4.021);
+
+    private static final Translation2d RED_HUB =
+        new Translation2d(11.901, 4.021);
+
+    private static final double HUB_AIM_KP = 2.0;
+    private static final double HUB_AIM_TOLERANCE = Math.toRadians(1.0);
+  }
+
   public static final class BlinkinConstants {
     public static final double Gold = 0.67;
     public static final double Black = 0.99;
