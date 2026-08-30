@@ -17,6 +17,7 @@ import frc.robot.commands.Intake;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.ShootBackUp;
 import frc.robot.commands.SmartShoot;
+import frc.robot.commands.AlignToHub;
 //import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
