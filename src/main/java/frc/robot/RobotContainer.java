@@ -195,7 +195,7 @@ NamedCommands.registerCommand("ShootLow", new Shoot(m_shooter,1));
               m_robotDrive));
     */
 
-    m_driverController0.leftBumper().whileTrue(new AlignToHub(m_robotDrive));
+    m_driverController0.leftBumper().whileTrue(new AlignToHub(m_robotDrive).alongWith(new SmartShoot(m_shooter,m_indexer,m_robotDrive)));
 
     m_driverController0.rightBumper()
     .toggleOnTrue(new Intake(m_intake, false)); 

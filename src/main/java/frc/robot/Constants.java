@@ -76,7 +76,7 @@ public final class Constants {
     public static final Translation2d RED_HUB =
         new Translation2d(11.901, 4.021);
 
-    public static final double HUB_AIM_KP = 2.0;
+    public static final double HUB_AIM_KP = 1.0;//2
     public static final double HUB_AIM_TOLERANCE = Math.toRadians(1.0);
   }
 

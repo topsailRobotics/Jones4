@@ -59,7 +59,7 @@ public class SmartShoot extends Command {
 
     m_shoot.smartShoot(rpm);
     //use timer temporarily, change to rpm setpoint-based when tuned
-    if(timer.get()>=1.5){
+    if(timer.get()>=1){
       m_indexer.runIndexVert();
       //examine rpm accuracy
       } 
