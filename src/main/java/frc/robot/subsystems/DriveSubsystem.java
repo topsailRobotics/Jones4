@@ -341,17 +341,17 @@ private SwerveModuleState[] getModuleStates() {
 
 
 //method to rotate and aim
-  public void pointAtHub() {
+ public void pointAtHub() {
     double error = getHubAngleError();
-    double rotation = 0;
 
-    if (Math.abs(error) > HubCenterConstants.HUB_AIM_TOLERANCE) {
-        rotation = HubCenterConstants.HUB_AIM_KP * error;
+    if (Math.abs(error) <= HubCenterConstants.HUB_AIM_TOLERANCE) {
+        setX();
+        return;
     }
 
-    //min and max for the rotation
+    double rotation = HubCenterConstants.HUB_AIM_KP * error;
     rotation = MathUtil.clamp(rotation, -1.0, 1.0);
-    //field reativity does not affect rotation
+
     drive(0, 0, rotation, false);
 }
 
