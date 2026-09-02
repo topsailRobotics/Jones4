@@ -33,6 +33,9 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Util.LimelightHelpers;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
+
+import frc.robot.Constants.HubCenterConstants;
+import edu.wpi.first.math.MathUtil;
 /*
  * "IMUAxis.kZ" was removed from all versions of m_gyro.getAngle because we use a NavX gyro
  * 
@@ -307,6 +310,54 @@ private SwerveModuleState[] getModuleStates() {
         },
         pose);
   }
+
+
+
+//method to find the angle difference between bot and hub using pose
+  public double getHubAngleError() {
+    Pose2d robotPose = getPose();
+
+    Translation2d hubPosition;
+
+    var alliance = DriverStation.getAlliance();
+
+    if (alliance.isPresent()
+            && alliance.get() == DriverStation.Alliance.Red) {
+        hubPosition = HubCenterConstants.RED_HUB;
+    } else {
+        hubPosition = HubCenterConstants.BLUE_HUB;
+    }
+
+    Translation2d robotToHub =
+        hubPosition.minus(robotPose.getTranslation());
+
+    Rotation2d angleToHub =
+        robotToHub.getAngle();
+
+    return MathUtil.angleModulus(
+        angleToHub.minus(robotPose.getRotation()).getRadians()
+    );
+}
+
+
+//method to rotate and aim
+  public void pointAtHub() {
+    double error = getHubAngleError();
+    double rotation = 0;
+
+    if (Math.abs(error) > HubCenterConstants.HUB_AIM_TOLERANCE) {
+        rotation = HubCenterConstants.HUB_AIM_KP * error;
+    }
+
+    //min and max for the rotation
+    rotation = MathUtil.clamp(rotation, -1.0, 1.0);
+    //field reativity does not affect rotation
+    drive(0, 0, rotation, false);
+}
+
+
+
+
 
  //method to get range 
  public double getRange()

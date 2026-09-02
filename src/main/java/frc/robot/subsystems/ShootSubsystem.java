@@ -80,7 +80,7 @@ public void smartShoot(double rpm)
  */
   public void shooterTest()
   {
-      m_pidController1.setSetpoint(2500, ControlType.kVelocity);
+      m_pidController1.setSetpoint(2500, ControlType.kVelocity);//2500
       m_pidController2.setSetpoint(-2500, ControlType.kVelocity);
       System.out.println(m_Encoder.getVelocity());// add constants for voltage setpoint later
   }
