@@ -148,8 +148,8 @@ public final class Constants {
    * Constants used in the intake process.
   */
   public static final class IntakeConstants { //change the constants
-    public static final int kIntakeWheelID = 51;
-    public static final int kIntakeArmID = 52;
+    public static final int kIntakeLeftID = 51;
+    public static final int kIntakeRightID = 52;
     public static final double kIntakeSetpoint = 3;
   }
 
