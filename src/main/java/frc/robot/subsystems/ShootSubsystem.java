@@ -57,12 +57,12 @@ public double getShooterRPM(double distance)
   //default case
   if (distance == -1) return 0;
   //simple interpolation
-  if (distance >= .8 && distance <=3.5 )//magical numbers obtained by testing
+  if (distance >= .8 && distance <=5 )//magical numbers obtained by testing
   {
-    return 2500 + 320 * (distance-.5);//.8 originally
+    return 2500 + 330 * (distance-.5);//.8 originally
   }
   //ferry, when distance too far, most likely unused
-  return 2400;
+  return 2500;
 }
 
 public void smartShoot(double rpm)

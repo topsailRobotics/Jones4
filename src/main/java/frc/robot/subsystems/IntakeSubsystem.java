@@ -12,8 +12,8 @@ public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
 
   // Initilization
-private final SparkMax m_IntakeLeft = new SparkMax(IntakeConstants.kIntakeArmID, MotorType.kBrushless);
-private final SparkMax m_IntakeRight= new SparkMax(IntakeConstants.kIntakeWheelID, MotorType.kBrushless);
+private final SparkMax m_IntakeLeft = new SparkMax(IntakeConstants.kIntakeLeftID, MotorType.kBrushless);
+private final SparkMax m_IntakeRight= new SparkMax(IntakeConstants.kIntakeRightID, MotorType.kBrushless);
 
 public IntakeSubsystem() {
  
@@ -46,14 +46,14 @@ public IntakeSubsystem() {
    * @author Larry9297
    */
   public void runIntake() {
-    m_IntakeLeft.setVoltage(-5.5);
-    m_IntakeRight.setVoltage(5.5);
+    m_IntakeLeft.setVoltage(9);
+    m_IntakeRight.setVoltage(-9);
     m_intakeOn = "running";
     }
 
   public void reverseIntake() {
-    m_IntakeLeft.setVoltage(6.5);
-    m_IntakeRight.setVoltage(-6.5);
+    m_IntakeLeft.setVoltage(-6.5);
+    m_IntakeRight.setVoltage(6.5);
     m_intakeOn = "reverse";
     }
   

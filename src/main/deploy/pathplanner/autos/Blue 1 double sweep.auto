@@ -21,7 +21,13 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "ShootLow"
+                        "name": "Smart Shoot"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Aim"
                       }
                     },
                     {
@@ -42,12 +48,6 @@
                                   "type": "wait",
                                   "data": {
                                     "waitTime": 3.5
-                                  }
-                                },
-                                {
-                                  "type": "named",
-                                  "data": {
-                                    "name": "Run Indexer"
                                   }
                                 },
                                 {
@@ -148,7 +148,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "SuperCharge"
+                  "name": "Intake"
                 }
               }
             ]

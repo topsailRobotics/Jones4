@@ -59,12 +59,14 @@ public class RobotContainer {
   private final ShootSubsystem m_shooter = new ShootSubsystem(); //actions not declared yet in shootersubsystem
 
   //autos, only run blue, reflect around origin
-  private final String m_defaultAuto = "Blue 3 double sweep";
-  private final String m_Auto1 = "Blue 3 single sweep";
+  private final String m_defaultAuto = "Blue 1 close Auto";
+  private final String m_Auto1 = "Blue 2 Auto";
   private final String m_Auto2 = "Blue 1 double sweep";
   private final String m_Auto3 = "Copy of Blue 2 Auto";
   private final String m_Auto4 = "Lynk Blue 3 close Auto";
   private final String m_Auto5 = "Blue 3 close Auto";
+  private final String m_Auto6 = "EightBall";
+  
 
  // private final String m_Auto3 = "Red 3 close Auto";
  // private final String m_Auto5 = "Red Test 3 debig duplicate";
@@ -98,6 +100,8 @@ NamedCommands.registerCommand("ShootLow", new Shoot(m_shooter,1));
     NamedCommands.registerCommand("Run Indexer", new RunCommand( () -> m_indexer.runIndexVert(), m_indexer));
     NamedCommands.registerCommand("Stop Indexer", new InstantCommand( () -> m_indexer.stopIndexVert(), m_indexer));
     NamedCommands.registerCommand("Stop Shooter", new InstantCommand( () -> m_shooter.stopShooter(), m_shooter));// only run shooter
+    NamedCommands.registerCommand("Smart Shoot", new SmartShoot(m_shooter,m_indexer,m_robotDrive));// only run shooter
+    NamedCommands.registerCommand("Aim", new AlignToHub(m_robotDrive));
     // Build an auto chooser. This will use Commands.none() as the default option.
    // m_chooser = AutoBuilder.buildAutoChooser();
     // Add commands to the autonomous command chooser
@@ -111,7 +115,8 @@ NamedCommands.registerCommand("ShootLow", new Shoot(m_shooter,1));
       m_chooser.addOption(m_Auto2, AutoBuilder.buildAuto(m_Auto2));
       m_chooser.addOption(m_Auto3, AutoBuilder.buildAuto(m_Auto3));
       m_chooser.addOption(m_Auto4, AutoBuilder.buildAuto(m_Auto4));
-      m_chooser.addOption(m_Auto4, AutoBuilder.buildAuto(m_Auto5));
+      m_chooser.addOption(m_Auto5, AutoBuilder.buildAuto(m_Auto5));
+      m_chooser.addOption(m_Auto6, AutoBuilder.buildAuto(m_Auto6));
 
 
       m_chooser.addOption("None", Commands.none());
