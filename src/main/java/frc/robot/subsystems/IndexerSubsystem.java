@@ -14,6 +14,13 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IndexerConstants;
 
+
+import com.revrobotics.ResetMode;
+import com.revrobotics.PersistMode;
+
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
 public class IndexerSubsystem extends SubsystemBase {
   private final SparkMax m_vert= new SparkMax(IndexerConstants.kwheelVertID, MotorType.kBrushless);
   private final SparkClosedLoopController m_pidController1 = m_vert.getClosedLoopController();
