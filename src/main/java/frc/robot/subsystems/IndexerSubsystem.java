@@ -24,6 +24,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 public class IndexerSubsystem extends SubsystemBase {
   private final SparkMax m_vert= new SparkMax(IndexerConstants.kwheelVertID, MotorType.kBrushless);
   private final SparkClosedLoopController m_pidController1 = m_vert.getClosedLoopController();
+  private final SparkMaxConfig m_vertConfig = new SparkMaxConfig();
   /**
    * Method to run the vertical indexer.
    * 
