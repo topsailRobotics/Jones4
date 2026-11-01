@@ -25,6 +25,21 @@ public class IndexerSubsystem extends SubsystemBase {
   private final SparkMax m_vert= new SparkMax(IndexerConstants.kwheelVertID, MotorType.kBrushless);
   private final SparkClosedLoopController m_pidController1 = m_vert.getClosedLoopController();
   private final SparkMaxConfig m_vertConfig = new SparkMaxConfig();
+
+  //Add constructor and put the specific configs here for initialization
+  public IndexerSubsystem() {
+
+    m_vertConfig
+        .idleMode(IdleMode.kBrake);
+    m_vertConfig
+        .smartCurrentLimit(40);
+    m_vert.configure(
+    m_vertConfig, //apply the config, the other 2 arguments are kinda just there...
+    ResetMode.kResetSafeParameters,
+    PersistMode.kPersistParameters
+);
+
+}
   /**
    * Method to run the vertical indexer.
    * 
