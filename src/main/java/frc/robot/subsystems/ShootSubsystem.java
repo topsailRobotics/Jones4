@@ -16,7 +16,10 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
 
 import frc.robot.Constants.ShooterConstants;
-
+import com.revrobotics.spark.SparkBase.PersistMode;  
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;  
 public class ShootSubsystem extends SubsystemBase {
  
     // front: intake
@@ -26,13 +29,42 @@ public class ShootSubsystem extends SubsystemBase {
     public boolean m_Shooteron = false;
   private final SparkMax m_ShootLeft = new SparkMax(ShooterConstants.kleftshootermotorID, MotorType.kBrushless);
   private final SparkMax m_ShootRight= new SparkMax(ShooterConstants.krightshootermotorID, MotorType.kBrushless);
+
+
+  private final SparkMaxConfig m_leftConfig = new SparkMaxConfig();
+  private final SparkMaxConfig m_rightConfig = new SparkMaxConfig();
+
+
   public final RelativeEncoder m_Encoder = m_ShootLeft.getEncoder();
 private final SparkClosedLoopController m_pidController1 = m_ShootLeft.getClosedLoopController();
 private final SparkClosedLoopController m_pidController2 = m_ShootRight.getClosedLoopController();
-  //default construcor
-  public ShootSubsystem() {
+  
+//default construcor  configure pid later 
+   public ShootSubsystem() {
+    
+    // 1. Configure Left Motor
+    m_leftConfig
+        .idleMode(IdleMode.kCoast)
+        .smartCurrentLimit(40);
+        
+    m_ShootLeft.configure(
+        m_leftConfig, 
+        ResetMode.kResetSafeParameters,
+        PersistMode.kPersistParameters
+    );
 
+    // 2. Configure Right Motor
+    m_rightConfig
+        .idleMode(IdleMode.kCoast)
+        .smartCurrentLimit(40);
+
+    m_ShootRight.configure(
+        m_rightConfig, 
+        ResetMode.kResetSafeParameters,
+        PersistMode.kPersistParameters
+    );
   }
+
 
 
   @Override
