@@ -16,12 +16,10 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkFlex;
-import frc.robot.Configs;
 import frc.robot.Constants.ModuleConstants;
 
 import com.revrobotics.ResetMode;
 import com.revrobotics.PersistMode;
-import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -31,8 +29,6 @@ public class MAXSwerveModule {
   private final SparkFlex m_drivingSpark;
   private final SparkMax m_turningSpark;
 
-  private final SparkFlexConfig m_drivingConfig = new SparkFlexConfig();
-  private final SparkMaxConfig m_turningConfig = new SparkMaxConfig();
 
   private final RelativeEncoder m_drivingEncoder;
   private final AbsoluteEncoder m_turningEncoder;
