@@ -17,6 +17,7 @@ import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkFlex;
 import frc.robot.Configs;
+import frc.robot.Constants.ModuleConstants;
 
 import com.revrobotics.ResetMode;
 import com.revrobotics.PersistMode;
@@ -24,6 +25,7 @@ import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.FeedbackSensor;
 
 public class MAXSwerveModule {
   private final SparkFlex m_drivingSpark;
@@ -54,6 +56,7 @@ public class MAXSwerveModule {
    * @author septiceyesam2049-bot
    */
   public MAXSwerveModule(int drivingCANId, int turningCANId, double chassisAngularOffset) {
+
     m_drivingSpark = new SparkFlex(drivingCANId, MotorType.kBrushless);
     m_turningSpark = new SparkMax(turningCANId, MotorType.kBrushless);
 
@@ -63,18 +66,83 @@ public class MAXSwerveModule {
     m_drivingClosedLoopController = m_drivingSpark.getClosedLoopController();
     m_turningClosedLoopController = m_turningSpark.getClosedLoopController();
 
-    // Apply the respective configurations to the SPARKS. Reset parameters before
-    // applying the configuration to bring the SPARK to a known good state. Persist
-    // the settings to the SPARK to avoid losing them on a power cycle.
-    m_drivingSpark.configure(Configs.MAXSwerveModule.drivingConfig, ResetMode.kResetSafeParameters,
-        PersistMode.kPersistParameters);
-    m_turningSpark.configure(Configs.MAXSwerveModule.turningConfig, ResetMode.kResetSafeParameters,
-        PersistMode.kPersistParameters);
+    // ==========================================
+    // DRIVING MOTOR CONFIGURATION (SPARK FLEX)
+    // ==========================================
+
+    double drivingFactor =
+        ModuleConstants.kWheelDiameterMeters * Math.PI
+        / ModuleConstants.kDrivingMotorReduction;
+
+    double drivingP = 0.04 * drivingFactor / 60.0;
+
+    double drivingKV =
+        12.0 * drivingFactor
+        / (60.0 * ModuleConstants.kDriveWheelFreeSpeedRps);
+
+    SparkFlexConfig drivingConfig = new SparkFlexConfig();
+
+    drivingConfig
+        .idleMode(IdleMode.kBrake)
+        .smartCurrentLimit(50);
+
+    drivingConfig.closedLoop
+        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+        .pid(drivingP, 0, 0)
+        .outputRange(-1, 1)
+        .feedForward.kV(drivingKV);
+
+
+    // ==========================================
+    // TURNING MOTOR CONFIGURATION (SPARK MAX)
+    // ==========================================
+
+    SparkMaxConfig turningConfig = new SparkMaxConfig();
+
+    turningConfig
+        .idleMode(IdleMode.kBrake)
+        .smartCurrentLimit(20);
+
+    turningConfig.absoluteEncoder
+        .inverted(true);
+
+    turningConfig.closedLoop
+        .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+        .pid(2 * Math.PI, 0, 0)
+        .outputRange(-1, 1)
+        .positionWrappingEnabled(true)
+        .positionWrappingInputRange(0, 1);
+
+
+    // ==========================================
+    // APPLY CONFIGURATIONS
+    // ==========================================
+
+    m_drivingSpark.configure(
+        drivingConfig,
+        ResetMode.kResetSafeParameters,
+        PersistMode.kPersistParameters
+    );
+
+    m_turningSpark.configure(
+        turningConfig,
+        ResetMode.kResetSafeParameters,
+        PersistMode.kPersistParameters
+    );
+
+
+    // ==========================================
+    // INITIALIZE MODULE
+    // ==========================================
 
     m_chassisAngularOffset = chassisAngularOffset;
-    m_desiredState.angle = new Rotation2d(m_turningEncoder.getPosition());
+
+    m_desiredState.angle = new Rotation2d(
+        m_turningEncoder.getPosition() * 2 * Math.PI
+    );
+
     m_drivingEncoder.setPosition(0);
-  }
+}
 
   /**
    * Returns the current state of the module.
