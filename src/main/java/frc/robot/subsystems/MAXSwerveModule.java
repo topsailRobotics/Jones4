@@ -38,7 +38,7 @@ public class MAXSwerveModule {
 
   private double m_chassisAngularOffset = 0;
   private SwerveModuleState m_desiredState = new SwerveModuleState(0.0, new Rotation2d());
-
+  private final double m_drivingFactor;
   /**
    * Constructs a MAXSwerveModule and configures the driving and turning motor,
    * encoder, and PID controller. This configuration is specific to the REV
@@ -66,14 +66,14 @@ public class MAXSwerveModule {
     // DRIVING MOTOR CONFIGURATION (SPARK FLEX)
     // ==========================================
 
-    double drivingFactor =
-        ModuleConstants.kWheelDiameterMeters * Math.PI
-        / ModuleConstants.kDrivingMotorReduction;
+    m_drivingFactor =
+    ModuleConstants.kWheelDiameterMeters * Math.PI
+    / ModuleConstants.kDrivingMotorReduction;
 
-    double drivingP = 0.04 * drivingFactor / 60.0;
+    double drivingP = 0.04 * m_drivingFactor / 60.0;
 
     double drivingKV =
-        12.0 * drivingFactor
+        12.0 * m_drivingFactor
         / (60.0 * ModuleConstants.kDriveWheelFreeSpeedRps);
 
     SparkFlexConfig drivingConfig = new SparkFlexConfig();
