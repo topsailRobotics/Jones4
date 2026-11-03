@@ -1,3 +1,5 @@
+//unused
+//our configs only applied to swerve previously, change the config format for other subsystems as well if this works
 package frc.robot;
 
 import com.revrobotics.spark.config.SparkFlexConfig;
