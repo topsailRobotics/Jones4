@@ -17,8 +17,8 @@ import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkBase.ControlType;
 
 import frc.robot.Constants.ShooterConstants;
-import com.revrobotics.spark.SparkBase.PersistMode;  
-import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.ResetMode;
+import com.revrobotics.PersistMode;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;  
 public class ShootSubsystem extends SubsystemBase {
@@ -46,12 +46,14 @@ private final SparkClosedLoopController m_pidController2 = m_ShootRight.getClose
     // 1. Configure Left Motor
     m_leftConfig
         .idleMode(IdleMode.kCoast)
-        .smartCurrentLimit(40);
+        .smartCurrentLimit(40)
+        .inverted(true);
     
     m_leftConfig.closedLoop
-        .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
         .pid(0.04, 0, 0)
-        .outputRange(-1, 1);
+        .outputRange(-1, 1)
+        .feedForward.kV(0.0002);
         
     m_ShootLeft.configure(
         m_leftConfig, 
@@ -63,11 +65,12 @@ private final SparkClosedLoopController m_pidController2 = m_ShootRight.getClose
     m_rightConfig
         .idleMode(IdleMode.kCoast)
         .smartCurrentLimit(40);
-        
+
     m_rightConfig.closedLoop
-        .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
         .pid(0.04, 0, 0)
-        .outputRange(-1, 1);    
+        .outputRange(-1, 1)
+        .feedForward.kV(0.0002);
 
     m_ShootRight.configure(
         m_rightConfig, 
