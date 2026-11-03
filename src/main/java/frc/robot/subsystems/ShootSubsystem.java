@@ -13,6 +13,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkBase.ControlType;
 
 import frc.robot.Constants.ShooterConstants;
@@ -46,6 +47,11 @@ private final SparkClosedLoopController m_pidController2 = m_ShootRight.getClose
     m_leftConfig
         .idleMode(IdleMode.kCoast)
         .smartCurrentLimit(40);
+    
+    m_leftConfig.closedLoop
+        .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+        .pid(0.04, 0, 0)
+        .outputRange(-1, 1);
         
     m_ShootLeft.configure(
         m_leftConfig, 
@@ -57,6 +63,11 @@ private final SparkClosedLoopController m_pidController2 = m_ShootRight.getClose
     m_rightConfig
         .idleMode(IdleMode.kCoast)
         .smartCurrentLimit(40);
+        
+    m_rightConfig.closedLoop
+        .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+        .pid(0.04, 0, 0)
+        .outputRange(-1, 1);    
 
     m_ShootRight.configure(
         m_rightConfig, 
